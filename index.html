@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日程調整- 修正テスト</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="antialiased">
+    <video autoplay loop muted playsinline id="background-video">
+        <source src="assets3/0927.mp4" type="video/mp4">
+    </video>
+
+    <header class="header hidden md:block fixed top-0 w-full z-10">
+        <div class="container flex items-center justify-between">
+            <div id="logo-and-back-pc" class="flex items-center">
+                <a href="index.html" class="logo font-bold text-2xl text-blue-600" id="logo-link-pc">
+                    <span id="logo-text">日程調整3</span>
+                </a>
+            </div>
+            <div class="flex items-center space-x-6">
+                <nav class="flex space-x-6">
+                    <a id="how-to-use-link-pc" href="javascript:void(0)" class="text-gray-600 hover:text-blue-600 transition-colors">使い方</a>
+                    <a id="my-schedules-link-pc" href="my-page.html" class="hidden text-gray-600 hover:text-blue-600 transition-colors">マイアンケート</a>
+                    <a id="logout-link-pc" href="#" class="hidden text-red-500 hover:text-red-700 transition-colors">ログアウト</a>
+                    <a id="login-link-pc" href="#" class="text-gray-600 hover:text-blue-600 transition-colors">ログイン/登録</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button id="lang-toggle-pc" class="text-gray-600 hover:text-blue-600 transition-colors">
+                        <span id="lang-text-pc" class="font-bold">JP / EN</span>
+                    </button>
+                    <button id="theme-toggle-pc" class="text-gray-600 hover:text-blue-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                </div>
+                <div id="user-icon-container-pc" class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center cursor-pointer transition-colors hover:border-blue-500"></div>
+            </div>
+        </div>
+    </header>
+
+    <header class="header block md:hidden fixed top-0 w-full z-10">
+        <div class="container flex items-center justify-between">
+            <div id="logo-and-back-mobile" class="flex items-center">
+                <a href="index.html" class="logo font-bold text-2xl text-blue-600" id="logo-link-mobile">
+                    <span id="logo-text">日程調整3</span>
+                </a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a id="login-link-mobile" href="#" class="text-gray-600 hover:text-blue-600 transition-colors">ログイン</a>
+                <button id="lang-toggle-mobile" class="text-gray-600 hover:text-blue-600 transition-colors">
+                    <span id="lang-text-mobile" class="font-bold">JP/EN</span>
+                </button>
+                <button id="theme-toggle-mobile" class="text-gray-600 hover:text-blue-600 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <div id="user-icon-container-mobile" class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center cursor-pointer transition-colors hover:border-blue-500"></div>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-container">
+        <section id="home-section" class="selection-section text-center flex flex-col items-center">
+            <div id="hero-title" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full inline-block mb-12 text-2xl">サクッと 簡単・シンプル</div>
+            <h2 id="home-subtitle" class="text-3xl font-bold mb-12">日程調整の種類を選択</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card p-8 flex flex-col items-center">
+                    <div class="icon mb-4">🗓️</div>
+                    <h3 id="date-card-title" class="text-xl font-bold mb-2">日にちで調整</h3>
+                    <p id="date-card-desc" class="text-gray-600 mb-6">参加者の都合の良い日にちを複数選択してもらいます。</p>
+                    <button id="create-date-button" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-600 transition-colors">日にちで作成</button>
+                    <p id="date-card-note" class="text-xs text-gray-400 mt-4">投票結果は投票期限が過ぎたら公開されます</p>
+                </div>
+                <div class="card p-8 flex flex-col items-center">
+                    <div class="icon mb-4">🕒</div>
+                    <h3 id="time-card-title" class="text-xl font-bold mb-2">時間帯で調整</h3>
+                    <p id="time-card-desc" class="text-gray-600 mb-6">特定の日の時間帯で、都合の良い時間帯を複数選択してもらいます。</p>
+                    <button id="create-time-button" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-600 transition-colors">時間帯で作成</button>
+                    <p id="time-card-note" class="text-xs text-gray-400 mt-4">投票結果は投票期限が過ぎたら公開されます</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-to-use-section" class="selection-section hidden">
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold text-center mb-8">使い方</h2>
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">ステップ1：日程調整の作成</h3>
+                        <p class="text-gray-700">サイトのトップページから、作成したい日程調整の種類を選択します。</p>
+                        <ul class="list-disc list-inside mt-2 text-gray-600">
+                            <li>**日にちで調整**: 候補日を複数選択してアンケートを作成します。</li>
+                            <li>**時間帯で調整**: 日程日を一つ決めて、時間帯の候補を複数選択します。</li>
+                        </ul>
+                        <p class="text-gray-700 mt-2">タイトルや説明文、投票期限を設定したら、「作成する」ボタンを押してください。</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">ステップ2：URLの共有</h3>
+                        <p class="text-gray-700">日程調整の作成が完了すると、専用のURLが発行されます。このURLをコピーして、LINEやメール、Slackなどで参加者に共有しましょう。</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">ステップ3：投票</h3>
+                        <p class="text-gray-700">共有されたURLにアクセスすると、投票ページが表示されます。</p>
+                        <ul class="list-disc list-inside mt-2 text-gray-600">
+                            <li>自分の名前を入力します。</li>
+                            <li>都合の良い日にち、または時間帯を複数選択します。</li>
+                            <li>「投票する」ボタンを押して投票完了です。</li>
+                        </ul>
+                        <p class="text-gray-700 mt-4 font-bold">注意点：</p>
+                        <p class="text-gray-700">投票結果は、**投票期限が過ぎるまで他の人には公開されません**。期限が過ぎると、すべての投票結果が自動で公開されます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="login-section" class="selection-section hidden">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold mb-8">ログイン / 登録</h2>
+
+                <form id="email-login-form" class="space-y-4 mb-6">
+                    <div>
+                        <input type="email" id="login-email" placeholder="メールアドレス" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <input type="password" id="login-password" placeholder="パスワード" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button id="email-login-button" type="submit" class="w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-600 transition-colors">ログイン</button>
+                    <button id="register-button" type="button" class="w-full text-blue-500 font-bold py-3 px-4 rounded-xl hover:bg-blue-100 transition-colors">新規登録</button>
+                </form>
+
+                <p id="or-separator" class="text-gray-600 mb-6">または</p>
+
+                <button id="google-login-button" class="w-full bg-white border border-gray-300 hover:bg-gray-100 transition-colors text-gray-700 font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 9.5C27.052 9.5 29.805 10.74 31.84 12.78L38.414 6.207C34.425 2.217 29.418 0 24 0C15.823 0 8.783 4.664 5.253 11.597L13.784 18.17C15.938 14.156 19.648 11.5 24 11.5C28.257 11.5 31.967 14.156 34.12 18.17L42.65 11.597C39.12 4.664 32.08 0 24 0Z" fill="#EA4335"/>
+                        <path d="M42.65 11.597C42.65 11.597 42.65 11.597 42.65 11.597L34.12 18.17C31.967 14.156 28.257 11.5 24 11.5C19.648 11.5 15.938 14.156 13.784 18.17L5.253 11.597C8.783 4.664 15.823 0 24 0C29.418 0 34.425 2.217 38.414 6.207L31.84 12.78C29.805 10.74 27.052 9.5 24 9.5Z" fill="#4285F4"/>
+                        <path d="M42.65 11.597C39.12 4.664 32.08 0 24 0C15.823 0 8.783 4.664 5.253 11.597L13.784 18.17C15.938 14.156 19.648 11.5 24 11.5C28.257 11.5 31.967 14.156 34.12 18.17L42.65 11.597C39.12 4.664 32.08 0 24 0Z" fill="#FBBC05"/>
+                        <path d="M42.65 11.597C39.12 4.664 32.08 0 24 0C15.823 0 8.783 4.664 5.253 11.597L13.784 18.17C15.938 14.156 19.648 11.5 24 11.5C28.257 11.5 31.967 14.156 34.12 18.17L42.65 11.597C39.12 4.664 32.08 0 24 0Z" fill="#34A853"/>
+                    </svg>
+                    <span id="google-login-text">Googleアカウントでログイン</span>
+                </button>
+            </div>
+        </section>
+
+        <section id="create-date-section" class="selection-section hidden">
+            <h2 class="text-3xl font-bold text-center mb-12">日にちで日程調整を作成</h2>
+            <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+                <form id="date-schedule-form">
+                    <div class="mb-6">
+                        <label for="schedule-title" class="block text-gray-700 font-bold mb-2">タイトル</label>
+                        <input type="text" id="schedule-title" name="schedule-title" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：チームランチの日程調整">
+                    </div>
+                    <div class="mb-6">
+                        <label for="schedule-description" class="block text-gray-700 font-bold mb-2">説明</label>
+                        <textarea id="schedule-description" name="schedule-description" rows="4" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：チームランチの候補日を決めたいです。"></textarea>
+                    </div>
+                    <div class="mb-6">
+                        <label for="vote-deadline" class="block text-gray-700 font-bold mb-2">投票期限</label>
+                        <input type="datetime-local" id="vote-deadline" name="vote-deadline" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" id="date-multiple-selection-checkbox" class="rounded text-blue-500 focus:ring-blue-500" checked>
+                            <span class="ml-2 text-gray-700">複数選択可</span>
+                        </label>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-gray-700 mb-4">候補日を選択</h3>
+                    <div id="calendar-container" class="mb-6">
+                        </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-600 transition-colors">作成する</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="create-time-section" class="selection-section hidden">
+            <h2 class="text-3xl font-bold text-center mb-12">時間帯で日程調整を作成</h2>
+            <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+                <form id="time-schedule-form">
+                    <div class="mb-6">
+                        <label for="time-schedule-title" class="block text-gray-700 font-bold mb-2">タイトル</label>
+                        <input type="text" id="time-schedule-title" name="time-schedule-title" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：チームランチの日程調整">
+                    </div>
+                    <div class="mb-6">
+                        <label for="time-schedule-description" class="block text-gray-700 font-bold mb-2">説明</label>
+                        <textarea id="time-schedule-description" name="time-schedule-description" rows="4" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：チームランチの時間帯を決めたいです。"></textarea>
+                    </div>
+                    <div class="mb-6">
+                        <label for="time-vote-deadline" class="block text-gray-700 font-bold mb-2">投票期限</label>
+                        <input type="datetime-local" id="time-vote-deadline" name="time-vote-deadline" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-6">
+                        <label for="time-schedule-date" class="block text-gray-700 font-bold mb-2">日程日を選択</label>
+                        <input type="date" id="time-schedule-date" name="time-schedule-date" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" id="time-multiple-selection-checkbox" class="rounded text-blue-500 focus:ring-blue-500" checked>
+                            <span class="ml-2 text-gray-700">複数選択可</span>
+                        </label>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-gray-700 mb-4">候補時間帯を選択</h3>
+                    <div id="time-slots-container" class="time-slot-grid mb-6">
+                        </div>
+                    <div class="text-center">
+                        <button type="submit" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-600 transition-colors">作成する</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="creation-complete-section" class="selection-section hidden">
+            <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-green-600 mb-4">🎉 作成が完了しました！</h2>
+                <p class="text-gray-700 mb-4">以下のURLをコピーして、参加者に共有してください。</p>
+                <div class="bg-gray-100 p-4 rounded-xl mb-6 break-all">
+                    <a id="share-url" href="#" class="text-blue-600 hover:underline"></a>
+                </div>
+                <button id="copy-url-button" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-600 transition-colors">URLをコピー</button>
+            </div>
+        </section>
+    </main>
+    <script src="script.js" type="module"></script>
+</body>
+</html>
