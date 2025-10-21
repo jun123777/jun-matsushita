@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マイアンケート</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="antialiased">
+    <video autoplay loop muted playsinline id="background-video">
+        <source src="assets2/nitteityousei2.mp4" type="video/mp4">
+    </video>
+
+    <header class="header hidden md:block fixed top-0 w-full z-10">
+        <div class="container flex items-center justify-between">
+            <div id="logo-and-back-pc" class="flex items-center">
+                <a href="index.html" class="logo font-bold text-2xl text-blue-600">
+                    <span id="logo-text">日程調整3</span>
+                </a>
+            </div>
+            <div class="flex items-center space-x-6">
+                <nav class="flex space-x-6">
+                    <a id="how-to-use-link-pc" href="index.html#how-to-use-section" class="text-gray-600 hover:text-blue-600 transition-colors">使い方</a>
+                    <a id="my-schedules-link-pc" href="my-page.html" class="text-blue-600 font-bold transition-colors">マイアンケート</a>
+                    <a id="logout-link-pc" href="#" class="hidden text-red-500 hover:text-red-700 transition-colors">ログアウト</a>
+                    <a id="login-link-pc" href="index.html#login-section" class="text-gray-600 hover:text-blue-600 transition-colors">ログイン/登録</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button id="lang-toggle-pc" class="text-gray-600 hover:text-blue-600 transition-colors">
+                        <span id="lang-text-pc" class="font-bold">JP / EN</span>
+                    </button>
+                    <button id="theme-toggle-pc" class="text-gray-600 hover:text-blue-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                </div>
+                <div id="user-icon-container-pc" class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center cursor-pointer transition-colors hover:border-blue-500"></div>
+            </div>
+        </div>
+    </header>
+
+    <header class="header block md:hidden fixed top-0 w-full z-10">
+        <div class="container flex items-center justify-between">
+            <div id="logo-and-back-mobile" class="flex items-center">
+                <a href="index.html" class="logo font-bold text-2xl text-blue-600">
+                    <span id="logo-text">日程調整3</span>
+                </a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a id="login-link-mobile" href="index.html#login-section" class="text-gray-600 hover:text-blue-600 transition-colors">ログイン</a>
+                <button id="lang-toggle-mobile" class="text-gray-600 hover:text-blue-600 transition-colors">
+                    <span id="lang-text-mobile" class="font-bold">JP/EN</span>
+                </button>
+                <button id="theme-toggle-mobile" class="text-gray-600 hover:text-blue-600 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <div id="user-icon-container-mobile" class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center cursor-pointer transition-colors hover:border-blue-500"></div>
+            </div>
+        </div>
+    </header>
+
+   <main id="app-container" class="w-full mt-20">
+        <section id="my-page-section" class="selection-section w-full">
+            
+            <div id="my-page-content-wrapper" class="max-w-3xl mx-auto">
+                
+                <div id="login-prompt-container" class="hidden bg-white p-8 rounded-2xl shadow-lg text-center">
+                    <h2 class="text-3xl font-bold mb-4">ログインが必要です</h2>
+                    <p class="text-gray-700 mb-6">マイアンケートを見るには、先にログインまたは新規登録を行ってください。</p>
+                    <a href="index.html#login-section" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-600 transition-colors">ログイン/新規登録</a>
+                </div>
+                
+                <div id="actual-my-page-content" class="hidden bg-white p-8 rounded-2xl shadow-lg">
+
+                    <div id="my-page-header-container" class="flex items-center justify-between mb-8"> 
+                        <h2 class="text-3xl font-bold">マイアンケート</h2>
+                        <div id="bulk-delete-container">
+                             <button id="bulk-delete-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded shadow-md hidden">
+                                選択した日程調整をまとめて削除
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="my-schedules-list" class="space-y-4">
+                        </div>
+                </div>
+            </div>
+            </section>
+    </main>
+    <script src="script.js" type="module"></script>
+</body>
+</html>

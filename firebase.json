@@ -1,0 +1,34 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "appAssociation": "auto",
+    "cleanUrls": true,
+    "rewrites": [
+      {
+        "source": "/voting-page.html",
+        "destination": "/voting-page.html"
+      },
+      {
+        "source": "/voting-page",
+        "destination": "/voting-page.html"
+      },
+      {
+        "source": "/my-page.html",
+        "destination": "/my-page.html"
+      },
+      {
+        "source": "/my-page",
+        "destination": "/my-page.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
