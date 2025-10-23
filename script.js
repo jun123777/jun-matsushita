@@ -157,6 +157,7 @@ const updateContent = (lang) => {
     const elements = [
         { id: 'logo-text', prop: 'textContent', value: text.appTitle }, // ✅ 修正: ロゴのテキストを更新
         { id: 'how-to-use-link-pc', prop: 'textContent', value: text.howToUse },
+        { id: 'my-schedules-link-pc', prop: 'textContent', value: text.mySchedules || 'マイアンケート' },
         { id: 'login-link-pc', prop: 'textContent', value: text.login },
         { id: 'lang-text-pc', prop: 'textContent', value: text.lang },
         { id: 'how-to-use-link-mobile', prop: 'textContent', value: text.howToUse },
