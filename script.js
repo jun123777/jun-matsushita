@@ -28,8 +28,6 @@ const translations = {
         howToUse: '使い方',
         login: 'ログイン/登録',
         lang: 'JP / EN',
-        mySchedules: 'マイアンケート', 
-        logout: 'ログアウト',
         heroTitle: 'サクッと 簡単・シンプル',
         homeSubtitle: '日程調整の種類を選択',
         dateCardTitle: '日にちで調整',
@@ -92,8 +90,6 @@ const translations = {
         howToUse: 'How to use',
         login: 'Login / Sign up',
         lang: 'EN / JP',
-        mySchedules: 'My Schedules', 
-        logout: 'Logout',
         heroTitle: 'Quick & Simple',
         homeSubtitle: 'Select a schedule type',
         dateCardTitle: 'By Date',
@@ -157,13 +153,9 @@ const updateContent = (lang) => {
     const elements = [
         { id: 'logo-text', prop: 'textContent', value: text.appTitle }, // ✅ 修正: ロゴのテキストを更新
         { id: 'how-to-use-link-pc', prop: 'textContent', value: text.howToUse },
-        { id: 'logout-link-pc', prop: 'textContent', value: text.logout },
-        { id: 'my-schedules-link-pc', prop: 'textContent', value: text.mySchedules || 'マイアンケート' },
         { id: 'login-link-pc', prop: 'textContent', value: text.login },
         { id: 'lang-text-pc', prop: 'textContent', value: text.lang },
         { id: 'how-to-use-link-mobile', prop: 'textContent', value: text.howToUse },
-        { id: 'my-schedules-link-mobile', prop: 'textContent', value: text.mySchedules },
-        { id: 'logout-link-mobile', prop: 'textContent', value: text.logout },
         { id: 'login-link-mobile', prop: 'textContent', value: text.login },
         { id: 'lang-text-mobile', prop: 'textContent', value: text.lang },
         { id: 'hero-title', prop: 'textContent', value: text.heroTitle },
@@ -377,6 +369,9 @@ const mainAppLogic = async(user) => {
         const userIconContainerPC = document.getElementById('user-icon-container-pc');
         
         const loginLinkMobile = document.getElementById('login-link-mobile');
+        // --- 🔽 修正: howToUseLinkMobile の変数をここで宣言 🔽 ---
+        const howToUseLinkMobile = document.getElementById('how-to-use-link-mobile');
+        // --- 🔼 修正ここまで 🔼 ---
         const mySchedulesLinkMobile = document.getElementById('my-schedules-link-mobile');
         const logoutLinkMobile = document.getElementById('logout-link-mobile');
         const userIconContainerMobile = document.getElementById('user-icon-container-mobile');
@@ -614,21 +609,8 @@ const mainAppLogic = async(user) => {
             alert("ログアウトしました。");
             window.location.href = 'index.html';
         };
-        
-        // PC用ボタンのイベントリスナー
-        
-        if (howToUseLinkPC) howToUseLinkPC.addEventListener('click', () => showSection('how-to-use-section'));
-        if (loginLinkPC) loginLinkPC.addEventListener('click', () => showSection('login-section'));
-        if (backToHomeButtonPC) backToHomeButtonPC.addEventListener('click', () => window.location.href = 'index.html');
-        if (logoutLinkPC) logoutLinkPC.addEventListener('click', handleLogout);
 
-        // スマホ用ボタンのイベントリスナー
-        if (loginLinkMobile) loginLinkMobile.addEventListener('click', () => showSection('login-section'));
-        if (backToHomeButtonMobile) backToHomeButtonMobile.addEventListener('click', () => window.location.href = 'index.html');
-        if (logoutLinkMobile) logoutLinkMobile.addEventListener('click', handleLogout); // ✅ 修正: スマホ版のログアウトボタンにもイベントリスナーを設定
-        
-
-
+        // --- 🔽 修正: showSection 関数をここに移動 🔽 ---
         const showSection = (sectionId) => {
             const allSections = document.querySelectorAll('main#app-container > section');
             allSections.forEach(section => section.classList.add('hidden'));
@@ -638,6 +620,48 @@ const mainAppLogic = async(user) => {
             }
             updateContent(currentLang);
         };
+        // --- 🔼 修正ここまで 🔼 ---
+
+        // --- 🔽 修正: handleHowToUseToggle 関数をここに追加 🔽 ---
+        const handleHowToUseToggle = (e) => {
+            // index.html にいる場合のみトグル動作を実行
+            if (window.location.pathname === '/index.html' || window.location.pathname === '/') {
+                e.preventDefault(); // リンクのデフォルト動作を停止
+
+                const howToUseSection = document.getElementById('how-to-use-section');
+                
+                if (howToUseSection) {
+                    // 既に「使い方」セクションが表示されている（hiddenクラスがない）場合はホームに戻す
+                    if (!howToUseSection.classList.contains('hidden')) {
+                        showSection('home-section');
+                    } else {
+                        // 表示されていない場合は「使い方」セクションを表示する
+                        showSection('how-to-use-section');
+                    }
+                }
+            } else {
+                // index.html 以外のページでは、index.html の使い方セクションに遷移する
+                window.location.href = 'index.html#how-to-use-section';
+            }
+        };
+        // --- 🔼 修正ここまで 🔼 ---
+        
+        // PC用ボタンのイベントリスナー
+        
+        // --- 🔽 修正: howToUseLinkPC のリスナーを変更 🔽 ---
+        if (howToUseLinkPC) howToUseLinkPC.addEventListener('click', handleHowToUseToggle);
+        // --- 🔼 修正ここまで 🔼 ---
+        if (loginLinkPC) loginLinkPC.addEventListener('click', () => showSection('login-section'));
+        if (backToHomeButtonPC) backToHomeButtonPC.addEventListener('click', () => window.location.href = 'index.html');
+        if (logoutLinkPC) logoutLinkPC.addEventListener('click', handleLogout);
+
+        // スマホ用ボタンのイベントリスナー
+        // --- 🔽 修正: howToUseLinkMobile のリスナーを追加 🔽 ---
+        if (howToUseLinkMobile) howToUseLinkMobile.addEventListener('click', handleHowToUseToggle);
+        // --- 🔼 修正ここまで 🔼 ---
+        if (loginLinkMobile) loginLinkMobile.addEventListener('click', () => showSection('login-section'));
+        if (backToHomeButtonMobile) backToHomeButtonMobile.addEventListener('click', () => window.location.href = 'index.html');
+        if (logoutLinkMobile) logoutLinkMobile.addEventListener('click', handleLogout); // ✅ 修正: スマホ版のログアウトボタンにもイベントリスナーを設定
         
         if (googleLoginButton) {
             googleLoginButton.addEventListener('click', async () => {
@@ -1055,7 +1079,9 @@ const mainAppLogic = async(user) => {
         }
         
         // PC用ボタンのイベントリスナー
-        if (howToUseLinkPC) howToUseLinkPC.addEventListener('click', () => showSection('how-to-use-section'));
+        // --- 🔽 修正: howToUseLinkPC のリスナーを変更 🔽 ---
+        if (howToUseLinkPC) howToUseLinkPC.addEventListener('click', handleHowToUseToggle);
+        // --- 🔼 修正ここまで 🔼 ---
         if (loginLinkPC) loginLinkPC.addEventListener('click', () => showSection('login-section'));
         if (backToHomeButtonPC) backToHomeButtonPC.addEventListener('click', () => window.location.href = 'index.html');
         if (logoutLinkPC) logoutLinkPC.addEventListener('click', handleLogout);
@@ -1063,6 +1089,9 @@ const mainAppLogic = async(user) => {
         if (themeTogglePC) themeTogglePC.addEventListener('click', handleThemeToggle);
 
         // スマホ用ボタンのイベントリスナー
+        // --- 🔽 修正: howToUseLinkMobile のリスナーを追加 🔽 ---
+        if (howToUseLinkMobile) howToUseLinkMobile.addEventListener('click', handleHowToUseToggle);
+        // --- 🔼 修正ここまで 🔼 ---
         if (loginLinkMobile) loginLinkMobile.addEventListener('click', () => showSection('login-section'));
         if (backToHomeButtonMobile) backToHomeButtonMobile.addEventListener('click', () => window.location.href = 'index.html');
         if (logoutLinkMobile) logoutLinkMobile.addEventListener('click', handleLogout); 
