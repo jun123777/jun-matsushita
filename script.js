@@ -24,10 +24,14 @@ const html = document.documentElement;
 
 const translations = {
     ja: {
-        appTitle: '日程調整3', // ✅ 修正: ロゴの翻訳キーを追加
+        appTitle: '日程調整3',
         howToUse: '使い方',
         login: 'ログイン/登録',
         lang: 'JP / EN',
+        // --- 🔽 修正: 翻訳キーを追加 🔽 ---
+        mySchedules: 'マイアンケート',
+        logout: 'ログアウト',
+        // --- 🔼 修正ここまで 🔼 ---
         heroTitle: 'サクッと 簡単・シンプル',
         homeSubtitle: '日程調整の種類を選択',
         dateCardTitle: '日にちで調整',
@@ -75,7 +79,7 @@ const translations = {
         noVotes: 'まだ誰も投票していません。',
         voteH2: '投票ページ',
         voteDateH3: '投票日を選択',
-        voteTimeH3: '候補時間帯を選択', // ✅ 修正: 投票ページの時間帯のタイトルを修正
+        voteTimeH3: '候補時間帯を選択',
         voterNameLabel: 'お名前',
         voterNamePlaceholder: '例：山田太郎',
         notAvailableLabel: '都合の良い日がない',
@@ -83,13 +87,17 @@ const translations = {
         commentPlaceholder: '例：月末であれば可能です。',
         submitVoteButton: '投票する',
         votedStatusH3: '投票状況',
-        daysOfWeek: ['日', '月', '火', '水', '木', '金', '土'] // ✅ 修正: 曜日の翻訳キーを追加
+        daysOfWeek: ['日', '月', '火', '水', '木', '金', '土']
     },
     en: {
-        appTitle: 'Schedule 3', // ✅ 修正: ロゴの翻訳キーを追加
+        appTitle: 'Schedule 3',
         howToUse: 'How to use',
         login: 'Login / Sign up',
         lang: 'EN / JP',
+        // --- 🔽 修正: 翻訳キーを追加 🔽 ---
+        mySchedules: 'My Schedules',
+        logout: 'Logout',
+        // --- 🔼 修正ここまで 🔼 ---
         heroTitle: 'Quick & Simple',
         homeSubtitle: 'Select a schedule type',
         dateCardTitle: 'By Date',
@@ -136,7 +144,7 @@ const translations = {
         noVotes: 'No one has voted yet.',
         voteH2: 'Voting Page',
         voteDateH3: 'Select a voting date',
-        voteTimeH3: 'Select candidate time slots', // ✅ 修正: 投票ページの時間帯のタイトルを修正
+        voteTimeH3: 'Select candidate time slots',
         voterNameLabel: 'Your Name',
         voterNamePlaceholder: 'e.g., John Doe',
         notAvailableLabel: 'Not available on any of the dates',
@@ -144,20 +152,29 @@ const translations = {
         commentPlaceholder: 'e.g., I am available at the end of the month.',
         submitVoteButton: 'Vote',
         votedStatusH3: 'Voting Status',
-        daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] // ✅ 修正: 曜日の翻訳キーを追加
+        daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     }
 };
 
 const updateContent = (lang) => {
     const text = translations[lang];
     const elements = [
-        { id: 'logo-text', prop: 'textContent', value: text.appTitle }, // ✅ 修正: ロゴのテキストを更新
+        // --- 🔽 修正: PC版とモバイル版のロゴIDを両方指定 🔽 ---
+        { id: 'logo-text-pc', prop: 'textContent', value: text.appTitle },
+        { id: 'logo-text-mobile', prop: 'textContent', value: text.appTitle },
+        // --- 🔼 修正ここまで 🔼 ---
         { id: 'how-to-use-link-pc', prop: 'textContent', value: text.howToUse },
         { id: 'login-link-pc', prop: 'textContent', value: text.login },
         { id: 'lang-text-pc', prop: 'textContent', value: text.lang },
         { id: 'how-to-use-link-mobile', prop: 'textContent', value: text.howToUse },
         { id: 'login-link-mobile', prop: 'textContent', value: text.login },
         { id: 'lang-text-mobile', prop: 'textContent', value: text.lang },
+        // --- 🔽 修正: 翻訳する要素を追加 🔽 ---
+        { id: 'my-schedules-link-pc', prop: 'textContent', value: text.mySchedules },
+        { id: 'logout-link-pc', prop: 'textContent', value: text.logout },
+        { id: 'my-schedules-link-mobile', prop: 'textContent', value: text.mySchedules },
+        { id: 'logout-link-mobile', prop: 'textContent', value: text.logout },
+        // --- 🔼 修正ここまで 🔼 ---
         { id: 'hero-title', prop: 'textContent', value: text.heroTitle },
         { id: 'home-subtitle', prop: 'textContent', value: text.homeSubtitle },
         { id: 'date-card-title', prop: 'textContent', value: text.dateCardTitle },
@@ -188,15 +205,13 @@ const updateContent = (lang) => {
                 if (sectionId === 'create-date-section') h2.textContent = text.createDateH2;
                 if (sectionId === 'create-time-section') h2.textContent = text.createDateH2;
                 if (sectionId === 'voting-page-section') {
-                     // voting-page.htmlでIDを付与したので、ここも更新
                      const votingTitle = document.getElementById('voting-title');
                      if(votingTitle) votingTitle.textContent = text.voteH2;
                 }
                 if (sectionId === 'voting-results-section') h2.textContent = text.resultsH2;
                 if (sectionId === 'my-page-section') {
-                    // my-page.html の h2 は既に「マイアンケート」なので、翻訳キーを使用
                     const myPageH2 = section.querySelector('#my-page-content-wrapper h2');
-                    if (myPageH2) myPageH2.textContent = text.mySchedules || 'マイアンケート'; // 新しいキー mySchedules が無い場合は仮のテキストを維持
+                    if (myPageH2) myPageH2.textContent = text.mySchedules || 'マイアンケート'; 
                 }
             }
             
@@ -243,7 +258,6 @@ const updateContent = (lang) => {
             }
 
             if (sectionId === 'voting-page-section') {
-                // ✅ 修正: 投票ページの日付/時間帯のh3を翻訳
                 const votingDateH3 = document.getElementById('voting-date-h3');
                 if (votingDateH3) votingDateH3.textContent = text.voteDateH3;
                 const votingTimeH3 = document.getElementById('voting-time-h3');
@@ -271,7 +285,7 @@ const updateContent = (lang) => {
                 const emailLoginButton = document.getElementById('email-login-button');
                 if (emailLoginButton) emailLoginButton.textContent = text.loginButtonText;
                 
-                const registerButtonTextElement = document.getElementById('register-button'); // IDは index.html の <button id="register-button"> に合わせます
+                const registerButtonTextElement = document.getElementById('register-button'); 
                 if (registerButtonTextElement) registerButtonTextElement.textContent = text.registerButtonText;
 
                 const orSeparator = document.getElementById('or-separator');
@@ -282,15 +296,13 @@ const updateContent = (lang) => {
             }
 
             if (sectionId === 'voting-results-section') {
-                const resultsDesc = document.querySelector('#voting-results-section p');
-                // このpタグは動的に更新されるため、ここでは何もしない
+                // ...
             }
         }
     });
 };
 
 const toggleMobileMenu = () => {
-    // 複数のページで使用するため、要素が存在するか確認する
     const mobileMenuContent = document.getElementById('mobile-menu-content');
     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
     if (mobileMenuContent && mobileMenuOverlay) {
@@ -303,10 +315,9 @@ const handleLangToggle = () => {
     currentLang = currentLang === 'ja' ? 'en' : 'ja';
     localStorage.setItem('lang', currentLang);
     updateContent(currentLang);
-    // カレンダーを表示している場合、言語切り替え後に再描画
     const calendarContainer = document.getElementById('calendar-container');
     if (calendarContainer && !calendarContainer.classList.contains('hidden')) {
-        renderCalendar(calendarContainer, currentMonth, currentYear, true, [], true); // 簡易的な再描画
+        renderCalendar(calendarContainer, currentMonth, currentYear, true, [], true); 
     }
 };
 
@@ -328,19 +339,14 @@ const applyTheme = (element) => {
 
 const mainAppLogic = async(user) => {
     
-    // マイページに関する古いロジックは削除され、以下のページ判定ブロック内に移動しました
-
     const urlParams = new URLSearchParams(window.location.search);
     
     let scheduleId = urlParams.get('id'); 
         
         if (!scheduleId) {
-            // パス形式 (/vote/xxxx など) からIDを取得を試みる
             const pathSegments = window.location.pathname.split('/').filter(segment => segment.length > 0);
-            // パスの最後のセグメントがIDであると仮定
             if (pathSegments.length > 0) {
                 const lastSegment = pathSegments[pathSegments.length - 1];
-                // 最後のセグメントがファイル名でない場合のみIDとして採用
                 if (!lastSegment.includes('.')) {
                     scheduleId = lastSegment; 
                 }
@@ -361,22 +367,20 @@ const mainAppLogic = async(user) => {
         const createDateButton = document.getElementById('create-date-button');
         const createTimeButton = document.getElementById('create-time-button');
         
-        // ナビゲーション関連の要素をPCとモバイルで分ける
+        // --- 🔽 修正: 全てのナビゲーション変数をここで宣言 🔽 ---
         const howToUseLinkPC = document.getElementById('how-to-use-link-pc');
         const loginLinkPC = document.getElementById('login-link-pc');
         const mySchedulesLinkPC = document.getElementById('my-schedules-link-pc');
         const logoutLinkPC = document.getElementById('logout-link-pc');
         const userIconContainerPC = document.getElementById('user-icon-container-pc');
         
-        const loginLinkMobile = document.getElementById('login-link-mobile');
-        // --- 🔽 修正: howToUseLinkMobile の変数をここで宣言 🔽 ---
         const howToUseLinkMobile = document.getElementById('how-to-use-link-mobile');
-        // --- 🔼 修正ここまで 🔼 ---
+        const loginLinkMobile = document.getElementById('login-link-mobile');
         const mySchedulesLinkMobile = document.getElementById('my-schedules-link-mobile');
         const logoutLinkMobile = document.getElementById('logout-link-mobile');
         const userIconContainerMobile = document.getElementById('user-icon-container-mobile');
+        // --- 🔼 修正ここまで 🔼 ---
 
-        // 言語/テーマトグル
         const langTogglePC = document.getElementById('lang-toggle-pc'); 
         const themeTogglePC = document.getElementById('theme-toggle-pc');
         const langToggleMobile = document.getElementById('lang-toggle-mobile'); 
@@ -413,23 +417,21 @@ const mainAppLogic = async(user) => {
         let currentMonth = today.getMonth();
         let currentYear = today.getFullYear();
 
-        const bulkDeleteBtn = document.getElementById('bulk-delete-btn'); // mainAppLogic 内の取得箇所を使用
+        const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
         if (bulkDeleteBtn && !bulkDeleteBtn.hasListener) {
             bulkDeleteBtn.onclick = () => {
                 const selectedIds = Array.from(document.querySelectorAll('.schedule-checkbox:checked'))
                 .map(cb => cb.dataset.id);
                 bulkDeleteSchedules(selectedIds);
             };
-            bulkDeleteBtn.hasListener = true; // 複数回設定されないためのフラグ
+            bulkDeleteBtn.hasListener = true; 
         }
 
         const renderMySchedules = (schedules, listElement) => {
-            // [A] 初期化と要素の取得
             if (!listElement) return;
 
             listElement.innerHTML = '';
 
-            // [B] データが存在しない場合の処理
             if (schedules.length === 0) {
                 listElement.innerHTML = '<p class="text-gray-500 dark:text-gray-400 p-4">作成したアンケートはありません。</p>';
                 return;
@@ -465,11 +467,9 @@ const mainAppLogic = async(user) => {
         };
 
         const attachMyPageListeners = () => {
-            // 1. 要素を取得
             const deleteButtons = document.querySelectorAll('.delete-schedule-btn');
             const schedulesCheckboxes = document.querySelectorAll('#my-schedules-list .schedule-checkbox'); 
             
-            // 2. 個別削除ボタンのリスナー設定
             deleteButtons.forEach(button => {
                 const newButton = button.cloneNode(true);
                 button.parentNode.replaceChild(newButton, button);
@@ -479,7 +479,6 @@ const mainAppLogic = async(user) => {
                 });
             });
             
-            // 3. チェックボックスのリスナー設定
             schedulesCheckboxes.forEach(cb => {
                 const newCheckbox = cb.cloneNode(true);
                 cb.parentNode.replaceChild(newCheckbox, cb);
@@ -489,21 +488,17 @@ const mainAppLogic = async(user) => {
 
 
         const updateBulkDeleteButton = () => {
-            // #my-schedules-list 内のチェックボックスを取得
             const listElement = document.getElementById('my-schedules-list');
             if (!listElement) return 0;
             const checkboxes = listElement.querySelectorAll('.schedule-checkbox'); 
 
             const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
             const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
-            // bulkDeleteBtn が存在しない場合は処理を終了
             if (!bulkDeleteBtn) return;
             
             if (checkedCount > 0) {
-            // チェックが1つ以上あれば表示
-            bulkDeleteBtn.classList.remove('hidden');
+                bulkDeleteBtn.classList.remove('hidden');
             } else {
-                // チェックが0であれば非表示
                 bulkDeleteBtn.classList.add('hidden');
             }
         };
@@ -515,11 +510,10 @@ const mainAppLogic = async(user) => {
             }
 
             if (!confirm(`本当に選択された ${selectedIds.length} 件の日程調整を削除してもよろしいですか？この操作は元に戻せません。`)) {
-                return; // キャンセルの場合はここで終了
+                return; 
             }
                 
             try {
-                // writeBatch が import されていないとここでエラーになります
                 const batch = writeBatch(db); 
                 selectedIds.forEach(id => {
                     const scheduleRef = doc(db, "schedules", id);
@@ -551,9 +545,7 @@ const mainAppLogic = async(user) => {
             }
         };
 
-        // ログイン状態に応じてアイコンとリンクの表示を切り替え
         const updateHeader = (user) => {
-            // PC用
             if (document.getElementById('user-icon-container-pc')) {
                 const userIconContainerPC = document.getElementById('user-icon-container-pc');
                 const loginLinkPC = document.getElementById('login-link-pc');
@@ -578,7 +570,6 @@ const mainAppLogic = async(user) => {
                 }
             }
 
-            // スマホ用
             if (document.getElementById('user-icon-container-mobile')) {
                  const userIconContainerMobile = document.getElementById('user-icon-container-mobile');
                  const loginLinkMobile = document.getElementById('login-link-mobile');
@@ -609,8 +600,8 @@ const mainAppLogic = async(user) => {
             alert("ログアウトしました。");
             window.location.href = 'index.html';
         };
-
-        // --- 🔽 修正: showSection 関数をここに移動 🔽 ---
+        
+        // --- 🔽 修正: 全てのヘルパー関数をリスナー設定の前に移動 🔽 ---
         const showSection = (sectionId) => {
             const allSections = document.querySelectorAll('main#app-container > section');
             allSections.forEach(section => section.classList.add('hidden'));
@@ -620,97 +611,24 @@ const mainAppLogic = async(user) => {
             }
             updateContent(currentLang);
         };
-        // --- 🔼 修正ここまで 🔼 ---
 
-        // --- 🔽 修正: handleHowToUseToggle 関数をここに追加 🔽 ---
         const handleHowToUseToggle = (e) => {
-            // index.html にいる場合のみトグル動作を実行
             if (window.location.pathname === '/index.html' || window.location.pathname === '/') {
-                e.preventDefault(); // リンクのデフォルト動作を停止
+                e.preventDefault(); 
 
                 const howToUseSection = document.getElementById('how-to-use-section');
                 
                 if (howToUseSection) {
-                    // 既に「使い方」セクションが表示されている（hiddenクラスがない）場合はホームに戻す
                     if (!howToUseSection.classList.contains('hidden')) {
                         showSection('home-section');
                     } else {
-                        // 表示されていない場合は「使い方」セクションを表示する
                         showSection('how-to-use-section');
                     }
                 }
             } else {
-                // index.html 以外のページでは、index.html の使い方セクションに遷移する
                 window.location.href = 'index.html#how-to-use-section';
             }
         };
-        // --- 🔼 修正ここまで 🔼 ---
-        
-        // PC用ボタンのイベントリスナー
-        
-        // --- 🔽 修正: howToUseLinkPC のリスナーを変更 🔽 ---
-        if (howToUseLinkPC) howToUseLinkPC.addEventListener('click', handleHowToUseToggle);
-        // --- 🔼 修正ここまで 🔼 ---
-        if (loginLinkPC) loginLinkPC.addEventListener('click', () => showSection('login-section'));
-        if (backToHomeButtonPC) backToHomeButtonPC.addEventListener('click', () => window.location.href = 'index.html');
-        if (logoutLinkPC) logoutLinkPC.addEventListener('click', handleLogout);
-
-        // スマホ用ボタンのイベントリスナー
-        // --- 🔽 修正: howToUseLinkMobile のリスナーを追加 🔽 ---
-        if (howToUseLinkMobile) howToUseLinkMobile.addEventListener('click', handleHowToUseToggle);
-        // --- 🔼 修正ここまで 🔼 ---
-        if (loginLinkMobile) loginLinkMobile.addEventListener('click', () => showSection('login-section'));
-        if (backToHomeButtonMobile) backToHomeButtonMobile.addEventListener('click', () => window.location.href = 'index.html');
-        if (logoutLinkMobile) logoutLinkMobile.addEventListener('click', handleLogout); // ✅ 修正: スマホ版のログアウトボタンにもイベントリスナーを設定
-        
-        if (googleLoginButton) {
-            googleLoginButton.addEventListener('click', async () => {
-                const provider = new GoogleAuthProvider();
-                try {
-                    await signInWithPopup(auth, provider);
-                    alert("ログインしました！");
-                    window.location.href = 'index.html';
-                } catch (error) {
-                    console.error("Googleログインエラー:", error);
-                    if (error.code === 'auth/cancelled-popup-request' || error.code === 'popup-blocked') {
-                        alert("Googleログインに失敗しました。\n\nブラウザのポップアップブロッカーが原因でログイン画面が表示できませんでした。\n\nお手数ですが、このサイトのポップアップを許可してから再度お試しいただくか、メールアドレスでのログインをご利用ください。");
-                    } else {
-                        alert("Googleログインに失敗しました: " + error.message);
-                    }
-                }
-            });
-        }
-        
-        if (emailLoginForm) {
-            emailLoginForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = document.getElementById('login-email').value;
-                const password = document.getElementById('login-password').value;
-                try {
-                    await signInWithEmailAndPassword(auth, email, password);
-                    alert("ログインしました！");
-                    window.location.href = 'index.html';
-                } catch (error) {
-                    console.error("メールアドレスログインエラー:", error);
-                    alert("ログインに失敗しました: " + error.message);
-                }
-            });
-        }
-
-        if (registerButton) {
-            registerButton.addEventListener('click', async () => {
-                const email = document.getElementById('login-email').value;
-                const password = document.getElementById('login-password').value;
-                try {
-                    await createUserWithEmailAndPassword(auth, email, password);
-                    alert("新規登録が完了しました！");
-                    window.location.href = 'index.html';
-                } catch (error) {
-                    console.error("新規登録エラー:", error);
-                    alert("新規登録に失敗しました: " + error.message);
-                }
-            });
-        }
 
         const renderCalendar = (container, month, year, selectable = true, allowedDates = [], isMultipleSelection = true) => {
             if (!container) return;
@@ -720,7 +638,6 @@ const mainAppLogic = async(user) => {
             const startDate = new Date(firstDay);
             startDate.setDate(startDate.getDate() - startDate.getDay());
 
-            // ✅ 修正: 月の表示を翻訳対応
             const monthName = new Date(year, month).toLocaleString(currentLang, { month: 'long' });
             const yearText = currentLang === 'ja' ? `${year}年` : year;
             const displayMonth = currentLang === 'ja' ? `${month + 1}月` : monthName;
@@ -734,7 +651,6 @@ const mainAppLogic = async(user) => {
             `;
             container.innerHTML = calendarHeader;
 
-            // ✅ 修正: 曜日の配列を翻訳から取得
             const daysOfWeek = translations[currentLang].daysOfWeek;
             const dayHeaderGrid = document.createElement('div');
             dayHeaderGrid.className = 'calendar-grid mb-2';
@@ -892,6 +808,70 @@ const mainAppLogic = async(user) => {
                 container.appendChild(timeSlotElement);
             });
         };
+        // --- 🔼 修正ここまで 🔼 ---
+
+        // PC用ボタンのイベントリスナー
+        if (howToUseLinkPC) howToUseLinkPC.addEventListener('click', handleHowToUseToggle);
+        if (loginLinkPC) loginLinkPC.addEventListener('click', () => showSection('login-section'));
+        if (backToHomeButtonPC) backToHomeButtonPC.addEventListener('click', () => window.location.href = 'index.html');
+        if (logoutLinkPC) logoutLinkPC.addEventListener('click', handleLogout);
+
+        // スマホ用ボタンのイベントリスナー
+        if (howToUseLinkMobile) howToUseLinkMobile.addEventListener('click', handleHowToUseToggle);
+        if (loginLinkMobile) loginLinkMobile.addEventListener('click', () => showSection('login-section'));
+        if (backToHomeButtonMobile) backToHomeButtonMobile.addEventListener('click', () => window.location.href = 'index.html');
+        if (logoutLinkMobile) logoutLinkMobile.addEventListener('click', handleLogout);
+        
+        if (googleLoginButton) {
+            googleLoginButton.addEventListener('click', async () => {
+                const provider = new GoogleAuthProvider();
+                try {
+                    await signInWithPopup(auth, provider);
+                    alert("ログインしました！");
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    console.error("Googleログインエラー:", error);
+                    if (error.code === 'auth/cancelled-popup-request' || error.code === 'popup-blocked') {
+                        alert("Googleログインに失敗しました。\n\nブラウザのポップアップブロッカーが原因でログイン画面が表示できませんでした。\n\nお手数ですが、このサイトのポップアップを許可してから再度お試しいただくか、メールアドレスでのログインをご利用ください。");
+                    } else {
+                        alert("Googleログインに失敗しました: " + error.message);
+                    }
+                }
+            });
+        }
+        
+        if (emailLoginForm) {
+            emailLoginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    alert("ログインしました！");
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    console.error("メールアドレスログインエラー:", error);
+                    alert("ログインに失敗しました: " + error.message);
+                }
+            });
+        }
+
+        if (registerButton) {
+            registerButton.addEventListener('click', async () => {
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                try {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    alert("新規登録が完了しました！");
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    console.error("新規登録エラー:", error);
+                    alert("新規登録に失敗しました: " + error.message);
+                }
+            });
+        }
+
+        // (renderCalendar と generateTimeSlots は上記に移動済み)
 
         const updateVotedUsersList = (votedUsers, candidates, isResultsPage) => {
             const votedUsersListElement = document.getElementById('voted-users-list');
@@ -1024,15 +1004,13 @@ const mainAppLogic = async(user) => {
         };
 
     // ★★★ ページ判定ロジックの再構築 ★★★
-    if (myPageSection) { // 👈 修正: my-page.htmlの場合
-        // my-page.html 専用のロジック
+    if (myPageSection) { 
         showSection('my-page-section');
         
         const loginPrompt = document.getElementById('login-prompt-container');
         const actualContent = document.getElementById('actual-my-page-content');
         
         if (user && !user.isAnonymous) {
-            // ログイン済みの場合
             if (loginPrompt) loginPrompt.classList.add('hidden');
             if (actualContent) actualContent.classList.remove('hidden');
 
@@ -1052,7 +1030,6 @@ const mainAppLogic = async(user) => {
                 }
             }
         } else {
-            // 未ログインの場合
             if (loginPrompt) loginPrompt.classList.remove('hidden');
             if (actualContent) actualContent.classList.add('hidden');
         }
@@ -1079,9 +1056,7 @@ const mainAppLogic = async(user) => {
         }
         
         // PC用ボタンのイベントリスナー
-        // --- 🔽 修正: howToUseLinkPC のリスナーを変更 🔽 ---
         if (howToUseLinkPC) howToUseLinkPC.addEventListener('click', handleHowToUseToggle);
-        // --- 🔼 修正ここまで 🔼 ---
         if (loginLinkPC) loginLinkPC.addEventListener('click', () => showSection('login-section'));
         if (backToHomeButtonPC) backToHomeButtonPC.addEventListener('click', () => window.location.href = 'index.html');
         if (logoutLinkPC) logoutLinkPC.addEventListener('click', handleLogout);
@@ -1089,9 +1064,7 @@ const mainAppLogic = async(user) => {
         if (themeTogglePC) themeTogglePC.addEventListener('click', handleThemeToggle);
 
         // スマホ用ボタンのイベントリスナー
-        // --- 🔽 修正: howToUseLinkMobile のリスナーを追加 🔽 ---
         if (howToUseLinkMobile) howToUseLinkMobile.addEventListener('click', handleHowToUseToggle);
-        // --- 🔼 修正ここまで 🔼 ---
         if (loginLinkMobile) loginLinkMobile.addEventListener('click', () => showSection('login-section'));
         if (backToHomeButtonMobile) backToHomeButtonMobile.addEventListener('click', () => window.location.href = 'index.html');
         if (logoutLinkMobile) logoutLinkMobile.addEventListener('click', handleLogout); 
@@ -1177,7 +1150,7 @@ const mainAppLogic = async(user) => {
                         renderCalendar(votingCalendarContainer, currentMonth, currentYear, false, createdSchedule.dates, isMultipleSelection);
                     } else if (createdSchedule.type === 'time') {
                         if(votingCalendarContainer) votingCalendarContainer.classList.add('hidden');
-                        if(votingDateH3) votingDateH3.classList.remove('hidden'); // 投票ページは日付選択のh3は常に表示なので、時間帯のときだけ表示するロジックを修正
+                        if(votingDateH3) votingDateH3.classList.remove('hidden'); 
                         if(votingTimeSlotsContainer) votingTimeSlotsContainer.classList.remove('hidden');
                         if(votingTimeH3) votingTimeH3.classList.remove('hidden');
                         generateTimeSlots(votingTimeSlotsContainer, false, createdSchedule.timeSlots, isMultipleSelection);
@@ -1262,10 +1235,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenuContent = document.getElementById('mobile-menu-content');
     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-    // 言語切り替えボタンのイベントリスナー
     const langTogglePC = document.getElementById('lang-toggle-pc');
     const langToggleMobile = document.getElementById('lang-toggle-mobile');
-    // ページロード時にテーマを適用
     const themeTogglePC = document.getElementById('theme-toggle-pc');
     const themeToggleMobile = document.getElementById('theme-toggle-mobile');
 
@@ -1276,7 +1247,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
     
-    // 初回ロード時に言語を適用し、コンテンツを更新
     updateContent(currentLang); 
     
     applyTheme(themeTogglePC);
@@ -1325,7 +1295,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
 
-            // スマホ用
             const userIconContainerMobile = document.getElementById('user-icon-container-mobile');
             const loginLinkMobile = document.getElementById('login-link-mobile');
             const mySchedulesLinkMobile = document.getElementById('my-schedules-link-mobile');
