@@ -131,6 +131,31 @@ body > * {
     z-index: 1;
 }
 
+/* --- 🔽 追加: 一般投票（Poll）のスタイル 🔽 --- */
+/* 投票結果のプログレスバー（1.jpg のスタイル） */
+.progress-bar {
+    width: 100%;
+    background-color: #e5e7eb; /* Tailwind gray-200 */
+    border-radius: 9999px;
+    height: 10px;
+    overflow: hidden; /* 子要素がはみ出ないように */
+}
+
+.progress-bar-inner {
+    height: 10px;
+    border-radius: 9999px;
+    /* 1.jpg のようなグラデーション */
+    background: linear-gradient(to right, #60a5fa, #ec4899); /* Tailwind blue-400 to pink-500 */
+    transition: width 0.5s ease-in-out; /* 幅が変わるときのアニメーション */
+    text-align: right;
+    color: white;
+    font-size: 0.75rem;
+    line-height: 10px;
+    padding-right: 5px;
+}
+/* --- 🔼 追加ここまで 🔼 --- */
+
+
 /* --- ダークモードのスタイル --- */
 /* htmlタグに dark クラスが付いているときに適用 */
 
@@ -212,6 +237,18 @@ body > * {
     color: #a0aec0;
 }
 
+/* --- 🔽 追加: プログレスバーのダークモード 🔽 --- */
+.dark .progress-bar {
+    background-color: #374151; /* Tailwind gray-700 */
+}
+
+.dark .progress-bar-inner {
+    /* ダークモードでもグラデーションは映えるのでそのまま */
+    background: linear-gradient(to right, #60a5fa, #ec4899); 
+}
+/* --- 🔼 追加ここまで 🔼 --- */
+
+
 /* ユーザーアイコンコンテナのスタイル */
 #user-icon-container {
     border-radius: 50%;
@@ -249,4 +286,34 @@ main {
   main {
     padding-top: 120px; /* PC版のヘッダーの高さに合わせて調整 */
   }
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    /* --- ▼▼ ここから書き換え ▼▼ --- */
+    /* フォーム内の datetime-local input に限定し、詳細度を上げる */
+    form input[type="datetime-local"] {
+        display: block !important; /* ブロック要素にして幅指定を効かせる */
+        box-sizing: border-box !important; /* paddingを含めて幅を計算 */
+
+        /* 幅を100%から左右パディング(1rem * 2)分引く */
+        width: calc(100% - 2rem) !important;
+
+        /* 他の入力欄 (px-4 py-2) とパディングを合わせる */
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+
+        /* 左右マージンをリセット */
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+
+        /* appearance: none; */ /* コメントアウトのまま */
+    }
+}
+@media (max-width: 640px) { /* Tailwind の sm ブレークポイント */
+    input[type="datetime-local"] {
+        /* 必要に応じて、さらに padding や font-size を調整 */
+        padding-left: 0.75rem; /* px-3 相当 */
+        padding-right: 0.75rem;
+    }
 }

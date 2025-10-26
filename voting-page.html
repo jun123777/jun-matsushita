@@ -16,9 +16,9 @@
         <div class="container flex items-center justify-between">
             <div id="logo-and-back-pc" class="flex items-center">
                 <a href="index.html" class="logo font-bold text-2xl text-blue-600" id="logo-link-pc">
-                    <span id="logo-text">日程調整3</span>
+                    <span id="logo-text-pc">日程調整3</span>
                 </a>
-            </div>
+                </div>
             <div class="flex items-center space-x-6">
                 <nav class="flex space-x-6">
                     <a id="how-to-use-link-pc" href="index.html#how-to-use-section" class="text-gray-600 hover:text-blue-600 transition-colors">使い方</a>
@@ -43,10 +43,13 @@
         <div class="container flex items-center justify-between">
             <div id="logo-and-back-mobile" class="flex items-center">
                 <a href="index.html" class="logo font-bold text-2xl text-blue-600">
-                    <span id="logo-text">日程調整3</span>
+                    <span id="logo-text-mobile">日程調整3</span>
                 </a>
-            </div>
+                </div>
             <div class="flex items-center space-x-4">
+                <a id="how-to-use-link-mobile" href="index.html#how-to-use-section" class="text-gray-600 hover:text-blue-600 transition-colors">使い方</a>
+                <a id="my-schedules-link-mobile" href="my-page.html" class="hidden text-gray-600 hover:text-blue-600 transition-colors">マイアンケート</a>
+                <a id="logout-link-mobile" href="#" class="hidden text-red-500 hover:text-red-700 transition-colors">ログアウト</a>
                 <a id="login-link-mobile" href="index.html#login-section" class="text-gray-600 hover:text-blue-600 transition-colors">ログイン</a>
                 <button id="lang-toggle-mobile" class="text-gray-600 hover:text-blue-600 transition-colors">
                     <span id="lang-text-mobile" class="font-bold">JP/EN</span>
@@ -77,6 +80,9 @@
                 <div id="voting-time-slots-container" class="time-slot-grid mb-6 hidden">                    
                 </div>
                 
+                <h3 class="text-lg font-bold text-gray-700 mb-4 hidden" id="voting-poll-h3">選択肢</h3>
+                <div id="voting-poll-options-container" class="space-y-3 mb-6 hidden">
+                    </div>
                 <div class="flex items-center space-x-2 mb-4">
                     <input type="checkbox" id="not-available-checkbox" class="rounded text-blue-500 focus:ring-blue-500">
                     <label for="not-available-checkbox" class="text-gray-700">都合の良い日がない</label>

@@ -22,16 +22,15 @@ let currentLang = localStorage.getItem('lang') || 'ja';
 const currentTheme = localStorage.getItem('theme') || 'light';
 const html = document.documentElement;
 
+// --- 翻訳キーを追加 ---
 const translations = {
     ja: {
         appTitle: '日程調整3',
         howToUse: '使い方',
         login: 'ログイン/登録',
         lang: 'JP / EN',
-        // --- 🔽 修正: 翻訳キーを追加 🔽 ---
         mySchedules: 'マイアンケート',
         logout: 'ログアウト',
-        // --- 🔼 修正ここまで 🔼 ---
         heroTitle: 'サクッと 簡単・シンプル',
         homeSubtitle: '日程調整の種類を選択',
         dateCardTitle: '日にちで調整',
@@ -42,13 +41,21 @@ const translations = {
         timeCardDesc: '特定の日の時間帯で、都合の良い時間帯を複数選択してもらいます。',
         timeCardButton: '時間帯で作成',
         timeCardNote: '投票結果は投票期限が過ぎたら公開されます',
+        pollCardTitle: '一般投票で調整',
+        pollCardDesc: '「A案」「B案」など、自由な選択肢で投票を作成します。',
+        createPollButton: '一般投票で作成',
         createDateH2: '日にちで日程調整を作成',
+        createTimeH2: '時間帯で日程調整を作成',
+        createPollH2: '一般投票を作成',
         titleLabel: 'タイトル',
         titlePlaceholder: '例：チームランチの日程調整',
         descLabel: '説明',
         descPlaceholder: '例：チームランチの候補日を決めたいです。',
         deadlineLabel: '投票期限',
         datesLabel: '候補日を選択',
+        timeSlotsLabel: '候補時間帯を選択',
+        pollOptionsLabel: '投票の選択肢',
+        addOptionButton: '+ 選択肢を追加',
         createButton: '作成する',
         howToUseH2: '使い方',
         step1Title: 'ステップ1：日程調整の作成',
@@ -61,7 +68,7 @@ const translations = {
         step3Title: 'ステップ3：投票',
         step3Desc: '共有されたURLにアクセスすると、投票ページが表示されます。',
         step3Bullet1: '自分の名前を入力します。',
-        step3Bullet2: '都合の良い日にち、または時間帯を複数選択します。',
+        step3Bullet2: '都合の良い日にち、時間帯、または選択肢を複数選択します。',
         step3Bullet3: '「投票する」ボタンを押して投票完了です。',
         step3NoteTitle: '注意点：',
         step3Note: '投票結果は、投票期限が過ぎるまで他の人には公開されません**。期限が過ぎると、すべての投票結果が自動で公開されます。',
@@ -80,6 +87,7 @@ const translations = {
         voteH2: '投票ページ',
         voteDateH3: '投票日を選択',
         voteTimeH3: '候補時間帯を選択',
+        votePollH3: '選択肢',
         voterNameLabel: 'お名前',
         voterNamePlaceholder: '例：山田太郎',
         notAvailableLabel: '都合の良い日がない',
@@ -94,10 +102,8 @@ const translations = {
         howToUse: 'How to use',
         login: 'Login / Sign up',
         lang: 'EN / JP',
-        // --- 🔽 修正: 翻訳キーを追加 🔽 ---
         mySchedules: 'My Schedules',
         logout: 'Logout',
-        // --- 🔼 修正ここまで 🔼 ---
         heroTitle: 'Quick & Simple',
         homeSubtitle: 'Select a schedule type',
         dateCardTitle: 'By Date',
@@ -108,13 +114,21 @@ const translations = {
         timeCardDesc: 'Have participants select convenient time slots for a specific date.',
         timeCardButton: 'Create by Time',
         timeCardNote: 'Results will be public after the voting deadline.',
+        pollCardTitle: 'General Poll',
+        pollCardDesc: 'Create a poll with custom options like "Option A", "Option B".',
+        createPollButton: 'Create Poll',
         createDateH2: 'Create a schedule by date',
+        createTimeH2: 'Create a schedule by time',
+        createPollH2: 'Create a General Poll',
         titleLabel: 'Title',
         titlePlaceholder: 'e.g., Team Lunch Schedule',
         descLabel: 'Description',
         descPlaceholder: 'e.g., Let\'s decide the dates for our team lunch.',
         deadlineLabel: 'Voting Deadline',
         datesLabel: 'Select candidate dates',
+        timeSlotsLabel: 'Select candidate time slots',
+        pollOptionsLabel: 'Poll Options',
+        addOptionButton: '+ Add Option',
         createButton: 'Create',
         howToUseH2: 'How to use',
         step1Title: 'Step 1: Create a Schedule',
@@ -127,7 +141,7 @@ const translations = {
         step3Title: 'Step 3: Vote',
         step3Desc: 'When you access the shared URL, the voting page will be displayed.',
         step3Bullet1: 'Enter your name.',
-        step3Bullet2: 'Select one or more convenient dates or time slots.',
+        step3Bullet2: 'Select one or more convenient dates, time slots, or options.',
         step3Bullet3: 'Press the "Vote" button to complete your vote.',
         step3NoteTitle: 'Note:',
         step3Note: 'Voting results will remain **private until the voting deadline has passed**. After the deadline, all voting results will be automatically published.',
@@ -145,6 +159,7 @@ const translations = {
         voteH2: 'Voting Page',
         voteDateH3: 'Select a voting date',
         voteTimeH3: 'Select candidate time slots',
+        votePollH3: 'Options',
         voterNameLabel: 'Your Name',
         voterNamePlaceholder: 'e.g., John Doe',
         notAvailableLabel: 'Not available on any of the dates',
@@ -159,22 +174,18 @@ const translations = {
 const updateContent = (lang) => {
     const text = translations[lang];
     const elements = [
-        // --- 🔽 修正: PC版とモバイル版のロゴIDを両方指定 🔽 ---
         { id: 'logo-text-pc', prop: 'textContent', value: text.appTitle },
         { id: 'logo-text-mobile', prop: 'textContent', value: text.appTitle },
-        // --- 🔼 修正ここまで 🔼 ---
         { id: 'how-to-use-link-pc', prop: 'textContent', value: text.howToUse },
         { id: 'login-link-pc', prop: 'textContent', value: text.login },
         { id: 'lang-text-pc', prop: 'textContent', value: text.lang },
         { id: 'how-to-use-link-mobile', prop: 'textContent', value: text.howToUse },
         { id: 'login-link-mobile', prop: 'textContent', value: text.login },
         { id: 'lang-text-mobile', prop: 'textContent', value: text.lang },
-        // --- 🔽 修正: 翻訳する要素を追加 🔽 ---
         { id: 'my-schedules-link-pc', prop: 'textContent', value: text.mySchedules },
         { id: 'logout-link-pc', prop: 'textContent', value: text.logout },
         { id: 'my-schedules-link-mobile', prop: 'textContent', value: text.mySchedules },
         { id: 'logout-link-mobile', prop: 'textContent', value: text.logout },
-        // --- 🔼 修正ここまで 🔼 ---
         { id: 'hero-title', prop: 'textContent', value: text.heroTitle },
         { id: 'home-subtitle', prop: 'textContent', value: text.homeSubtitle },
         { id: 'date-card-title', prop: 'textContent', value: text.dateCardTitle },
@@ -184,7 +195,10 @@ const updateContent = (lang) => {
         { id: 'time-card-title', prop: 'textContent', value: text.timeCardTitle },
         { id: 'time-card-desc', prop: 'textContent', value: text.timeCardDesc },
         { id: 'create-time-button', prop: 'textContent', value: text.timeCardButton },
-        { id: 'time-card-note', prop: 'textContent', value: text.timeCardNote }
+        { id: 'time-card-note', prop: 'textContent', value: text.timeCardNote },
+        { id: 'poll-card-title', prop: 'textContent', value: text.pollCardTitle },
+        { id: 'poll-card-desc', prop: 'textContent', value: text.pollCardDesc },
+        { id: 'create-poll-button', prop: 'textContent', value: text.createPollButton },
     ];
 
     elements.forEach(el => {
@@ -194,7 +208,7 @@ const updateContent = (lang) => {
         }
     });
 
-    const sections = ['home-section', 'how-to-use-section', 'login-section', 'create-date-section', 'create-time-section', 'voting-page-section', 'voting-results-section', 'my-page-section'];
+    const sections = ['home-section', 'how-to-use-section', 'login-section', 'create-date-section', 'create-time-section', 'create-poll-section', 'voting-page-section', 'voting-results-section', 'my-page-section'];
     sections.forEach(sectionId => {
         const section = document.getElementById(sectionId);
         if (section) {
@@ -203,7 +217,8 @@ const updateContent = (lang) => {
                 if (sectionId === 'how-to-use-section') h2.textContent = text.howToUseH2;
                 if (sectionId === 'login-section') h2.textContent = text.loginH2;
                 if (sectionId === 'create-date-section') h2.textContent = text.createDateH2;
-                if (sectionId === 'create-time-section') h2.textContent = text.createDateH2;
+                if (sectionId === 'create-time-section') h2.textContent = text.createTimeH2;
+                if (sectionId === 'create-poll-section') h2.textContent = text.createPollH2;
                 if (sectionId === 'voting-page-section') {
                      const votingTitle = document.getElementById('voting-title');
                      if(votingTitle) votingTitle.textContent = text.voteH2;
@@ -240,21 +255,42 @@ const updateContent = (lang) => {
                 });
             }
 
-            if (sectionId === 'create-date-section' || sectionId === 'create-time-section') {
-                const titleLabel = document.querySelector(`#${sectionId} label[for^="schedule-title"]`);
+            if (sectionId === 'create-date-section' || sectionId === 'create-time-section' || sectionId === 'create-poll-section') {
+                const typePrefix = sectionId.split('-')[1]; // 'date', 'time', 'poll'
+                
+                const titleLabel = document.querySelector(`#${sectionId} label[for^="${typePrefix}-schedule-title"]`);
                 if (titleLabel) titleLabel.textContent = text.titleLabel;
-                const scheduleTitle = document.querySelector(`#${sectionId} input[name^="schedule-title"]`);
+                
+                const scheduleTitle = document.querySelector(`#${sectionId} input[name^="${typePrefix}-schedule-title"]`);
                 if (scheduleTitle) scheduleTitle.placeholder = text.titlePlaceholder;
-                const descLabel = document.querySelector(`#${sectionId} label[for^="schedule-description"]`);
+                
+                const descLabel = document.querySelector(`#${sectionId} label[for^="${typePrefix}-schedule-description"]`);
                 if (descLabel) descLabel.textContent = text.descLabel;
-                const scheduleDescription = document.querySelector(`#${sectionId} textarea[name^="schedule-description"]`);
+                
+                const scheduleDescription = document.querySelector(`#${sectionId} textarea[name^="${typePrefix}-schedule-description"]`);
                 if (scheduleDescription) scheduleDescription.placeholder = text.descPlaceholder;
-                const deadlineLabel = document.querySelector(`#${sectionId} label[for^="vote-deadline"]`);
+                
+                const deadlineLabel = document.querySelector(`#${sectionId} label[for^="${typePrefix}-vote-deadline"]`);
                 if (deadlineLabel) deadlineLabel.textContent = text.deadlineLabel;
-                const datesLabel = document.querySelector(`#${sectionId} h3`);
-                if (datesLabel) datesLabel.textContent = sectionId === 'create-date-section' ? text.datesLabel : text.voteTimeH3;
-                const createDateSubmitButton = document.querySelector(`#${sectionId} button[type="submit"]`);
-                if (createDateSubmitButton) createDateSubmitButton.textContent = text.createButton;
+                
+                const createSubmitButton = document.querySelector(`#${sectionId} button[type="submit"]`);
+                if (createSubmitButton) createSubmitButton.textContent = text.createButton;
+
+                // 各セクション固有のラベル
+                if (sectionId === 'create-date-section') {
+                    const datesLabel = document.querySelector(`#${sectionId} h3`);
+                    if (datesLabel) datesLabel.textContent = text.datesLabel;
+                }
+                if (sectionId === 'create-time-section') {
+                    const timeSlotsLabel = document.querySelector(`#${sectionId} h3`);
+                    if (timeSlotsLabel) timeSlotsLabel.textContent = text.timeSlotsLabel;
+                }
+                if (sectionId === 'create-poll-section') {
+                    const pollOptionsLabel = document.querySelector(`#${sectionId} h3`);
+                    if (pollOptionsLabel) pollOptionsLabel.textContent = text.pollOptionsLabel;
+                    const addOptionButton = document.getElementById('add-poll-option-button');
+                    if (addOptionButton) addOptionButton.textContent = text.addOptionButton;
+                }
             }
 
             if (sectionId === 'voting-page-section') {
@@ -262,6 +298,8 @@ const updateContent = (lang) => {
                 if (votingDateH3) votingDateH3.textContent = text.voteDateH3;
                 const votingTimeH3 = document.getElementById('voting-time-h3');
                 if (votingTimeH3) votingTimeH3.textContent = text.voteTimeH3;
+                const votingPollH3 = document.getElementById('voting-poll-h3');
+                if (votingPollH3) votingPollH3.textContent = text.votePollH3;
 
                 const voterNameInput = document.getElementById('voter-name');
                 if (voterNameInput) voterNameInput.placeholder = text.voterNamePlaceholder;
@@ -293,10 +331,6 @@ const updateContent = (lang) => {
                 
                 const googleLoginText = document.getElementById('google-login-text');
                 if (googleLoginText) googleLoginText.textContent = text.googleLoginText;
-            }
-
-            if (sectionId === 'voting-results-section') {
-                // ...
             }
         }
     });
@@ -337,6 +371,62 @@ const applyTheme = (element) => {
     }
 };
 
+// --- ヘッダー更新関数 ---
+const updateHeader = (user) => {
+    // PC用要素の取得
+    const userIconContainerPC = document.getElementById('user-icon-container-pc');
+    const loginLinkPC = document.getElementById('login-link-pc');
+    const mySchedulesLinkPC = document.getElementById('my-schedules-link-pc');
+    const logoutLinkPC = document.getElementById('logout-link-pc');
+
+    // スマホ用要素の取得
+    const userIconContainerMobile = document.getElementById('user-icon-container-mobile');
+    const loginLinkMobile = document.getElementById('login-link-mobile');
+    const mySchedulesLinkMobile = document.getElementById('my-schedules-link-mobile');
+    const logoutLinkMobile = document.getElementById('logout-link-mobile');
+
+    // PC用
+    if (userIconContainerPC) {
+        if (user && !user.isAnonymous) {
+            const photoURL = user.photoURL || 'https://via.placeholder.com/32';
+            userIconContainerPC.innerHTML = `<img src="${photoURL}" alt="User" class="w-full h-full rounded-full object-cover">`;
+            if (loginLinkPC) loginLinkPC.classList.add('hidden');
+            if (mySchedulesLinkPC) mySchedulesLinkPC.classList.remove('hidden');
+            if (logoutLinkPC) logoutLinkPC.classList.remove('hidden');
+        } else {
+            userIconContainerPC.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            `;
+            if (loginLinkPC) loginLinkPC.classList.remove('hidden');
+            if (mySchedulesLinkPC) mySchedulesLinkPC.classList.add('hidden');
+            if (logoutLinkPC) logoutLinkPC.classList.add('hidden');
+        }
+    }
+
+    // スマホ用
+    if (userIconContainerMobile) {
+         if (user && !user.isAnonymous) {
+            const photoURL = user.photoURL || 'https://via.placeholder.com/32';
+            userIconContainerMobile.innerHTML = `<img src="${photoURL}" alt="User" class="w-full h-full rounded-full object-cover">`;
+            if (loginLinkMobile) loginLinkMobile.classList.add('hidden');
+            if (mySchedulesLinkMobile) mySchedulesLinkMobile.classList.remove('hidden');
+            if (logoutLinkMobile) logoutLinkMobile.classList.remove('hidden');
+        } else {
+            userIconContainerMobile.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            `;
+            if (loginLinkMobile) loginLinkMobile.classList.remove('hidden');
+            if (mySchedulesLinkMobile) mySchedulesLinkMobile.classList.add('hidden');
+            if (logoutLinkMobile) logoutLinkMobile.classList.add('hidden');
+        }
+    }
+};
+
+
 const mainAppLogic = async(user) => {
     
     const urlParams = new URLSearchParams(window.location.search);
@@ -360,14 +450,15 @@ const mainAppLogic = async(user) => {
         const loginSection = document.getElementById('login-section');
         const createDateSection = document.getElementById('create-date-section');
         const createTimeSection = document.getElementById('create-time-section');
+        const createPollSection = document.getElementById('create-poll-section');
         const creationCompleteSection = document.getElementById('creation-complete-section');
         const votingPageSection = document.getElementById('voting-page-section');
         const votingResultsSection = document.getElementById('voting-results-section');
         const myPageSection = document.getElementById('my-page-section');
         const createDateButton = document.getElementById('create-date-button');
         const createTimeButton = document.getElementById('create-time-button');
+        const createPollButton = document.getElementById('create-poll-button');
         
-        // --- 🔽 修正: 全てのナビゲーション変数をここで宣言 🔽 ---
         const howToUseLinkPC = document.getElementById('how-to-use-link-pc');
         const loginLinkPC = document.getElementById('login-link-pc');
         const mySchedulesLinkPC = document.getElementById('my-schedules-link-pc');
@@ -379,7 +470,6 @@ const mainAppLogic = async(user) => {
         const mySchedulesLinkMobile = document.getElementById('my-schedules-link-mobile');
         const logoutLinkMobile = document.getElementById('logout-link-mobile');
         const userIconContainerMobile = document.getElementById('user-icon-container-mobile');
-        // --- 🔼 修正ここまで 🔼 ---
 
         const langTogglePC = document.getElementById('lang-toggle-pc'); 
         const themeTogglePC = document.getElementById('theme-toggle-pc');
@@ -394,7 +484,9 @@ const mainAppLogic = async(user) => {
         const timeSlotsContainer = document.getElementById('time-slots-container');
         const votingCalendarContainer = document.getElementById('voting-calendar-container');
         const votingTimeSlotsContainer = document.getElementById('voting-time-slots-container');
+        const votingPollOptionsContainer = document.getElementById('voting-poll-options-container');
         const votingTimeH3 = document.getElementById('voting-time-h3');
+        const votingPollH3 = document.getElementById('voting-poll-h3');
         const votedUsersList = document.getElementById('voted-users-list');
         const submitVoteButton = document.getElementById('submit-vote-button');
         const shareUrlElement = document.getElementById('share-url');
@@ -405,13 +497,14 @@ const mainAppLogic = async(user) => {
         const notAvailableComment = document.getElementById('not-available-comment');
         const dateScheduleForm = document.getElementById('date-schedule-form');
         const timeScheduleForm = document.getElementById('time-schedule-form');
+        const pollScheduleForm = document.getElementById('poll-schedule-form');
         const votingDateH3 = document.getElementById('voting-date-h3');
         const googleLoginButton = document.getElementById('google-login-button');
         const emailLoginForm = document.getElementById('email-login-form');
         const registerButton = document.getElementById('register-button');
 
         let isHowToUseVisible = false;
-        let selectedDates = new Set();
+        let selectedDates = new Set(); // 'date' と 'poll' で共用
         let selectedTimeSlots = new Set();
         const today = new Date();
         let currentMonth = today.getMonth();
@@ -444,13 +537,22 @@ const mainAppLogic = async(user) => {
                 
                 listItem.className = 'bg-white dark:bg-gray-700 p-4 rounded-xl shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0';
                 
+                let scheduleTypeLabel = '';
+                if (schedule.type === 'date') {
+                    scheduleTypeLabel = '日にち調整';
+                } else if (schedule.type === 'time') {
+                    scheduleTypeLabel = '時間帯調整';
+                } else if (schedule.type === 'poll') {
+                    scheduleTypeLabel = '一般投票';
+                }
+
                 listItem.innerHTML = `
                      <div class="flex items-center space-x-3 w-full sm:w-auto">
                          <input type="checkbox" data-id="${scheduleId}" class="schedule-checkbox h-5 w-5 text-blue-600 dark:bg-gray-600 dark:border-gray-500 rounded focus:ring-blue-500">
                          
                          <div class="flex flex-col">
                             <span class="font-bold text-lg dark:text-white">${schedule.title}</span>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">${schedule.type === 'date' ? '日にち調整' : '時間帯調整'} / 期限: ${new Date(schedule.deadline).toLocaleDateString()}</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">${scheduleTypeLabel} / 期限: ${new Date(schedule.deadline).toLocaleDateString()}</span>
                          </div>
                      </div>
 
@@ -545,55 +647,7 @@ const mainAppLogic = async(user) => {
             }
         };
 
-        const updateHeader = (user) => {
-            if (document.getElementById('user-icon-container-pc')) {
-                const userIconContainerPC = document.getElementById('user-icon-container-pc');
-                const loginLinkPC = document.getElementById('login-link-pc');
-                const mySchedulesLinkPC = document.getElementById('my-schedules-link-pc');
-                const logoutLinkPC = document.getElementById('logout-link-pc');
-
-                if (user && !user.isAnonymous) {
-                    const photoURL = user.photoURL || 'https://via.placeholder.com/32';
-                    userIconContainerPC.innerHTML = `<img src="${photoURL}" alt="User" class="w-full h-full rounded-full object-cover">`;
-                    if (loginLinkPC) loginLinkPC.classList.add('hidden');
-                    if (mySchedulesLinkPC) mySchedulesLinkPC.classList.remove('hidden');
-                    if (logoutLinkPC) logoutLinkPC.classList.remove('hidden');
-                } else {
-                    userIconContainerPC.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                    `;
-                    if (loginLinkPC) loginLinkPC.classList.remove('hidden');
-                    if (mySchedulesLinkPC) mySchedulesLinkPC.classList.add('hidden');
-                    if (logoutLinkPC) logoutLinkPC.classList.add('hidden');
-                }
-            }
-
-            if (document.getElementById('user-icon-container-mobile')) {
-                 const userIconContainerMobile = document.getElementById('user-icon-container-mobile');
-                 const loginLinkMobile = document.getElementById('login-link-mobile');
-                 const mySchedulesLinkMobile = document.getElementById('my-schedules-link-mobile');
-                 const logoutLinkMobile = document.getElementById('logout-link-mobile');
-
-                if (user && !user.isAnonymous) {
-                    const photoURL = user.photoURL || 'https://via.placeholder.com/32';
-                    userIconContainerMobile.innerHTML = `<img src="${photoURL}" alt="User" class="w-full h-full rounded-full object-cover">`;
-                    if (loginLinkMobile) loginLinkMobile.classList.add('hidden');
-                    if (mySchedulesLinkMobile) mySchedulesLinkMobile.classList.remove('hidden');
-                    if (logoutLinkMobile) logoutLinkMobile.classList.remove('hidden');
-                } else {
-                    userIconContainerMobile.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                    `;
-                    if (loginLinkMobile) loginLinkMobile.classList.remove('hidden');
-                    if (mySchedulesLinkMobile) mySchedulesLinkMobile.classList.add('hidden');
-                    if (logoutLinkMobile) logoutLinkMobile.classList.add('hidden');
-                }
-            }
-        };
+        // mainAppLogic 内の updateHeader は削除済み
 
         const handleLogout = async () => {
             await signOut(auth);
@@ -601,10 +655,11 @@ const mainAppLogic = async(user) => {
             window.location.href = 'index.html';
         };
         
-        // --- 🔽 修正: 全てのヘルパー関数をリスナー設定の前に移動 🔽 ---
         const showSection = (sectionId) => {
             const allSections = document.querySelectorAll('main#app-container > section');
-            allSections.forEach(section => section.classList.add('hidden'));
+            allSections.forEach(section => {
+                if(section) section.classList.add('hidden');
+            });
             const sectionToShow = document.getElementById(sectionId);
             if (sectionToShow) {
                 sectionToShow.classList.remove('hidden');
@@ -614,7 +669,7 @@ const mainAppLogic = async(user) => {
 
         const handleHowToUseToggle = (e) => {
             if (window.location.pathname === '/index.html' || window.location.pathname === '/') {
-                e.preventDefault(); 
+                if(e) e.preventDefault(); 
 
                 const howToUseSection = document.getElementById('how-to-use-section');
                 
@@ -630,6 +685,7 @@ const mainAppLogic = async(user) => {
             }
         };
 
+        // --- 🔽 修正: renderCalendar に data-date 属性を追加 🔽 ---
         const renderCalendar = (container, month, year, selectable = true, allowedDates = [], isMultipleSelection = true) => {
             if (!container) return;
             container.innerHTML = '';
@@ -671,15 +727,16 @@ const mainAppLogic = async(user) => {
                 const dayElement = document.createElement('div');
                 dayElement.className = 'calendar-day';
                 dayElement.textContent = date.getDate();
+                const dateString = date.toISOString().split('T')[0]; // dateString をここで定義
+                dayElement.dataset.date = dateString; // data-date 属性を常に付与
 
                 if (date.getMonth() !== month) {
                     dayElement.classList.add('inactive');
                 } else if (selectable) {
-                    const dateString = date.toISOString().split('T')[0];
                     dayElement.addEventListener('click', () => {
                         if (!isMultipleSelection) {
                             selectedDates.clear();
-                            const allDays = document.querySelectorAll('.selectable-date');
+                            const allDays = container.querySelectorAll('.calendar-day.selected'); 
                             allDays.forEach(d => d.classList.remove('selected'));
                         }
                         if (selectedDates.has(dateString)) {
@@ -693,8 +750,7 @@ const mainAppLogic = async(user) => {
                     if (selectedDates.has(dateString)) {
                         dayElement.classList.add('selected');
                     }
-                } else {
-                    const dateString = date.toISOString().split('T')[0];
+                } else { // selectable が false (投票ページ) の場合
                     if (allowedDates.includes(dateString)) {
                         dayElement.classList.add('selectable-date');
                         dayElement.addEventListener('click', () => {
@@ -706,7 +762,7 @@ const mainAppLogic = async(user) => {
                             }
                             if (!isMultipleSelection) {
                                 selectedDates.clear();
-                                const allDays = document.querySelectorAll('.selectable-date');
+                                const allDays = container.querySelectorAll('.selectable-date.selected'); // container 内で検索
                                 allDays.forEach(d => d.classList.remove('selected'));
                             }
 
@@ -757,6 +813,7 @@ const mainAppLogic = async(user) => {
                 });
             }
         };
+        // --- 🔼 修正ここまで 🔼 ---
 
         const generateTimeSlots = (container, selectable = true, allowedTimeSlots = [], isMultipleSelection = true) => {
             if (!container) return;
@@ -784,11 +841,11 @@ const mainAppLogic = async(user) => {
                 timeSlotElement.textContent = timeText;
                 timeSlotElement.dataset.time = timeText;
 
-                if (selectable) {
-                    timeSlotElement.addEventListener('click', () => {
+                timeSlotElement.addEventListener('click', () => {
+                    if (selectable) {
                         if (!isMultipleSelection) {
                             selectedTimeSlots.clear();
-                            const allSlots = document.querySelectorAll('.time-slot');
+                            const allSlots = container.querySelectorAll('.time-slot.selected'); // container 内で検索
                             allSlots.forEach(s => s.classList.remove('selected'));
                         }
                         if (selectedTimeSlots.has(timeText)) {
@@ -798,9 +855,36 @@ const mainAppLogic = async(user) => {
                             selectedTimeSlots.add(timeText);
                             timeSlotElement.classList.add('selected');
                         }
-                    });
-                } else {
-                    if (selectedTimeSlots.has(timeText)) {
+                    } else {
+                        // 投票ページのロジック (not available チェック)
+                        if (notAvailableCheckbox && notAvailableCheckbox.checked) {
+                            notAvailableCheckbox.checked = false;
+                            if (notAvailableCommentContainer) {
+                                notAvailableCommentContainer.classList.add('hidden');
+                            }
+                        }
+                        if (!isMultipleSelection) {
+                            selectedTimeSlots.clear();
+                            const allSlots = container.querySelectorAll('.time-slot.selected'); // container 内で検索
+                            allSlots.forEach(s => s.classList.remove('selected'));
+                        }
+
+                        if (selectedTimeSlots.has(timeText)) {
+                            selectedTimeSlots.delete(timeText);
+                            timeSlotElement.classList.remove('selected');
+                        } else {
+                            selectedTimeSlots.add(timeText);
+                            timeSlotElement.classList.add('selected');
+                        }
+                    }
+                });
+
+                if (selectable && selectedTimeSlots.has(timeText)) {
+                    timeSlotElement.classList.add('selected');
+                }
+                // 投票ページでの初期選択状態の反映
+                if (!selectable && allowedTimeSlots.includes(timeText)) {
+                     if (selectedTimeSlots.has(timeText)) {
                         timeSlotElement.classList.add('selected');
                     }
                 }
@@ -808,8 +892,7 @@ const mainAppLogic = async(user) => {
                 container.appendChild(timeSlotElement);
             });
         };
-        // --- 🔼 修正ここまで 🔼 ---
-
+        
         // PC用ボタンのイベントリスナー
         if (howToUseLinkPC) howToUseLinkPC.addEventListener('click', handleHowToUseToggle);
         if (loginLinkPC) loginLinkPC.addEventListener('click', () => showSection('login-section'));
@@ -871,8 +954,6 @@ const mainAppLogic = async(user) => {
             });
         }
 
-        // (renderCalendar と generateTimeSlots は上記に移動済み)
-
         const updateVotedUsersList = (votedUsers, candidates, isResultsPage) => {
             const votedUsersListElement = document.getElementById('voted-users-list');
             const resultsDisplayElement = document.getElementById('results-display');
@@ -885,12 +966,24 @@ const mainAppLogic = async(user) => {
                 li.textContent = translations[currentLang].noVotes;
                 li.className = 'text-gray-500';
                 votedUsersListElement.appendChild(li);
+                if (isResultsPage && resultsDisplayElement) {
+                    resultsDisplayElement.innerHTML = `<p class="text-gray-500 p-4">${translations[currentLang].noVotes}</p>`;
+                }
                 return;
             }
 
             if (isResultsPage) {
                 const voteCounts = {};
-                candidates.forEach(candidate => voteCounts[candidate] = { votes: 0, voters: [] });
+                let pollOptions = [];
+                let totalVotes = 0; 
+
+                if (candidates.type === 'poll') { 
+                    pollOptions = candidates.options;
+                    pollOptions.forEach(option => voteCounts[option] = { votes: 0, voters: [] });
+                } else { 
+                    candidates.forEach(candidate => voteCounts[candidate] = { votes: 0, voters: [] });
+                    pollOptions = candidates; 
+                }
 
                 votedUsers.forEach(user => {
                     if (user.voteData.status === 'available' && Array.isArray(user.voteData.votes)) {
@@ -898,29 +991,62 @@ const mainAppLogic = async(user) => {
                             if (voteCounts[vote]) {
                                 voteCounts[vote].votes++;
                                 voteCounts[vote].voters.push(user.name);
+                                totalVotes++;
                             }
                         });
                     }
                 });
 
                 const notAvailableUsers = votedUsers.filter(user => user.voteData.status === 'not-available');
-                const sortedCandidates = Object.keys(voteCounts).sort();
+                
+                const sortedCandidates = (candidates.type === 'poll') 
+                                         ? pollOptions 
+                                         : Object.keys(voteCounts).sort(); 
 
                 if (resultsDisplayElement) {
                     resultsDisplayElement.innerHTML = '';
-                    sortedCandidates.forEach(candidate => {
-                        const count = voteCounts[candidate].votes;
-                        const voters = voteCounts[candidate].voters;
-                        const li = document.createElement('li');
-                        li.className = 'p-4 border-b border-gray-200 dark:border-gray-700';
-                        li.innerHTML = `
-                            <div class="flex items-center justify-between">
-                                <span class="font-bold text-gray-800 dark:text-gray-200">${candidate} (${count}票)</span>
-                                <span class="text-sm text-gray-500 dark:text-gray-400">${voters.join(', ')}</span>
-                            </div>
-                        `;
-                        resultsDisplayElement.appendChild(li);
-                    });
+                    
+                    if (candidates.type === 'poll') {
+                        const maxVotes = Math.max(...Object.values(voteCounts).map(v => v.votes), 1); 
+                        
+                        sortedCandidates.forEach(candidate => {
+                            const count = voteCounts[candidate].votes;
+                            const voters = voteCounts[candidate].voters;
+                            const percentage = (count / maxVotes) * 100;
+
+                            const li = document.createElement('li');
+                            li.className = 'p-4 border-b border-gray-200 dark:border-gray-700 space-y-2';
+                            
+                            li.innerHTML = `
+                                <div class="flex items-center justify-between font-bold text-gray-800 dark:text-gray-200">
+                                    <span>${candidate}</span>
+                                    <span>${count}票</span>
+                                </div>
+                                <div class="progress-bar w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                    <div class="progress-bar-inner bg-blue-600 h-2.5 rounded-full" style="width: ${percentage}%"></div>
+                                </div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">
+                                    ${voters.join(', ')}
+                                </div>
+                            `;
+                            resultsDisplayElement.appendChild(li);
+                        });
+
+                    } else { 
+                        sortedCandidates.forEach(candidate => {
+                            const count = voteCounts[candidate].votes;
+                            const voters = voteCounts[candidate].voters;
+                            const li = document.createElement('li');
+                            li.className = 'p-4 border-b border-gray-200 dark:border-gray-700';
+                            li.innerHTML = `
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-gray-800 dark:text-gray-200">${candidate} (${count}票)</span>
+                                    <span class="text-sm text-gray-500 dark:text-gray-400">${voters.join(', ')}</span>
+                                </div>
+                            `;
+                            resultsDisplayElement.appendChild(li);
+                        });
+                    }
     
                     if (notAvailableUsers.length > 0) {
                         const li = document.createElement('li');
@@ -947,6 +1073,7 @@ const mainAppLogic = async(user) => {
             }
         };
         
+        // --- 🔽 修正: handleScheduleCreation で DOM から日付を取得 🔽 ---
         const handleScheduleCreation = async (e, type) => {
             e.preventDefault();
 
@@ -955,12 +1082,12 @@ const mainAppLogic = async(user) => {
                 return;
             }
 
-            const multipleSelectionCheckbox = document.getElementById(`${type === 'date' ? 'date-multiple-selection-checkbox' : 'time-multiple-selection-checkbox'}`);
+            const multipleSelectionCheckbox = document.getElementById(`${type}-multiple-selection-checkbox`);
             const isMultipleSelection = multipleSelectionCheckbox ? multipleSelectionCheckbox.checked : true;
 
-            const titleElement = document.getElementById(`${type === 'date' ? 'schedule-title' : 'time-schedule-title'}`);
-            const descriptionElement = document.getElementById(`${type === 'date' ? 'schedule-description' : 'time-schedule-description'}`);
-            const deadlineElement = document.getElementById(`${type === 'date' ? 'vote-deadline' : 'time-vote-deadline'}`);
+            const titleElement = document.getElementById(`${type}-schedule-title`);
+            const descriptionElement = document.getElementById(`${type}-schedule-description`);
+            const deadlineElement = document.getElementById(`${type}-vote-deadline`);
 
             if (!titleElement || !descriptionElement || !deadlineElement) {
                 alert('フォーム要素が見つかりません。');
@@ -974,6 +1101,14 @@ const mainAppLogic = async(user) => {
             let scheduleData;
             
             if (type === 'date') {
+                selectedDates.clear(); // 送信前に必ずクリア
+                const selectedDaysElements = document.querySelectorAll('#calendar-container .calendar-day.selected');
+                selectedDaysElements.forEach(el => {
+                    if(el.dataset.date) {
+                         selectedDates.add(el.dataset.date);
+                    }
+                });
+
                 if (!title || selectedDates.size === 0) {
                     alert(translations[currentLang].createDateH2 === '日にちで日程調整を作成' ? 'タイトルと候補日を一つ以上選択してください。' : 'Please select a title and at least one date.');
                     return;
@@ -981,9 +1116,11 @@ const mainAppLogic = async(user) => {
                 scheduleData = {
                     title, description, deadline, dates: Array.from(selectedDates), votedUsers: [], createdBy: user.uid, type: 'date', selectionType: isMultipleSelection ? 'multiple' : 'single'
                 };
-            } else {
+            } else if (type === 'time') {
                 const dateElement = document.getElementById('time-schedule-date');
                 const date = dateElement ? dateElement.value : '';
+                
+                // selectedTimeSlots は generateTimeSlots 内のクリックイベントで更新されている想定
                 
                 if (!title || selectedTimeSlots.size === 0 || !date) {
                     alert(translations[currentLang].createTimeH2 === '時間帯で日程調整を作成' ? 'タイトル、日程日、そして候補時間を一つ以上選択してください。' : 'Please select a title, a date, and at least one time slot.');
@@ -992,18 +1129,60 @@ const mainAppLogic = async(user) => {
                 scheduleData = {
                     title, description, deadline, date, timeSlots: Array.from(selectedTimeSlots), votedUsers: [], createdBy: user.uid, type: 'time', selectionType: isMultipleSelection ? 'multiple' : 'single'
                 };
+            } else if (type === 'poll') {
+                const optionInputs = document.querySelectorAll('#poll-options-container .poll-option-input');
+                const options = Array.from(optionInputs)
+                                    .map(input => input.value.trim())
+                                    .filter(value => value.length > 0); 
+
+                if (!title || options.length < 2) { 
+                    alert('タイトルと、2つ以上の選択肢を入力してください。');
+                    return;
+                }
+                scheduleData = {
+                    title, description, deadline, 
+                    options: options, 
+                    votedUsers: [], 
+                    createdBy: user.uid, 
+                    type: 'poll', 
+                    selectionType: isMultipleSelection ? 'multiple' : 'single'
+                };
             }
         
             const schedulesRef = collection(db, "schedules");
             const newDocRef = doc(schedulesRef);
             const lowerCaseId = newDocRef.id.toLowerCase();
-            await setDoc(doc(db, "schedules", lowerCaseId), scheduleData);
-            const votingUrl = `voting-page.html?id=${lowerCaseId}`; 
-            document.getElementById('share-url').textContent = `${window.location.origin}/${votingUrl}`;
-            showSection('creation-complete-section');
-        };
+            try {
+                await setDoc(doc(db, "schedules", lowerCaseId), scheduleData);
+                const votingUrl = `voting-page.html?id=${lowerCaseId}`; 
+                if(shareUrlElement) shareUrlElement.textContent = `${window.location.origin}/${votingUrl}`;
+                showSection('creation-complete-section');
+                // 作成成功後に選択状態をリセット
+                selectedDates.clear();
+                selectedTimeSlots.clear();
+                // フォームの入力内容もリセット (オプション)
+                if (e.target instanceof HTMLFormElement) {
+                    e.target.reset();
+                }
+                // 一般投票の選択肢もリセット
+                if (type === 'poll') {
+                     const pollOptionsContainer = document.getElementById('poll-options-container');
+                     if (pollOptionsContainer) {
+                         pollOptionsContainer.innerHTML = `
+                             <input type="text" class="poll-option-input w-full px-4 py-2 border rounded-xl dark:bg-gray-700 dark:border-gray-600" placeholder="選択肢 1">
+                             <input type="text" class="poll-option-input w-full px-4 py-2 border rounded-xl dark:bg-gray-700 dark:border-gray-600" placeholder="選択肢 2">
+                         `;
+                     }
+                }
 
-    // ★★★ ページ判定ロジックの再構築 ★★★
+            } catch (error) {
+                console.error("スケジュールの作成に失敗しました:", error);
+                alert("スケジュールの作成に失敗しました。");
+            }
+        };
+        // --- 🔼 修正ここまで 🔼 ---
+
+    // ★★★ ページ判定ロジック ★★★
     if (myPageSection) { 
         showSection('my-page-section');
         
@@ -1040,6 +1219,7 @@ const mainAppLogic = async(user) => {
         if (createDateButton) {
             createDateButton.addEventListener('click', () => {
                 showSection('create-date-section');
+                selectedDates.clear(); 
                 const multipleSelectionCheckbox = document.getElementById('date-multiple-selection-checkbox');
                 const isMultipleSelection = multipleSelectionCheckbox ? multipleSelectionCheckbox.checked : true;
                 renderCalendar(calendarContainer, currentMonth, currentYear, true, [], isMultipleSelection);
@@ -1049,49 +1229,67 @@ const mainAppLogic = async(user) => {
         if (createTimeButton) {
             createTimeButton.addEventListener('click', () => {
                 showSection('create-time-section');
+                selectedTimeSlots.clear(); 
                 const multipleSelectionCheckbox = document.getElementById('time-multiple-selection-checkbox');
                 const isMultipleSelection = multipleSelectionCheckbox ? multipleSelectionCheckbox.checked : true;
                 generateTimeSlots(timeSlotsContainer, true, [], isMultipleSelection);
             });
         }
         
-        // PC用ボタンのイベントリスナー
-        if (howToUseLinkPC) howToUseLinkPC.addEventListener('click', handleHowToUseToggle);
-        if (loginLinkPC) loginLinkPC.addEventListener('click', () => showSection('login-section'));
-        if (backToHomeButtonPC) backToHomeButtonPC.addEventListener('click', () => window.location.href = 'index.html');
-        if (logoutLinkPC) logoutLinkPC.addEventListener('click', handleLogout);
+        if (createPollButton) {
+            createPollButton.addEventListener('click', () => {
+                showSection('create-poll-section');
+                 const pollOptionsContainer = document.getElementById('poll-options-container');
+                 if (pollOptionsContainer) {
+                     pollOptionsContainer.innerHTML = `
+                         <input type="text" class="poll-option-input w-full px-4 py-2 border rounded-xl dark:bg-gray-700 dark:border-gray-600" placeholder="選択肢 1">
+                         <input type="text" class="poll-option-input w-full px-4 py-2 border rounded-xl dark:bg-gray-700 dark:border-gray-600" placeholder="選択肢 2">
+                     `;
+                 }
+            });
+        }
+
+        const addPollOptionButton = document.getElementById('add-poll-option-button');
+        const pollOptionsContainer = document.getElementById('poll-options-container');
+
+        if (addPollOptionButton && pollOptionsContainer) {
+            addPollOptionButton.addEventListener('click', () => {
+                const newOptionInput = document.createElement('input');
+                newOptionInput.type = 'text';
+                newOptionInput.className = 'poll-option-input w-full px-4 py-2 border rounded-xl dark:bg-gray-700 dark:border-gray-600'; 
+                newOptionInput.placeholder = `選択肢 ${pollOptionsContainer.children.length + 1}`;
+                pollOptionsContainer.appendChild(newOptionInput);
+            });
+        }
+        
+        // イベントリスナー (言語・テーマ)
         if (langTogglePC) langTogglePC.addEventListener('click', handleLangToggle);
         if (themeTogglePC) themeTogglePC.addEventListener('click', handleThemeToggle);
-
-        // スマホ用ボタンのイベントリスナー
-        if (howToUseLinkMobile) howToUseLinkMobile.addEventListener('click', handleHowToUseToggle);
-        if (loginLinkMobile) loginLinkMobile.addEventListener('click', () => showSection('login-section'));
-        if (backToHomeButtonMobile) backToHomeButtonMobile.addEventListener('click', () => window.location.href = 'index.html');
-        if (logoutLinkMobile) logoutLinkMobile.addEventListener('click', handleLogout); 
         if (langToggleMobile) langToggleMobile.addEventListener('click', handleLangToggle);
         if (themeToggleMobile) themeToggleMobile.addEventListener('click', handleThemeToggle);
 
 
+        // フォーム送信
         if (dateScheduleForm) {
-            dateScheduleForm.addEventListener('submit', async (e) => {
-                await handleScheduleCreation(e, 'date');
-            });
+            dateScheduleForm.addEventListener('submit', (e) => handleScheduleCreation(e, 'date'));
         }
-        
         if (timeScheduleForm) {
-            timeScheduleForm.addEventListener('submit', async (e) => {
-                await handleScheduleCreation(e, 'time');
-            });
+            timeScheduleForm.addEventListener('submit', (e) => handleScheduleCreation(e, 'time'));
+        }
+        if (pollScheduleForm) {
+            pollScheduleForm.addEventListener('submit', (e) => handleScheduleCreation(e, 'poll'));
         }
 
         if (copyUrlButton) {
             copyUrlButton.addEventListener('click', () => {
-                const urlText = shareUrlElement.textContent;
-                navigator.clipboard.writeText(urlText).then(() => {
-                    alert('URLがクリップボードにコピーされました！');
-                }).catch(err => {
-                    console.error('URLコピーに失敗しました', err);
-                });
+                const urlText = shareUrlElement?.textContent;
+                if(urlText) {
+                    navigator.clipboard.writeText(urlText).then(() => {
+                        alert('URLがクリップボードにコピーされました！');
+                    }).catch(err => {
+                        console.error('URLコピーに失敗しました', err);
+                    });
+                }
             });
         }
     } else if (normalizedScheduleId) {
@@ -1101,6 +1299,12 @@ const mainAppLogic = async(user) => {
         onSnapshot(scheduleRef, (docSnap) => {
             if (docSnap.exists()) {
                 const createdSchedule = docSnap.data();
+                if (!createdSchedule) { 
+                    console.error("Document data is empty!");
+                    window.location.href = "index.html";
+                    return;
+                }
+                
                 const deadline = new Date(createdSchedule.deadline);
                 const now = new Date();
                 const isClosed = now > deadline;
@@ -1111,26 +1315,38 @@ const mainAppLogic = async(user) => {
 
                 if (user && !user.isAnonymous) {
                     voterName = user.displayName || user.email;
-                    currentUserVote = createdSchedule.votedUsers.find(vote => vote.name === voterName);
+                    currentUserVote = (createdSchedule.votedUsers || []).find(vote => vote.name === voterName);
                 }
 
                 if (isClosed) {
-                    document.getElementById('voting-results-title').textContent = createdSchedule.title;
-                    document.getElementById('voting-results-description').textContent = createdSchedule.description;
+                    if(document.getElementById('voting-results-title'))
+                        document.getElementById('voting-results-title').textContent = createdSchedule.title;
+                    if(document.getElementById('voting-results-description'))
+                        document.getElementById('voting-results-description').textContent = createdSchedule.description;
 
                     showSection('voting-results-section');
 
-                    const candidates = createdSchedule.type === 'date' ? createdSchedule.dates : createdSchedule.timeSlots;
-                    updateVotedUsersList(createdSchedule.votedUsers, candidates, true);
+                    let candidates;
+                    if (createdSchedule.type === 'poll') {
+                        candidates = { type: 'poll', options: createdSchedule.options || [] }; 
+                    } else {
+                        candidates = createdSchedule.type === 'date' ? (createdSchedule.dates || []) : (createdSchedule.timeSlots || []);
+                    }
+                    updateVotedUsersList(createdSchedule.votedUsers || [], candidates, true);
 
                     return; 
                 } else {
-                    document.getElementById('voting-title').textContent = createdSchedule.title;
-                    document.getElementById('voting-description').textContent = createdSchedule.description;
+                    if(document.getElementById('voting-title'))
+                        document.getElementById('voting-title').textContent = createdSchedule.title;
+                    if(document.getElementById('voting-description'))
+                        document.getElementById('voting-description').textContent = createdSchedule.description;
                     showSection('voting-page-section');
 
+                    selectedDates.clear(); 
+                    selectedTimeSlots.clear(); 
+
                     if (currentUserVote && currentUserVote.voteData.status === 'available') {
-                        if (createdSchedule.type === 'date') {
+                        if (createdSchedule.type === 'date' || createdSchedule.type === 'poll') {
                             selectedDates = new Set(currentUserVote.voteData.votes);
                          } else if (createdSchedule.type === 'time') {
                             selectedTimeSlots = new Set(currentUserVote.voteData.votes);
@@ -1146,18 +1362,87 @@ const mainAppLogic = async(user) => {
                     if (createdSchedule.type === 'date') {
                         if(votingTimeSlotsContainer) votingTimeSlotsContainer.classList.add('hidden');
                         if(votingTimeH3) votingTimeH3.classList.add('hidden');
+                        if(votingPollOptionsContainer) votingPollOptionsContainer.classList.add('hidden'); 
+                        if(votingPollH3) votingPollH3.classList.add('hidden'); 
                         if(votingCalendarContainer) votingCalendarContainer.classList.remove('hidden');
-                        renderCalendar(votingCalendarContainer, currentMonth, currentYear, false, createdSchedule.dates, isMultipleSelection);
+                        if(votingDateH3) votingDateH3.classList.remove('hidden');
+                        renderCalendar(votingCalendarContainer, currentMonth, currentYear, false, createdSchedule.dates || [], isMultipleSelection);
                     } else if (createdSchedule.type === 'time') {
                         if(votingCalendarContainer) votingCalendarContainer.classList.add('hidden');
-                        if(votingDateH3) votingDateH3.classList.remove('hidden'); 
+                        if(votingDateH3) votingDateH3.classList.add('hidden'); 
+                        if(votingPollOptionsContainer) votingPollOptionsContainer.classList.add('hidden'); 
+                        if(votingPollH3) votingPollH3.classList.add('hidden'); 
                         if(votingTimeSlotsContainer) votingTimeSlotsContainer.classList.remove('hidden');
                         if(votingTimeH3) votingTimeH3.classList.remove('hidden');
-                        generateTimeSlots(votingTimeSlotsContainer, false, createdSchedule.timeSlots, isMultipleSelection);
+                        generateTimeSlots(votingTimeSlotsContainer, false, createdSchedule.timeSlots || [], isMultipleSelection);
+                    } else if (createdSchedule.type === 'poll') {
+                        if(votingCalendarContainer) votingCalendarContainer.classList.add('hidden');
+                        if(votingDateH3) votingDateH3.classList.add('hidden');
+                        if(votingTimeSlotsContainer) votingTimeSlotsContainer.classList.add('hidden');
+                        if(votingTimeH3) votingTimeH3.classList.add('hidden');
+                        
+                        if(votingPollH3) votingPollH3.classList.remove('hidden');
+                        if(votingPollOptionsContainer) {
+                             votingPollOptionsContainer.classList.remove('hidden');
+                             votingPollOptionsContainer.innerHTML = ''; // クリア
+                        }
+
+                        (createdSchedule.options || []).forEach(option => {
+                            const optionElement = document.createElement('div');
+                            optionElement.className = 'flex items-center space-x-3 p-3 border rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer';
+                            
+                            const inputType = isMultipleSelection ? 'checkbox' : 'radio';
+                            const inputId = `poll-option-${option.replace(/\s+/g, '-')}`; 
+
+                            optionElement.innerHTML = `
+                                <input type="${inputType}" id="${inputId}" name="poll-option" value="${option}" class="poll-vote-input rounded text-blue-500 h-5 w-5 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500">
+                                <label for="${inputId}" class="text-gray-800 dark:text-gray-200 cursor-pointer w-full">${option}</label>
+                            `;
+                            if(votingPollOptionsContainer) votingPollOptionsContainer.appendChild(optionElement);
+
+                            const inputElement = optionElement.querySelector('input');
+                            if(!inputElement) return; 
+
+                            if (selectedDates.has(option)) {
+                                inputElement.checked = true;
+                            }
+
+                            optionElement.addEventListener('click', (e) => {
+                                if (e.target !== inputElement) {
+                                    if (isMultipleSelection) {
+                                        inputElement.checked = !inputElement.checked;
+                                    } else {
+                                        inputElement.checked = true;
+                                    }
+                                }
+                                
+                                if (notAvailableCheckbox && notAvailableCheckbox.checked) notAvailableCheckbox.checked = false;
+                                
+                                const selectedOption = inputElement.value;
+                                if (!isMultipleSelection) {
+                                    selectedDates.clear(); 
+                                    selectedDates.add(selectedOption);
+                                    document.querySelectorAll('.poll-vote-input').forEach(radio => {
+                                        if (radio !== inputElement) radio.checked = false;
+                                    });
+                                } else {
+                                    if (inputElement.checked) {
+                                        selectedDates.add(selectedOption);
+                                    } else {
+                                        selectedDates.delete(selectedOption);
+                                    }
+                                }
+                            });
+                        });
                     }
 
-                    const candidates = createdSchedule.type === 'date' ? createdSchedule.dates : createdSchedule.timeSlots;
-                    updateVotedUsersList(createdSchedule.votedUsers, candidates, false);
+                    let candidates;
+                    if (createdSchedule.type === 'poll') {
+                        candidates = { type: 'poll', options: createdSchedule.options || [] };
+                    } else {
+                        candidates = createdSchedule.type === 'date' ? (createdSchedule.dates || []) : (createdSchedule.timeSlots || []);
+                    }
+                    updateVotedUsersList(createdSchedule.votedUsers || [], candidates, false);
                 }
             } else {
                 console.error("No such document!");
@@ -1167,12 +1452,25 @@ const mainAppLogic = async(user) => {
 
         if (submitVoteButton) {
             submitVoteButton.addEventListener('click', async () => {
-                const voterName = document.getElementById('voter-name').value;
+                const voterNameInput = document.getElementById('voter-name');
+                const voterName = voterNameInput ? voterNameInput.value : '';
                 const isNotAvailable = notAvailableCheckbox ? notAvailableCheckbox.checked : false;
                 const docSnap = await getDoc(scheduleRef);
+                
+                if (!docSnap.exists()) {
+                    alert("エラー：スケジュールが見つかりません。");
+                    return;
+                }
+                
                 const currentSchedule = docSnap.data();
-                const isDateSchedule = currentSchedule.type === 'date';
-                const votes = isDateSchedule ? selectedDates : selectedTimeSlots;
+                if (!currentSchedule) {
+                     alert("エラー：スケジュールデータの読み込みに失敗しました。");
+                    return;
+                }
+                
+                const votes = (currentSchedule.type === 'date' || currentSchedule.type === 'poll') 
+                                ? selectedDates 
+                                : selectedTimeSlots;
 
                 if (!voterName) {
                     alert(translations[currentLang].voterNameLabel === 'お名前' ? 'お名前を入力してください。' : 'Please enter your name.');
@@ -1184,7 +1482,7 @@ const mainAppLogic = async(user) => {
                     return;
                 }
 
-                const existingVoteIndex = currentSchedule.votedUsers.findIndex(vote => vote.name === voterName);
+                const existingVoteIndex = (currentSchedule.votedUsers || []).findIndex(vote => vote.name === voterName);
                 let voteData;
                 if (isNotAvailable) {
                     voteData = {
@@ -1198,7 +1496,7 @@ const mainAppLogic = async(user) => {
                     };
                 }
 
-                const updatedVotedUsers = [...currentSchedule.votedUsers];
+                const updatedVotedUsers = [...(currentSchedule.votedUsers || [])];
                 if (existingVoteIndex !== -1) {
                     updatedVotedUsers[existingVoteIndex].voteData = voteData;
                 } else {
@@ -1207,8 +1505,17 @@ const mainAppLogic = async(user) => {
 
                 await updateDoc(scheduleRef, { votedUsers: updatedVotedUsers });
 
-                votes.clear();
-                document.getElementById('voter-name').value = '';
+                // 投票完了後に選択状態をリセット
+                selectedDates.clear(); 
+                selectedTimeSlots.clear(); 
+                if (currentSchedule.type === 'poll') {
+                    document.querySelectorAll('.poll-vote-input').forEach(input => input.checked = false);
+                } else if (currentSchedule.type === 'time') {
+                     document.querySelectorAll('.time-slot.selected').forEach(el => el.classList.remove('selected'));
+                } else if (currentSchedule.type === 'date') {
+                     document.querySelectorAll('.calendar-day.selected').forEach(el => el.classList.remove('selected'));
+                }
+                
                 if (notAvailableCheckbox) notAvailableCheckbox.checked = false;
                 if (notAvailableCommentContainer) notAvailableCommentContainer.classList.add('hidden');
                 
@@ -1219,13 +1526,14 @@ const mainAppLogic = async(user) => {
         if (notAvailableCheckbox) {
             notAvailableCheckbox.addEventListener('change', () => {
                 if (notAvailableCheckbox.checked) {
-                    notAvailableCommentContainer.classList.remove('hidden');
+                    if(notAvailableCommentContainer) notAvailableCommentContainer.classList.remove('hidden');
                     selectedDates.clear();
                     selectedTimeSlots.clear();
                     const selectedElements = document.querySelectorAll('.calendar-day.selected, .time-slot.selected');
                     selectedElements.forEach(el => el.classList.remove('selected'));
+                    document.querySelectorAll('.poll-vote-input').forEach(input => input.checked = false);
                 } else {
-                    notAvailableCommentContainer.classList.add('hidden');
+                    if(notAvailableCommentContainer) notAvailableCommentContainer.classList.add('hidden');
                 }
             });
         }
@@ -1257,7 +1565,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.querySelectorAll('#mobile-menu-content a').forEach(link => {
         link.addEventListener('click', () => {
-            if (mobileMenuContent.classList.contains('active')) {
+            if (mobileMenuContent && mobileMenuContent.classList.contains('active')) {
                 toggleMobileMenu();
             }
         })
@@ -1270,51 +1578,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (themeToggleMobile) themeToggleMobile.addEventListener('click', handleThemeToggle);
 
     onAuthStateChanged(auth, (user) => {
-        const updateHeader = (user) => {
-            const userIconContainerPC = document.getElementById('user-icon-container-pc');
-            const loginLinkPC = document.getElementById('login-link-pc');
-            const mySchedulesLinkPC = document.getElementById('my-schedules-link-pc');
-            const logoutLinkPC = document.getElementById('logout-link-pc');
-
-            if (userIconContainerPC) {
-                if (user && !user.isAnonymous) {
-                    const photoURL = user.photoURL || 'https://via.placeholder.com/32';
-                    userIconContainerPC.innerHTML = `<img src="${photoURL}" alt="User" class="w-full h-full rounded-full object-cover">`;
-                    if (loginLinkPC) loginLinkPC.classList.add('hidden');
-                    if (mySchedulesLinkPC) mySchedulesLinkPC.classList.remove('hidden');
-                    if (logoutLinkPC) logoutLinkPC.classList.remove('hidden');
-                } else {
-                    userIconContainerPC.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                    `;
-                    if (loginLinkPC) loginLinkPC.classList.remove('hidden');
-                    if (mySchedulesLinkPC) mySchedulesLinkPC.classList.add('hidden');
-                    if (logoutLinkPC) logoutLinkPC.classList.add('hidden');
-                }
-            }
-
-            const userIconContainerMobile = document.getElementById('user-icon-container-mobile');
-            const loginLinkMobile = document.getElementById('login-link-mobile');
-            const mySchedulesLinkMobile = document.getElementById('my-schedules-link-mobile');
-            const logoutLinkMobile = document.getElementById('logout-link-mobile');
-            
-            if (userIconContainerMobile) {
-                if (user && !user.isAnonymous) {
-                    const photoURL = user.photoURL || 'https://via.placeholder.com/32';
-                    userIconContainerMobile.innerHTML = `<img src="${photoURL}" alt="User" class="w-full h-full rounded-full object-cover">`;
-                    if (loginLinkMobile) loginLinkMobile.classList.add('hidden');
-                    if (mySchedulesLinkMobile) mySchedulesLinkMobile.classList.remove('hidden');
-                    if (logoutLinkMobile) logoutLinkMobile.classList.remove('hidden');
-                } else {
-                    if (loginLinkMobile) loginLinkMobile.classList.remove('hidden');
-                    if (mySchedulesLinkMobile) mySchedulesLinkMobile.classList.add('hidden');
-                    if (logoutLinkMobile) logoutLinkMobile.classList.add('hidden');
-                }
-            }
-        }
-        updateHeader(user);
-        mainAppLogic(user);
+        mainAppLogic(user); // mainAppLogic を先に実行
+        updateHeader(user); // グローバルスコープの updateHeader を呼び出す
     });
 });

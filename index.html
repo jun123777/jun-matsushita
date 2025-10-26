@@ -18,7 +18,7 @@
                 <a href="index.html" class="logo font-bold text-2xl text-blue-600" id="logo-link-pc">
                     <span id="logo-text-pc">日程調整3</span>
                 </a>
-            </div>
+                </div>
             <div class="flex items-center space-x-6">
                 <nav class="flex space-x-6">
                     <a id="how-to-use-link-pc" href="javascript:void(0)" class="text-gray-600 hover:text-blue-600 transition-colors">使い方</a>
@@ -45,7 +45,7 @@
                 <a href="index.html" class="logo font-bold text-2xl text-blue-600" id="logo-link-mobile">
                     <span id="logo-text-mobile">日程調整3</span>
                 </a>
-            </div>
+                </div>
             <div class="flex items-center space-x-4">
                 <a id="how-to-use-link-mobile" href="javascript:void(0)" class="text-gray-600 hover:text-blue-600 transition-colors">使い方</a>
                 <a id="my-schedules-link-mobile" href="my-page.html" class="hidden text-gray-600 hover:text-blue-600 transition-colors">マイアンケート</a>
@@ -66,7 +66,7 @@
         <section id="home-section" class="selection-section text-center flex flex-col items-center">
             <div id="hero-title" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full inline-block mb-12 text-2xl">サクッと 簡単・シンプル</div>
             <h2 id="home-subtitle" class="text-3xl font-bold mb-12">日程調整の種類を選択</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="card p-8 flex flex-col items-center">
                     <div class="icon mb-4">🗓️</div>
                     <h3 id="date-card-title" class="text-xl font-bold mb-2">日にちで調整</h3>
@@ -81,7 +81,14 @@
                     <button id="create-time-button" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-600 transition-colors">時間帯で作成</button>
                     <p id="time-card-note" class="text-xs text-gray-400 mt-4">投票結果は投票期限が過ぎたら公開されます</p>
                 </div>
-            </div>
+                <div class="card p-8 flex flex-col items-center">
+                    <div class="icon mb-4">📊</div>
+                    <h3 id="poll-card-title" class="text-xl font-bold mb-2">一般投票で調整</h3>
+                    <p id="poll-card-desc" class="text-gray-600 mb-6">「A案」「B案」「C案」など、自由な選択肢で投票を作成します。</p>
+                    <button id="create-poll-button" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-600 transition-colors">一般投票で作成</button>
+                    <p id="poll-card-note" class="text-xs text-gray-400 mt-4">投票結果は投票期限が過ぎたら公開されます</p>
+                </div>
+                </div>
         </section>
 
         <section id="how-to-use-section" class="selection-section hidden">
@@ -150,16 +157,16 @@
             <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
                 <form id="date-schedule-form">
                     <div class="mb-6">
-                        <label for="schedule-title" class="block text-gray-700 font-bold mb-2">タイトル</label>
-                        <input type="text" id="schedule-title" name="schedule-title" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：チームランチの日程調整">
+                        <label for="date-schedule-title" class="block text-gray-700 font-bold mb-2">タイトル</label>
+                        <input type="text" id="date-schedule-title" name="schedule-title" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：チームランチの日程調整">
                     </div>
                     <div class="mb-6">
-                        <label for="schedule-description" class="block text-gray-700 font-bold mb-2">説明</label>
-                        <textarea id="schedule-description" name="schedule-description" rows="4" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：チームランチの候補日を決めたいです。"></textarea>
+                        <label for="date-schedule-description" class="block text-gray-700 font-bold mb-2">説明</label>
+                        <textarea id="date-schedule-description" name="schedule-description" rows="4" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：チームランチの候補日を決めたいです。"></textarea>
                     </div>
                     <div class="mb-6">
-                        <label for="vote-deadline" class="block text-gray-700 font-bold mb-2">投票期限</label>
-                        <input type="datetime-local" id="vote-deadline" name="vote-deadline" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label for="date-vote-deadline" class="block text-gray-700 font-bold mb-2">投票期限</label>
+                        <input type="datetime-local" id="date-vote-deadline" name="vote-deadline" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
 
                     <div class="mb-6">
@@ -218,6 +225,43 @@
             </div>
         </section>
 
+        <section id="create-poll-section" class="selection-section hidden">
+            <h2 class="text-3xl font-bold text-center mb-12">一般投票を作成</h2>
+            <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+                <form id="poll-schedule-form">
+                    <div class="mb-6">
+                        <label for="poll-schedule-title" class="block text-gray-700 font-bold mb-2">タイトル</label>
+                        <input type="text" id="poll-schedule-title" name="poll-schedule-title" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：ランチの場所アンケート">
+                    </div>
+                    <div class="mb-6">
+                        <label for="poll-schedule-description" class="block text-gray-700 font-bold mb-2">説明</label>
+                        <textarea id="poll-schedule-description" name="poll-schedule-description" rows="4" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例：次のランチで行きたい場所を決めます"></textarea>
+                    </div>
+                    <div class="mb-6">
+                        <label for="poll-vote-deadline" class="block text-gray-700 font-bold mb-2">投票期限</label>
+                        <input type="datetime-local" id="poll-vote-deadline" name="poll-vote-deadline" class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" id="poll-multiple-selection-checkbox" class="rounded text-blue-500 focus:ring-blue-500" checked>
+                            <span class="ml-2 text-gray-700">複数選択可</span>
+                        </label>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-gray-700 mb-4">投票の選択肢</h3>
+                    <div id="poll-options-container" class="space-y-3 mb-6">
+                        <input type="text" class="poll-option-input w-full px-4 py-2 border rounded-xl" placeholder="選択肢 1">
+                        <input type="text" class="poll-option-input w-full px-4 py-2 border rounded-xl" placeholder="選択肢 2">
+                    </div>
+                    <button type="button" id="add-poll-option-button" class="text-blue-500 font-bold py-2 px-4 rounded-xl hover:bg-blue-100 transition-colors mb-6">+ 選択肢を追加</button>
+
+                    <div class="text-center">
+                        <button type="submit" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-600 transition-colors">作成する</button>
+                    </div>
+                </form>
+            </div>
+        </section>
         <section id="creation-complete-section" class="selection-section hidden">
             <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg text-center">
                 <h2 class="text-3xl font-bold text-green-600 mb-4">🎉 作成が完了しました！</h2>
