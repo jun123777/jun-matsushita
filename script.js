@@ -1055,15 +1055,33 @@ const mainAppLogic = async(user) => {
                     }
     
                     if (notAvailableUsers.length > 0) {
-                        const li = document.createElement('li');
-                        li.className = 'p-4 dark:border-gray-700';
-                        li.innerHTML = `
-                            <div class="flex items-center justify-between">
+                        const headerLi = document.createElement('li');
+                        headerLi.className = 'p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800'; // 見出しとして少し背景色を変更
+                        headerLi.innerHTML = `
+                            <div>
                                 <span class="font-bold text-gray-800 dark:text-gray-200">都合の悪い人 (${notAvailableUsers.length}人)</span>
-                                <span class="text-sm text-gray-500 dark:text-gray-400">${notAvailableUsers.map(user => user.name).join(', ')}</span>
                             </div>
                         `;
-                        resultsDisplayElement.appendChild(li);
+                        resultsDisplayElement.appendChild(headerLi);
+
+                        // 都合が悪い人たちを一人ずつリストアップ
+                        notAvailableUsers.forEach(user => {
+                            const li = document.createElement('li');
+                            li.className = 'p-4 border-b border-gray-200 dark:border-gray-700'; // 候補日と同じスタイル
+                            
+                            // コメントがある場合のみ、コメント表示用のHTMLを生成
+                            const commentHTML = user.voteData.comment 
+                                ? `<p class="text-sm text-gray-500 dark:text-gray-400 mt-1 pl-4">${user.voteData.comment}</p>`
+                                : ''; // コメントがなければ何も表示しない
+
+                            li.innerHTML = `
+                                <div>
+                                    <span class="font-medium text-gray-700 dark:text-gray-300">${user.name}</span>
+                                    ${commentHTML}
+                                </div>
+                            `;
+                            resultsDisplayElement.appendChild(li);
+                        });
                     }
                 }
             } else {
