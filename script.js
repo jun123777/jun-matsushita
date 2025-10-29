@@ -530,10 +530,14 @@ const mainAppLogic = async(user) => {
                 return;
             }
 
+            const baseUrl = `${window.location.origin}/voting-page.html`;
+
             schedules.forEach(item => {
                 const schedule = item.data;
                 const scheduleId = item.id;
                 const listItem = document.createElement('div');
+
+                const shareUrl = `${baseUrl}?id=${scheduleId}`;
                 
                 listItem.className = 'bg-white dark:bg-gray-700 p-4 rounded-xl shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0';
                 
@@ -552,13 +556,15 @@ const mainAppLogic = async(user) => {
                          
                          <div class="flex flex-col">
                             <span class="font-bold text-lg dark:text-white">${schedule.title}</span>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">${scheduleTypeLabel} / 期限: ${new Date(schedule.deadline).toLocaleDateString()}</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">${schedule.type === 'date' ? '日にち調整' : '時間帯調整'} / 期限: ${new Date(schedule.deadline).toLocaleDateString()}</span>
+                            
+                            <a href="${shareUrl}" target="_blank" class="text-xs text-blue-500 hover:underline dark:text-blue-400 mt-1 break-all">${shareUrl}</a>
                          </div>
                      </div>
 
                      <div class="flex items-center space-x-3 mt-2 sm:mt-0">
                         <button data-id="${scheduleId}" class="delete-schedule-btn text-sm text-red-500 hover:text-red-700 transition-colors">削除</button>
-                        <a href="voting-page.html?id=${scheduleId}" class="text-blue-500 hover:underline text-sm font-medium">詳細を見る</a>
+                        <a href="${shareUrl}" class="text-blue-500 hover:underline text-sm font-medium">詳細を見る</a>
                      </div>
                 `;
                 listElement.appendChild(listItem);
