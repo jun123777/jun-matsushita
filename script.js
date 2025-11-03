@@ -22,7 +22,7 @@ let currentLang = localStorage.getItem('lang') || 'ja';
 const currentTheme = localStorage.getItem('theme') || 'light';
 const html = document.documentElement;
 
-// --- 翻訳キーを追加 ---
+// --- 翻訳キーを修正 ---
 const translations = {
     ja: {
         appTitle: '日程調整3',
@@ -37,15 +37,19 @@ const translations = {
         dateCardDesc: '参加者の都合の良い日にちを複数選択してもらいます。',
         dateCardButton: '日にちで作成',
         dateCardNote: '投票結果は投票期限が過ぎたら公開されます',
-        timeCardTitle: '時間帯で調整',
-        timeCardDesc: '特定の日の時間帯で、都合の良い時間帯を複数選択してもらいます。',
-        timeCardButton: '時間帯で作成',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        timeCardTitle: '日時で調整',
+        timeCardDesc: '複数の候補日それぞれに、都合の良い時間帯を複数選択してもらいます。',
+        timeCardButton: '日時で作成',
+        // --- ▲ 修正ここまで ---
         timeCardNote: '投票結果は投票期限が過ぎたら公開されます',
         pollCardTitle: '一般投票で調整',
         pollCardDesc: '「A案」「B案」など、自由な選択肢で投票を作成します。',
         createPollButton: '一般投票で作成',
         createDateH2: '日にちで日程調整を作成',
-        createTimeH2: '時間帯で日程調整を作成',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        createTimeH2: '日時で日程調整を作成',
+        // --- ▲ 修正ここまで ---
         createPollH2: '一般投票を作成',
         titleLabel: 'タイトル',
         titlePlaceholder: '例：チームランチの日程調整',
@@ -53,7 +57,10 @@ const translations = {
         descPlaceholder: '例：チームランチの候補日を決めたいです。',
         deadlineLabel: '投票期限',
         datesLabel: '候補日を選択',
-        timeSlotsLabel: '候補時間帯を選択',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        timeSlotsLabel: '1. 候補日を選択', // create-time-section の H3
+        datetimeConfigLabel: '2. 候補時間帯を編集', // create-time-section の H3
+        // --- ▲ 修正ここまで ---
         pollOptionsLabel: '投票の選択肢',
         addOptionButton: '+ 選択肢を追加',
         createButton: '作成する',
@@ -61,14 +68,18 @@ const translations = {
         step1Title: 'ステップ1：日程調整の作成',
         step1Desc: 'サイトのトップページから、作成したい日程調整の種類を選択します。',
         step1Bullet1: '日にちで調整: 候補日を複数選択してアンケートを作成します。',
-        step1Bullet2: '時間帯で調整: 日程日を一つ決めて、時間帯の候補を複数選択します。',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        step1Bullet2: '日時で調整: 複数の候補日を選択し、それぞれに時間帯の候補を設定します。',
+        // --- ▲ 修正ここまで ---
         step1Note: 'タイトルや説明文、投票期限を設定したら、「作成する」ボタンを押してください。',
         step2Title: 'ステップ2：URLの共有',
         step2Desc: '日程調整の作成が完了すると、専用のURLが発行されます。このURLをコピーして、LINEやメール、Slackなどで参加者に共有しましょう。',
         step3Title: 'ステップ3：投票',
         step3Desc: '共有されたURLにアクセスすると、投票ページが表示されます。',
         step3Bullet1: '自分の名前を入力します。',
-        step3Bullet2: '都合の良い日にち、時間帯、または選択肢を複数選択します。',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        step3Bullet2: '都合の良い日にち、日時、または選択肢を複数選択します。',
+        // --- ▲ 修正ここまで ---
         step3Bullet3: '「投票する」ボタンを押して投票完了です。',
         step3NoteTitle: '注意点：',
         step3Note: '投票結果は、投票期限が過ぎるまで他の人には公開されません**。期限が過ぎると、すべての投票結果が自動で公開されます。',
@@ -86,7 +97,9 @@ const translations = {
         noVotes: 'まだ誰も投票していません。',
         voteH2: '投票ページ',
         voteDateH3: '投票日を選択',
-        voteTimeH3: '候補時間帯を選択',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        voteTimeH3: '候補日時を選択', // 投票ページでの日時選択のタイトル
+        // --- ▲ 修正ここまで ---
         votePollH3: '選択肢',
         voterNameLabel: 'お名前',
         voterNamePlaceholder: '例：山田太郎',
@@ -110,15 +123,19 @@ const translations = {
         dateCardDesc: 'Have participants select multiple convenient dates.',
         dateCardButton: 'Create by Date',
         dateCardNote: 'Results will be public after the voting deadline.',
-        timeCardTitle: 'By Time',
-        timeCardDesc: 'Have participants select convenient time slots for a specific date.',
-        timeCardButton: 'Create by Time',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        timeCardTitle: 'By Datetime',
+        timeCardDesc: 'Have participants select convenient time slots for multiple specific dates.',
+        timeCardButton: 'Create by Datetime',
+        // --- ▲ 修正ここまで ---
         timeCardNote: 'Results will be public after the voting deadline.',
         pollCardTitle: 'General Poll',
         pollCardDesc: 'Create a poll with custom options like "Option A", "Option B".',
         createPollButton: 'Create Poll',
         createDateH2: 'Create a schedule by date',
-        createTimeH2: 'Create a schedule by time',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        createTimeH2: 'Create a schedule by datetime',
+        // --- ▲ 修正ここまで ---
         createPollH2: 'Create a General Poll',
         titleLabel: 'Title',
         titlePlaceholder: 'e.g., Team Lunch Schedule',
@@ -126,7 +143,10 @@ const translations = {
         descPlaceholder: 'e.g., Let\'s decide the dates for our team lunch.',
         deadlineLabel: 'Voting Deadline',
         datesLabel: 'Select candidate dates',
-        timeSlotsLabel: 'Select candidate time slots',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        timeSlotsLabel: '1. Select candidate dates',
+        datetimeConfigLabel: '2. Edit candidate time slots',
+        // --- ▲ 修正ここまで ---
         pollOptionsLabel: 'Poll Options',
         addOptionButton: '+ Add Option',
         createButton: 'Create',
@@ -134,14 +154,18 @@ const translations = {
         step1Title: 'Step 1: Create a Schedule',
         step1Desc: 'From the top page, select the type of schedule you want to create.',
         step1Bullet1: 'By Date: Create a poll by selecting multiple candidate dates.',
-        step1Bullet2: 'By Time: Select a specific date and multiple time slots.',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        step1Bullet2: 'By Datetime: Select multiple dates and set time slots for each.',
+        // --- ▲ 修正ここまで ---
         step1Note: 'After setting the title, description, and voting deadline, press the "Create" button.',
         step2Title: 'Step 2: Share the URL',
         step2Desc: 'Once the schedule is created, a unique URL will be issued. Copy this URL and share it with participants via LINE, email, Slack, etc.',
         step3Title: 'Step 3: Vote',
         step3Desc: 'When you access the shared URL, the voting page will be displayed.',
         step3Bullet1: 'Enter your name.',
-        step3Bullet2: 'Select one or more convenient dates, time slots, or options.',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        step3Bullet2: 'Select one or more convenient dates, datetimes, or options.',
+        // --- ▲ 修正ここまで ---
         step3Bullet3: 'Press the "Vote" button to complete your vote.',
         step3NoteTitle: 'Note:',
         step3Note: 'Voting results will remain **private until the voting deadline has passed**. After the deadline, all voting results will be automatically published.',
@@ -158,7 +182,9 @@ const translations = {
         noVotes: 'No one has voted yet.',
         voteH2: 'Voting Page',
         voteDateH3: 'Select a voting date',
-        voteTimeH3: 'Select candidate time slots',
+        // --- ▼ 修正: 「時間帯」から「日時」へ ---
+        voteTimeH3: 'Select candidate datetimes',
+        // --- ▲ 修正ここまで ---
         votePollH3: 'Options',
         voterNameLabel: 'Your Name',
         voterNamePlaceholder: 'e.g., John Doe',
@@ -282,8 +308,11 @@ const updateContent = (lang) => {
                     if (datesLabel) datesLabel.textContent = text.datesLabel;
                 }
                 if (sectionId === 'create-time-section') {
-                    const timeSlotsLabel = document.querySelector(`#${sectionId} h3`);
-                    if (timeSlotsLabel) timeSlotsLabel.textContent = text.timeSlotsLabel;
+                    // --- ▼ 修正: 「日時」セクションの2つのH3を翻訳 ---
+                    const h3s = document.querySelectorAll(`#${sectionId} h3`);
+                    if (h3s.length > 0) h3s[0].textContent = text.timeSlotsLabel;
+                    if (h3s.length > 1) h3s[1].textContent = text.datetimeConfigLabel;
+                    // --- ▲ 修正ここまで ---
                 }
                 if (sectionId === 'create-poll-section') {
                     const pollOptionsLabel = document.querySelector(`#${sectionId} h3`);
@@ -353,6 +382,15 @@ const handleLangToggle = () => {
     if (calendarContainer && !calendarContainer.classList.contains('hidden')) {
         renderCalendar(calendarContainer, currentMonth, currentYear, true, [], true); 
     }
+    // --- ▼ 追加: 「日時」カレンダーも再描画 ---
+    const timeCalendarContainer = document.getElementById('time-calendar-container');
+    if (timeCalendarContainer && !timeCalendarContainer.classList.contains('hidden')) {
+        // 注: onDateClick の再バインドが必要になるため、単純な再描画は推奨されない
+        // 日時作成画面は、言語切り替えで閉じるか、状態を保持した再描画ロジックが必要
+        alert("言語を切り替えました。「日時で調整」を再度開いてください。");
+        window.location.reload(); // 簡易的なリロードで対応
+    }
+    // --- ▲ 追加ここまで ---
 };
 
 const handleThemeToggle = () => {
@@ -481,7 +519,11 @@ const mainAppLogic = async(user) => {
         const backToHomeButtonMobile = document.getElementById('back-to-home-button-mobile');
         
         const calendarContainer = document.getElementById('calendar-container');
-        const timeSlotsContainer = document.getElementById('time-slots-container');
+        // --- ▼ 修正: 「日時」セクションのコンテナ取得 ---
+        const timeCalendarContainer = document.getElementById('time-calendar-container');
+        const datetimeConfigContainer = document.getElementById('datetime-config-container');
+        // --- ▲ 修正ここまで ---
+
         const votingCalendarContainer = document.getElementById('voting-calendar-container');
         const votingTimeSlotsContainer = document.getElementById('voting-time-slots-container');
         const votingPollOptionsContainer = document.getElementById('voting-poll-options-container');
@@ -504,8 +546,12 @@ const mainAppLogic = async(user) => {
         const registerButton = document.getElementById('register-button');
 
         let isHowToUseVisible = false;
-        let selectedDates = new Set(); // 'date' と 'poll' で共用
-        let selectedTimeSlots = new Set();
+        let selectedDates = new Set(); // 'date' と 'poll'、および投票ページでの 'datetime' 選択で使用
+        // --- ▼ 修正: 'time' 作成用の新しい状態変数 ---
+        let selectedDateTimes = new Map(); // 'time' (datetime) 作成用
+        // --- ▲ 修正ここまで ---
+        let selectedTimeSlots = new Set(); // 旧 'time' (単一日付) 投票用（互換性のため残す）
+
         const today = new Date();
         let currentMonth = today.getMonth();
         let currentYear = today.getFullYear();
@@ -545,7 +591,13 @@ const mainAppLogic = async(user) => {
                 if (schedule.type === 'date') {
                     scheduleTypeLabel = '日にち調整';
                 } else if (schedule.type === 'time') {
-                    scheduleTypeLabel = '時間帯調整';
+                    // --- ▼ 修正: 新旧 'time' タイプの表示分け ---
+                    if (schedule.candidates) { // 新しい日時タイプ
+                        scheduleTypeLabel = '日時調整';
+                    } else { // 古い時間帯タイプ
+                        scheduleTypeLabel = '時間帯調整';
+                    }
+                    // --- ▲ 修正ここまで ---
                 } else if (schedule.type === 'poll') {
                     scheduleTypeLabel = '一般投票';
                 }
@@ -556,7 +608,7 @@ const mainAppLogic = async(user) => {
                          
                          <div class="flex flex-col">
                             <span class="font-bold text-lg dark:text-white">${schedule.title}</span>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">${schedule.type === 'date' ? '日にち調整' : '時間帯調整'} / 期限: ${new Date(schedule.deadline).toLocaleDateString()}</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">${scheduleTypeLabel} / 期限: ${new Date(schedule.deadline).toLocaleDateString()}</span>
                             
                             <a href="${shareUrl}" target="_blank" class="text-xs text-blue-500 hover:underline dark:text-blue-400 mt-1 break-all">${shareUrl}</a>
                          </div>
@@ -653,8 +705,6 @@ const mainAppLogic = async(user) => {
             }
         };
 
-        // mainAppLogic 内の updateHeader は削除済み
-
         const handleLogout = async () => {
             await signOut(auth);
             alert("ログアウトしました。");
@@ -691,8 +741,8 @@ const mainAppLogic = async(user) => {
             }
         };
 
-        // --- 🔽 修正: renderCalendar に data-date 属性を追加 🔽 ---
-        const renderCalendar = (container, month, year, selectable = true, allowedDates = [], isMultipleSelection = true) => {
+        // --- ▼ 修正: renderCalendar に onDateClick コールバックを追加 ▼ ---
+        const renderCalendar = (container, month, year, selectable = true, allowedDates = [], isMultipleSelection = true, onDateClick = null) => {
             if (!container) return;
             container.innerHTML = '';
             const firstDay = new Date(year, month, 1);
@@ -733,29 +783,45 @@ const mainAppLogic = async(user) => {
                 const dayElement = document.createElement('div');
                 dayElement.className = 'calendar-day';
                 dayElement.textContent = date.getDate();
-                const dateString = date.toISOString().split('T')[0]; // dateString をここで定義
-                dayElement.dataset.date = dateString; // data-date 属性を常に付与
+                const dateString = date.toISOString().split('T')[0];
+                dayElement.dataset.date = dateString;
 
                 if (date.getMonth() !== month) {
                     dayElement.classList.add('inactive');
                 } else if (selectable) {
                     dayElement.addEventListener('click', () => {
-                        if (!isMultipleSelection) {
-                            selectedDates.clear();
-                            const allDays = container.querySelectorAll('.calendar-day.selected'); 
-                            allDays.forEach(d => d.classList.remove('selected'));
-                        }
-                        if (selectedDates.has(dateString)) {
-                            selectedDates.delete(dateString);
-                            dayElement.classList.remove('selected');
-                        } else {
-                            selectedDates.add(dateString);
-                            dayElement.classList.add('selected');
+                        // 外部コールバック（「日時で調整」用）
+                        if (onDateClick) {
+                            onDateClick(dateString, dayElement);
+                        } 
+                        // 通常の「日にちで調整」用のロジック
+                        else {
+                            if (!isMultipleSelection) {
+                                selectedDates.clear();
+                                const allDays = container.querySelectorAll('.calendar-day.selected'); 
+                                allDays.forEach(d => d.classList.remove('selected'));
+                            }
+                            if (selectedDates.has(dateString)) {
+                                selectedDates.delete(dateString);
+                                dayElement.classList.remove('selected');
+                            } else {
+                                selectedDates.add(dateString);
+                                dayElement.classList.add('selected');
+                            }
                         }
                     });
-                    if (selectedDates.has(dateString)) {
-                        dayElement.classList.add('selected');
+                    
+                    // 選択状態の復元
+                    if (onDateClick) { // 「日時」作成の場合
+                        if (selectedDateTimes.has(dateString)) {
+                            dayElement.classList.add('selected');
+                        }
+                    } else { // 「日にち」作成の場合
+                        if (selectedDates.has(dateString)) {
+                            dayElement.classList.add('selected');
+                        }
                     }
+
                 } else { // selectable が false (投票ページ) の場合
                     if (allowedDates.includes(dateString)) {
                         dayElement.classList.add('selectable-date');
@@ -768,7 +834,7 @@ const mainAppLogic = async(user) => {
                             }
                             if (!isMultipleSelection) {
                                 selectedDates.clear();
-                                const allDays = container.querySelectorAll('.selectable-date.selected'); // container 内で検索
+                                const allDays = container.querySelectorAll('.selectable-date.selected');
                                 allDays.forEach(d => d.classList.remove('selected'));
                             }
 
@@ -803,7 +869,7 @@ const mainAppLogic = async(user) => {
                         currentMonth = 11;
                         currentYear--;
                     }
-                    renderCalendar(container, currentMonth, currentYear, selectable, allowedDates, isMultipleSelection);
+                    renderCalendar(container, currentMonth, currentYear, selectable, allowedDates, isMultipleSelection, onDateClick);
                 });
             }
             
@@ -815,19 +881,21 @@ const mainAppLogic = async(user) => {
                         currentMonth = 0;
                         currentYear++;
                     }
-                    renderCalendar(container, currentMonth, currentYear, selectable, allowedDates, isMultipleSelection);
+                    renderCalendar(container, currentMonth, currentYear, selectable, allowedDates, isMultipleSelection, onDateClick);
                 });
             }
         };
-        // --- 🔼 修正ここまで 🔼 ---
+        // --- ▲ 修正ここまで ▲ ---
 
-        const generateTimeSlots = (container, selectable = true, allowedTimeSlots = [], isMultipleSelection = true) => {
+        // --- ▼ 修正: generateTimeSlots に stateMap (selectedDateTimes) と dateString を渡せるように変更 ▼ ---
+        const generateTimeSlots = (container, selectable = true, allowedTimeSlots = [], isMultipleSelection = true, dateString = null, stateMap = null) => {
             if (!container) return;
             container.innerHTML = '';
             
             const timeSlotsToRender = selectable ? [] : allowedTimeSlots;
             
             if (selectable) {
+                // 「日時で調整」作成時
                 const startTime = 9 * 60;
                 const endTime = 24 * 60;
                 for (let i = startTime; i < endTime; i += 30) {
@@ -849,20 +917,24 @@ const mainAppLogic = async(user) => {
 
                 timeSlotElement.addEventListener('click', () => {
                     if (selectable) {
-                        if (!isMultipleSelection) {
-                            selectedTimeSlots.clear();
-                            const allSlots = container.querySelectorAll('.time-slot.selected'); // container 内で検索
-                            allSlots.forEach(s => s.classList.remove('selected'));
-                        }
-                        if (selectedTimeSlots.has(timeText)) {
-                            selectedTimeSlots.delete(timeText);
-                            timeSlotElement.classList.remove('selected');
-                        } else {
-                            selectedTimeSlots.add(timeText);
-                            timeSlotElement.classList.add('selected');
+                        // 「日時で調整」作成時のロジック
+                        if (dateString && stateMap) {
+                            if (!stateMap.has(dateString)) {
+                                stateMap.set(dateString, new Set());
+                            }
+                            const timeSet = stateMap.get(dateString);
+
+                            // 「日時で調整」は常に複数選択可（UIが複雑になるため）
+                            if (timeSet.has(timeText)) {
+                                timeSet.delete(timeText);
+                                timeSlotElement.classList.remove('selected');
+                            } else {
+                                timeSet.add(timeText);
+                                timeSlotElement.classList.add('selected');
+                            }
                         }
                     } else {
-                        // 投票ページのロジック (not available チェック)
+                        // 投票ページのロジック (旧 'time' タイプ用)
                         if (notAvailableCheckbox && notAvailableCheckbox.checked) {
                             notAvailableCheckbox.checked = false;
                             if (notAvailableCommentContainer) {
@@ -871,7 +943,7 @@ const mainAppLogic = async(user) => {
                         }
                         if (!isMultipleSelection) {
                             selectedTimeSlots.clear();
-                            const allSlots = container.querySelectorAll('.time-slot.selected'); // container 内で検索
+                            const allSlots = container.querySelectorAll('.time-slot.selected');
                             allSlots.forEach(s => s.classList.remove('selected'));
                         }
 
@@ -885,10 +957,11 @@ const mainAppLogic = async(user) => {
                     }
                 });
 
-                if (selectable && selectedTimeSlots.has(timeText)) {
+                // 選択状態の復元
+                if (selectable && dateString && stateMap && stateMap.has(dateString) && stateMap.get(dateString).has(timeText)) {
                     timeSlotElement.classList.add('selected');
                 }
-                // 投票ページでの初期選択状態の反映
+                // 投票ページ(旧 'time' タイプ)での初期選択状態の反映
                 if (!selectable && allowedTimeSlots.includes(timeText)) {
                      if (selectedTimeSlots.has(timeText)) {
                         timeSlotElement.classList.add('selected');
@@ -898,6 +971,7 @@ const mainAppLogic = async(user) => {
                 container.appendChild(timeSlotElement);
             });
         };
+        // --- ▲ 修正ここまで ▲ ---
         
         // PC用ボタンのイベントリスナー
         if (howToUseLinkPC) howToUseLinkPC.addEventListener('click', handleHowToUseToggle);
@@ -960,6 +1034,7 @@ const mainAppLogic = async(user) => {
             });
         }
 
+        // --- ▼ 修正: updateVotedUsersList で新しい「日時」形式に対応 ▼ ---
         const updateVotedUsersList = (votedUsers, candidates, isResultsPage) => {
             const votedUsersListElement = document.getElementById('voted-users-list');
             const resultsDisplayElement = document.getElementById('results-display');
@@ -980,16 +1055,27 @@ const mainAppLogic = async(user) => {
 
             if (isResultsPage) {
                 const voteCounts = {};
-                let pollOptions = [];
-                let totalVotes = 0; 
+                let allCandidates = [];
+                let isPoll = false;
+                let isDateTime = false;
 
                 if (candidates.type === 'poll') { 
-                    pollOptions = candidates.options;
-                    pollOptions.forEach(option => voteCounts[option] = { votes: 0, voters: [] });
+                    isPoll = true;
+                    allCandidates = candidates.options;
+                } else if (typeof candidates === 'object' && !Array.isArray(candidates) && candidates.type !== 'poll') {
+                    isDateTime = true;
+                    // 新しい「日時」形式 ( { "2025-10-10": ["09:00", ...], ... } )
+                    Object.keys(candidates).forEach(date => {
+                        candidates[date].forEach(time => {
+                            allCandidates.push(`${date} ${time}`);
+                        });
+                    });
                 } else { 
-                    candidates.forEach(candidate => voteCounts[candidate] = { votes: 0, voters: [] });
-                    pollOptions = candidates; 
+                    // 古い「日にち」または「時間帯」形式 ( ["..."] )
+                    allCandidates = candidates;
                 }
+                
+                allCandidates.forEach(candidate => voteCounts[candidate] = { votes: 0, voters: [] });
 
                 votedUsers.forEach(user => {
                     if (user.voteData.status === 'available' && Array.isArray(user.voteData.votes)) {
@@ -997,7 +1083,6 @@ const mainAppLogic = async(user) => {
                             if (voteCounts[vote]) {
                                 voteCounts[vote].votes++;
                                 voteCounts[vote].voters.push(user.name);
-                                totalVotes++;
                             }
                         });
                     }
@@ -1005,14 +1090,12 @@ const mainAppLogic = async(user) => {
 
                 const notAvailableUsers = votedUsers.filter(user => user.voteData.status === 'not-available');
                 
-                const sortedCandidates = (candidates.type === 'poll') 
-                                         ? pollOptions 
-                                         : Object.keys(voteCounts).sort(); 
+                const sortedCandidates = allCandidates.sort(); 
 
                 if (resultsDisplayElement) {
                     resultsDisplayElement.innerHTML = '';
                     
-                    if (candidates.type === 'poll') {
+                    if (isPoll) {
                         const maxVotes = Math.max(...Object.values(voteCounts).map(v => v.votes), 1); 
                         
                         sortedCandidates.forEach(candidate => {
@@ -1039,6 +1122,7 @@ const mainAppLogic = async(user) => {
                         });
 
                     } else { 
+                        // 「日にち」または「日時」
                         sortedCandidates.forEach(candidate => {
                             const count = voteCounts[candidate].votes;
                             const voters = voteCounts[candidate].voters;
@@ -1056,7 +1140,7 @@ const mainAppLogic = async(user) => {
     
                     if (notAvailableUsers.length > 0) {
                         const headerLi = document.createElement('li');
-                        headerLi.className = 'p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800'; // 見出しとして少し背景色を変更
+                        headerLi.className = 'p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800';
                         headerLi.innerHTML = `
                             <div>
                                 <span class="font-bold text-gray-800 dark:text-gray-200">都合の悪い人 (${notAvailableUsers.length}人)</span>
@@ -1064,15 +1148,13 @@ const mainAppLogic = async(user) => {
                         `;
                         resultsDisplayElement.appendChild(headerLi);
 
-                        // 都合が悪い人たちを一人ずつリストアップ
                         notAvailableUsers.forEach(user => {
                             const li = document.createElement('li');
-                            li.className = 'p-4 border-b border-gray-200 dark:border-gray-700'; // 候補日と同じスタイル
+                            li.className = 'p-4 border-b border-gray-200 dark:border-gray-700';
                             
-                            // コメントがある場合のみ、コメント表示用のHTMLを生成
                             const commentHTML = user.voteData.comment 
                                 ? `<p class="text-sm text-gray-500 dark:text-gray-400 mt-1 pl-4">${user.voteData.comment}</p>`
-                                : ''; // コメントがなければ何も表示しない
+                                : '';
 
                             li.innerHTML = `
                                 <div>
@@ -1096,8 +1178,9 @@ const mainAppLogic = async(user) => {
                 });
             }
         };
+        // --- ▲ 修正ここまで ▲ ---
         
-        // --- 🔽 修正: handleScheduleCreation で DOM から日付を取得 🔽 ---
+        // --- ▼ 修正: handleScheduleCreation で新しい「日時」形式の保存に対応 ▼ ---
         const handleScheduleCreation = async (e, type) => {
             e.preventDefault();
 
@@ -1125,7 +1208,7 @@ const mainAppLogic = async(user) => {
             let scheduleData;
             
             if (type === 'date') {
-                selectedDates.clear(); // 送信前に必ずクリア
+                selectedDates.clear();
                 const selectedDaysElements = document.querySelectorAll('#calendar-container .calendar-day.selected');
                 selectedDaysElements.forEach(el => {
                     if(el.dataset.date) {
@@ -1138,20 +1221,35 @@ const mainAppLogic = async(user) => {
                     return;
                 }
                 scheduleData = {
-                    title, description, deadline, dates: Array.from(selectedDates), votedUsers: [], createdBy: user.uid, type: 'date', selectionType: isMultipleSelection ? 'multiple' : 'single'
+                    title, description, deadline, 
+                    dates: Array.from(selectedDates), // [ "2025-10-10", "2025-10-11" ]
+                    votedUsers: [], 
+                    createdBy: user.uid, 
+                    type: 'date', 
+                    selectionType: isMultipleSelection ? 'multiple' : 'single'
                 };
             } else if (type === 'time') {
-                const dateElement = document.getElementById('time-schedule-date');
-                const date = dateElement ? dateElement.value : '';
+                // selectedDateTimes (Map) から Firestore に保存する candidates (Object) を作成
+                const candidates = {};
+                let hasValidTime = false;
+                selectedDateTimes.forEach((timeSet, dateString) => {
+                    if (timeSet.size > 0) { // 少なくとも1つの時間帯が選択されている日付のみ保存
+                        candidates[dateString] = Array.from(timeSet).sort(); // 時間帯を配列にして保存
+                        hasValidTime = true;
+                    }
+                });
                 
-                // selectedTimeSlots は generateTimeSlots 内のクリックイベントで更新されている想定
-                
-                if (!title || selectedTimeSlots.size === 0 || !date) {
-                    alert(translations[currentLang].createTimeH2 === '時間帯で日程調整を作成' ? 'タイトル、日程日、そして候補時間を一つ以上選択してください。' : 'Please select a title, a date, and at least one time slot.');
+                if (!title || !hasValidTime) {
+                    alert(translations[currentLang].createTimeH2 === '日時で日程調整を作成' ? 'タイトルと、候補日時を一つ以上選択してください。' : 'Please select a title and at least one datetime slot.');
                     return;
                 }
                 scheduleData = {
-                    title, description, deadline, date, timeSlots: Array.from(selectedTimeSlots), votedUsers: [], createdBy: user.uid, type: 'time', selectionType: isMultipleSelection ? 'multiple' : 'single'
+                    title, description, deadline, 
+                    candidates: candidates, // { "2025-10-10": ["09:00-...", "09:30-..."], ... }
+                    votedUsers: [], 
+                    createdBy: user.uid, 
+                    type: 'time', // タイプは 'time' のまま（中身の candidates で判別）
+                    selectionType: isMultipleSelection ? 'multiple' : 'single'
                 };
             } else if (type === 'poll') {
                 const optionInputs = document.querySelectorAll('#poll-options-container .poll-option-input');
@@ -1181,14 +1279,18 @@ const mainAppLogic = async(user) => {
                 const votingUrl = `voting-page.html?id=${lowerCaseId}`; 
                 if(shareUrlElement) shareUrlElement.textContent = `${window.location.origin}/${votingUrl}`;
                 showSection('creation-complete-section');
-                // 作成成功後に選択状態をリセット
+                
+                // フォームと状態をリセット
                 selectedDates.clear();
-                selectedTimeSlots.clear();
-                // フォームの入力内容もリセット (オプション)
+                selectedDateTimes.clear();
                 if (e.target instanceof HTMLFormElement) {
                     e.target.reset();
                 }
-                // 一般投票の選択肢もリセット
+                if (type === 'time' && datetimeConfigContainer) {
+                    datetimeConfigContainer.innerHTML = '';
+                    const calendarDays = document.querySelectorAll('#time-calendar-container .calendar-day.selected');
+                    calendarDays.forEach(day => day.classList.remove('selected'));
+                }
                 if (type === 'poll') {
                      const pollOptionsContainer = document.getElementById('poll-options-container');
                      if (pollOptionsContainer) {
@@ -1204,7 +1306,7 @@ const mainAppLogic = async(user) => {
                 alert("スケジュールの作成に失敗しました。");
             }
         };
-        // --- 🔼 修正ここまで 🔼 ---
+        // --- ▲ 修正ここまで ▲ ---
 
     // ★★★ ページ判定ロジック ★★★
     if (myPageSection) { 
@@ -1246,19 +1348,62 @@ const mainAppLogic = async(user) => {
                 selectedDates.clear(); 
                 const multipleSelectionCheckbox = document.getElementById('date-multiple-selection-checkbox');
                 const isMultipleSelection = multipleSelectionCheckbox ? multipleSelectionCheckbox.checked : true;
-                renderCalendar(calendarContainer, currentMonth, currentYear, true, [], isMultipleSelection);
+                renderCalendar(calendarContainer, currentMonth, currentYear, true, [], isMultipleSelection, null); // dateClick=null
             });
         }
         
+        // --- ▼ 修正: createTimeButton のロジックを「日時」用に変更 ▼ ---
         if (createTimeButton) {
             createTimeButton.addEventListener('click', () => {
                 showSection('create-time-section');
-                selectedTimeSlots.clear(); 
+                selectedDateTimes.clear(); // 新しい状態変数をクリア
+                if(datetimeConfigContainer) datetimeConfigContainer.innerHTML = ''; // 時間設定UIをクリア
+
                 const multipleSelectionCheckbox = document.getElementById('time-multiple-selection-checkbox');
                 const isMultipleSelection = multipleSelectionCheckbox ? multipleSelectionCheckbox.checked : true;
-                generateTimeSlots(timeSlotsContainer, true, [], isMultipleSelection);
+
+                // 日付クリック時のコールバック関数を定義
+                const onDateClick = (dateString, dayElement) => {
+                    const configContainer = document.getElementById('datetime-config-container');
+                    if (!configContainer) return;
+
+                    const existingConfig = configContainer.querySelector(`[data-date-config="${dateString}"]`);
+
+                    if (existingConfig) {
+                        // 既に選択済み -> 選択解除
+                        selectedDateTimes.delete(dateString);
+                        existingConfig.remove();
+                        dayElement.classList.remove('selected');
+                    } else {
+                        // 新規選択
+                        selectedDateTimes.set(dateString, new Set()); // まず空のSetで登録
+                        dayElement.classList.add('selected');
+
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'p-4 border rounded-lg dark:border-gray-600';
+                        wrapper.dataset.dateConfig = dateString;
+
+                        const dateObj = new Date(dateString + 'T00:00:00'); // タイムゾーンを考慮
+                        const displayDate = `${dateString} (${translations[currentLang].daysOfWeek[dateObj.getDay()]})`;
+
+                        wrapper.innerHTML = `<p class="font-bold dark:text-white">${displayDate}</p>`;
+                        
+                        const grid = document.createElement('div');
+                        grid.className = 'time-slot-grid mt-2';
+                        
+                        // stateMap と dateString を渡して時間帯スロットを生成
+                        generateTimeSlots(grid, true, [], true, dateString, selectedDateTimes);
+                        
+                        wrapper.appendChild(grid);
+                        configContainer.appendChild(wrapper);
+                    }
+                };
+
+                // コールバックを渡してカレンダーを描画
+                renderCalendar(timeCalendarContainer, currentMonth, currentYear, true, [], true, onDateClick);
             });
         }
+        // --- ▲ 修正ここまで ▲ ---
         
         if (createPollButton) {
             createPollButton.addEventListener('click', () => {
@@ -1316,6 +1461,8 @@ const mainAppLogic = async(user) => {
                 }
             });
         }
+    
+    // --- ▼ 修正: 投票ページ (normalizedScheduleId) のロジックを大幅に修正 ▼ ---
     } else if (normalizedScheduleId) {
         showSection('voting-page-section');
         const scheduleRef = doc(db, "schedules", normalizedScheduleId);
@@ -1342,6 +1489,7 @@ const mainAppLogic = async(user) => {
                     currentUserVote = (createdSchedule.votedUsers || []).find(vote => vote.name === voterName);
                 }
 
+                // 1. 投票結果ページ
                 if (isClosed) {
                     if(document.getElementById('voting-results-title'))
                         document.getElementById('voting-results-title').textContent = createdSchedule.title;
@@ -1353,27 +1501,42 @@ const mainAppLogic = async(user) => {
                     let candidates;
                     if (createdSchedule.type === 'poll') {
                         candidates = { type: 'poll', options: createdSchedule.options || [] }; 
+                    } else if (createdSchedule.type === 'time' && createdSchedule.candidates) {
+                        // 新しい「日時」形式
+                        candidates = createdSchedule.candidates;
+                    } else if (createdSchedule.type === 'time' && createdSchedule.timeSlots) {
+                        // 古い「時間帯」形式
+                        candidates = createdSchedule.timeSlots || [];
                     } else {
-                        candidates = createdSchedule.type === 'date' ? (createdSchedule.dates || []) : (createdSchedule.timeSlots || []);
+                        // 「日にち」形式
+                        candidates = createdSchedule.dates || [];
                     }
                     updateVotedUsersList(createdSchedule.votedUsers || [], candidates, true);
-
                     return; 
-                } else {
+                } 
+                
+                // 2. 投票ページ
+                else {
                     if(document.getElementById('voting-title'))
                         document.getElementById('voting-title').textContent = createdSchedule.title;
                     if(document.getElementById('voting-description'))
                         document.getElementById('voting-description').textContent = createdSchedule.description;
                     showSection('voting-page-section');
 
+                    // 状態をクリア
                     selectedDates.clear(); 
                     selectedTimeSlots.clear(); 
 
+                    // 既存の投票データを復元
                     if (currentUserVote && currentUserVote.voteData.status === 'available') {
                         if (createdSchedule.type === 'date' || createdSchedule.type === 'poll') {
                             selectedDates = new Set(currentUserVote.voteData.votes);
-                         } else if (createdSchedule.type === 'time') {
-                            selectedTimeSlots = new Set(currentUserVote.voteData.votes);
+                         } else if (createdSchedule.type === 'time' && createdSchedule.candidates) {
+                             // 新しい「日時」形式
+                             selectedDates = new Set(currentUserVote.voteData.votes); // "YYYY-MM-DD HH:MM-..." 形式
+                         } else if (createdSchedule.type === 'time' && createdSchedule.timeSlots) {
+                             // 古い「時間帯」形式
+                             selectedTimeSlots = new Set(currentUserVote.voteData.votes);
                         }
                     }
 
@@ -1383,44 +1546,142 @@ const mainAppLogic = async(user) => {
                        voterNameInput.readOnly = true;
                     }
 
+                    // コンテナをすべて非表示
+                    if(votingCalendarContainer) votingCalendarContainer.classList.add('hidden');
+                    if(votingDateH3) votingDateH3.classList.add('hidden');
+                    if(votingTimeSlotsContainer) votingTimeSlotsContainer.classList.add('hidden');
+                    if(votingTimeH3) votingTimeH3.classList.add('hidden');
+                    if(votingPollOptionsContainer) votingPollOptionsContainer.classList.add('hidden'); 
+                    if(votingPollH3) votingPollH3.classList.add('hidden'); 
+
+
+                    let candidates; // 結果表示用の候補リスト
+
+                    // タイプ別にUIを描画
                     if (createdSchedule.type === 'date') {
-                        if(votingTimeSlotsContainer) votingTimeSlotsContainer.classList.add('hidden');
-                        if(votingTimeH3) votingTimeH3.classList.add('hidden');
-                        if(votingPollOptionsContainer) votingPollOptionsContainer.classList.add('hidden'); 
-                        if(votingPollH3) votingPollH3.classList.add('hidden'); 
                         if(votingCalendarContainer) votingCalendarContainer.classList.remove('hidden');
                         if(votingDateH3) votingDateH3.classList.remove('hidden');
                         renderCalendar(votingCalendarContainer, currentMonth, currentYear, false, createdSchedule.dates || [], isMultipleSelection);
-                    } else if (createdSchedule.type === 'time') {
-                        if(votingCalendarContainer) votingCalendarContainer.classList.add('hidden');
-                        if(votingDateH3) votingDateH3.classList.add('hidden'); 
-                        if(votingPollOptionsContainer) votingPollOptionsContainer.classList.add('hidden'); 
-                        if(votingPollH3) votingPollH3.classList.add('hidden'); 
+                        candidates = createdSchedule.dates || [];
+                    
+                    } else if (createdSchedule.type === 'time' && createdSchedule.candidates) {
+                        // ★★★ 新しい「日時」形式 ★★★
+                        if(votingCalendarContainer) {
+                            votingCalendarContainer.classList.remove('hidden');
+                            votingCalendarContainer.innerHTML = ''; // クリア
+                        }
+                        if(votingTimeH3) votingTimeH3.classList.remove('hidden'); // 「候補日時を選択」
+
+                        const datetimeListContainer = document.createElement('div');
+                        datetimeListContainer.className = 'space-y-4';
+                        
+                        const scheduleCandidates = createdSchedule.candidates;
+                        const sortedDates = Object.keys(scheduleCandidates).sort();
+                        
+                        candidates = []; // 結果表示用にフラット化
+
+                        for (const date of sortedDates) {
+                            const times = scheduleCandidates[date];
+                            
+                            const dateObj = new Date(date + 'T00:00:00');
+                            const displayDate = `${date} (${translations[currentLang].daysOfWeek[dateObj.getDay()]})`;
+
+                            const dateHeader = document.createElement('h4');
+                            dateHeader.className = 'font-bold text-lg text-gray-800 dark:text-gray-200 pt-2';
+                            dateHeader.textContent = displayDate;
+                            datetimeListContainer.appendChild(dateHeader);
+                            
+                            const timeGrid = document.createElement('div');
+                            timeGrid.className = 'grid grid-cols-2 sm:grid-cols-3 gap-2'; // SPは2列、sm以上は3列
+                            
+                            for (const time of times) {
+                                const uniqueId = `dt-${date}-${time.replace(/[:\s-]/g, '')}`;
+                                const datetimeString = `${date} ${time}`; // 投票値
+                                candidates.push(datetimeString); // 結果用
+
+                                const optionElement = document.createElement('div');
+                                // Tailwind CSS でクリック可能な領域を広げる
+                                optionElement.className = 'border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors';
+                                
+                                const inputType = isMultipleSelection ? 'checkbox' : 'radio';
+                                optionElement.innerHTML = `
+                                    <label for="${uniqueId}" class="flex items-center space-x-2 p-3 cursor-pointer">
+                                        <input type="${inputType}" id="${uniqueId}" name="datetime-option" value="${datetimeString}" class="datetime-vote-input rounded text-blue-500 h-5 w-5 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500">
+                                        <span class="text-gray-800 dark:text-gray-200 w-full">${time}</span>
+                                    </label>
+                                `;
+                                
+                                const inputElement = optionElement.querySelector('input');
+                                if (!inputElement) continue;
+
+                                if (selectedDates.has(datetimeString)) {
+                                    inputElement.checked = true;
+                                }
+                                
+                                // ラベル全体をクリック可能にする (inputElement のクリックイベントは発火させない)
+                                optionElement.addEventListener('click', (e) => {
+                                    if (e.target.tagName !== 'INPUT') {
+                                        if (isMultipleSelection) {
+                                            inputElement.checked = !inputElement.checked;
+                                        } else {
+                                            inputElement.checked = true;
+                                        }
+                                    }
+                                    
+                                    if (notAvailableCheckbox) notAvailableCheckbox.checked = false;
+                                    
+                                    const selectedOption = inputElement.value;
+
+                                    if (!isMultipleSelection) {
+                                        selectedDates.clear(); 
+                                        selectedDates.add(selectedOption);
+                                        // 他のラジオボタンのチェックを外す
+                                        document.querySelectorAll('.datetime-vote-input').forEach(radio => {
+                                            if (radio !== inputElement) radio.checked = false;
+                                        });
+                                    } else {
+                                        if (inputElement.checked) {
+                                            selectedDates.add(selectedOption);
+                                        } else {
+                                            selectedDates.delete(selectedOption);
+                                        }
+                                    }
+                                });
+                                
+                                timeGrid.appendChild(optionElement);
+                            }
+                            datetimeListContainer.appendChild(timeGrid);
+                        }
+                        if(votingCalendarContainer) votingCalendarContainer.appendChild(datetimeListContainer);
+
+                    } else if (createdSchedule.type === 'time' && createdSchedule.timeSlots) {
+                        // 古い「時間帯」形式
                         if(votingTimeSlotsContainer) votingTimeSlotsContainer.classList.remove('hidden');
                         if(votingTimeH3) votingTimeH3.classList.remove('hidden');
                         generateTimeSlots(votingTimeSlotsContainer, false, createdSchedule.timeSlots || [], isMultipleSelection);
+                        candidates = createdSchedule.timeSlots || [];
+
                     } else if (createdSchedule.type === 'poll') {
-                        if(votingCalendarContainer) votingCalendarContainer.classList.add('hidden');
-                        if(votingDateH3) votingDateH3.classList.add('hidden');
-                        if(votingTimeSlotsContainer) votingTimeSlotsContainer.classList.add('hidden');
-                        if(votingTimeH3) votingTimeH3.classList.add('hidden');
-                        
                         if(votingPollH3) votingPollH3.classList.remove('hidden');
                         if(votingPollOptionsContainer) {
                              votingPollOptionsContainer.classList.remove('hidden');
                              votingPollOptionsContainer.innerHTML = ''; // クリア
                         }
 
+                        candidates = createdSchedule.options || [];
+
                         (createdSchedule.options || []).forEach(option => {
                             const optionElement = document.createElement('div');
-                            optionElement.className = 'flex items-center space-x-3 p-3 border rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer';
+                            optionElement.className = 'border rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors';
                             
                             const inputType = isMultipleSelection ? 'checkbox' : 'radio';
                             const inputId = `poll-option-${option.replace(/\s+/g, '-')}`; 
 
                             optionElement.innerHTML = `
-                                <input type="${inputType}" id="${inputId}" name="poll-option" value="${option}" class="poll-vote-input rounded text-blue-500 h-5 w-5 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500">
-                                <label for="${inputId}" class="text-gray-800 dark:text-gray-200 cursor-pointer w-full">${option}</label>
+                                <label for="${inputId}" class="flex items-center space-x-3 p-3 cursor-pointer">
+                                    <input type="${inputType}" id="${inputId}" name="poll-option" value="${option}" class="poll-vote-input rounded text-blue-500 h-5 w-5 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500">
+                                    <span class="text-gray-800 dark:text-gray-200 cursor-pointer w-full">${option}</span>
+                                </label>
                             `;
                             if(votingPollOptionsContainer) votingPollOptionsContainer.appendChild(optionElement);
 
@@ -1432,7 +1693,7 @@ const mainAppLogic = async(user) => {
                             }
 
                             optionElement.addEventListener('click', (e) => {
-                                if (e.target !== inputElement) {
+                                if (e.target.tagName !== 'INPUT') {
                                     if (isMultipleSelection) {
                                         inputElement.checked = !inputElement.checked;
                                     } else {
@@ -1460,12 +1721,7 @@ const mainAppLogic = async(user) => {
                         });
                     }
 
-                    let candidates;
-                    if (createdSchedule.type === 'poll') {
-                        candidates = { type: 'poll', options: createdSchedule.options || [] };
-                    } else {
-                        candidates = createdSchedule.type === 'date' ? (createdSchedule.dates || []) : (createdSchedule.timeSlots || []);
-                    }
+                    // 投票状況リストを更新
                     updateVotedUsersList(createdSchedule.votedUsers || [], candidates, false);
                 }
             } else {
@@ -1492,9 +1748,18 @@ const mainAppLogic = async(user) => {
                     return;
                 }
                 
-                const votes = (currentSchedule.type === 'date' || currentSchedule.type === 'poll') 
-                                ? selectedDates 
-                                : selectedTimeSlots;
+                let votes; // 投票データを格納
+                if (currentSchedule.type === 'date' || currentSchedule.type === 'poll') {
+                    votes = selectedDates; // Set<string>
+                } else if (currentSchedule.type === 'time' && currentSchedule.candidates) {
+                    // 新しい「日時」形式
+                    votes = selectedDates; // Set<string> ("YYYY-MM-DD HH:MM-...")
+                } else if (currentSchedule.type === 'time' && currentSchedule.timeSlots) {
+                    // 古い「時間帯」形式
+                    votes = selectedTimeSlots; // Set<string>
+                } else {
+                    votes = new Set();
+                }
 
                 if (!voterName) {
                     alert(translations[currentLang].voterNameLabel === 'お名前' ? 'お名前を入力してください。' : 'Please enter your name.');
@@ -1532,13 +1797,11 @@ const mainAppLogic = async(user) => {
                 // 投票完了後に選択状態をリセット
                 selectedDates.clear(); 
                 selectedTimeSlots.clear(); 
-                if (currentSchedule.type === 'poll') {
-                    document.querySelectorAll('.poll-vote-input').forEach(input => input.checked = false);
-                } else if (currentSchedule.type === 'time') {
-                     document.querySelectorAll('.time-slot.selected').forEach(el => el.classList.remove('selected'));
-                } else if (currentSchedule.type === 'date') {
-                     document.querySelectorAll('.calendar-day.selected').forEach(el => el.classList.remove('selected'));
-                }
+                
+                // UI上のチェックもリセット
+                document.querySelectorAll('.poll-vote-input, .datetime-vote-input').forEach(input => input.checked = false);
+                document.querySelectorAll('.time-slot.selected').forEach(el => el.classList.remove('selected'));
+                document.querySelectorAll('.calendar-day.selected').forEach(el => el.classList.remove('selected'));
                 
                 if (notAvailableCheckbox) notAvailableCheckbox.checked = false;
                 if (notAvailableCommentContainer) notAvailableCommentContainer.classList.add('hidden');
@@ -1551,17 +1814,19 @@ const mainAppLogic = async(user) => {
             notAvailableCheckbox.addEventListener('change', () => {
                 if (notAvailableCheckbox.checked) {
                     if(notAvailableCommentContainer) notAvailableCommentContainer.classList.remove('hidden');
+                    // すべての選択を解除
                     selectedDates.clear();
                     selectedTimeSlots.clear();
                     const selectedElements = document.querySelectorAll('.calendar-day.selected, .time-slot.selected');
                     selectedElements.forEach(el => el.classList.remove('selected'));
-                    document.querySelectorAll('.poll-vote-input').forEach(input => input.checked = false);
+                    document.querySelectorAll('.poll-vote-input, .datetime-vote-input').forEach(input => input.checked = false);
                 } else {
                     if(notAvailableCommentContainer) notAvailableCommentContainer.classList.add('hidden');
                 }
             });
         }
     } 
+    // --- ▲ 修正ここまで ▲ ---
 }
 document.addEventListener('DOMContentLoaded', async () => {
     const mobileMenuButton = document.getElementById('mobile-menu-button');
