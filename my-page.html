@@ -27,9 +27,21 @@
                     <a id="login-link-pc" href="index.html#login-section" class="text-gray-600 hover:text-blue-600 transition-colors">ログイン/登録</a>
                 </nav>
                 <div class="flex items-center space-x-4">
-                    <button id="lang-toggle-pc" class="text-gray-600 hover:text-blue-600 transition-colors">
-                        <span id="lang-text-pc" class="font-bold">JP / EN</span>
-                    </button>
+                    
+                    <div class="relative" id="lang-dropdown-container-pc">
+                        <button id="lang-dropdown-button-pc" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-bold">
+                            <span id="lang-current-text-pc">日本語</span> <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        
+                        <div id="lang-dropdown-menu-pc" class="hidden absolute right-0 mt-2 w-36 bg-white dark:bg-gray-800 rounded-md shadow-lg z-20 py-1 border dark:border-gray-700">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="ja">日本語</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="en">English</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="ko">한국어</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="fr">Français</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="es">Español</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="zh">简体中文</a>
+                        </div>
+                    </div>
                     <button id="theme-toggle-pc" class="text-gray-600 hover:text-blue-600 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
@@ -51,9 +63,21 @@
                 <a id="my-schedules-link-mobile" href="my-page.html" class="hidden text-gray-600 hover:text-blue-600 transition-colors">マイアンケート</a>
                 <a id="logout-link-mobile" href="#" class="hidden text-red-500 hover:text-red-700 transition-colors">ログアウト</a>
                 <a id="login-link-mobile" href="index.html#login-section" class="text-gray-600 hover:text-blue-600 transition-colors">ログイン</a>
-                <button id="lang-toggle-mobile" class="text-gray-600 hover:text-blue-600 transition-colors">
-                    <span id="lang-text-mobile" class="font-bold">JP/EN</span>
-                </button>
+                
+                <div class="relative" id="lang-dropdown-container-mobile">
+                    <button id="lang-dropdown-button-mobile" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-bold">
+                        <span id="lang-current-text-mobile">日本語</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="lang-dropdown-menu-mobile" class="hidden absolute right-0 mt-2 w-36 bg-white dark:bg-gray-800 rounded-md shadow-lg z-20 py-1 border dark:border-gray-700">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="ja">日本語</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="en">English</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="ko">한국어</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="fr">Français</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="es">Español</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="zh">简体中文</a>
+                    </div>
+                </div>
                 <button id="theme-toggle-mobile" class="text-gray-600 hover:text-blue-600 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                 </button>

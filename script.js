@@ -22,34 +22,30 @@ let currentLang = localStorage.getItem('lang') || 'ja';
 const currentTheme = localStorage.getItem('theme') || 'light';
 const html = document.documentElement;
 
-// --- 翻訳キーを修正 ---
+// --- ▼▼ [修正] 翻訳オブジェクト全体を更新 (多言語対応 + 文言変更) ▼▼ ---
 const translations = {
     ja: {
         appTitle: '日程調整3',
         howToUse: '使い方',
         login: 'ログイン/登録',
-        lang: 'JP / EN',
+        lang: '日本語', // プルダウンのボタン用
         mySchedules: 'マイアンケート',
         logout: 'ログアウト',
         heroTitle: 'サクッと 簡単・シンプル',
         homeSubtitle: '日程調整の種類を選択',
         dateCardTitle: '日にちで調整',
-        dateCardDesc: '参加者の都合の良い日にちを複数選択してもらいます。',
+        dateCardDesc: '候補日をカレンダーで提示し、参加者が都合の良い日を選べます。',
         dateCardButton: '日にちで作成',
         dateCardNote: '投票結果は投票期限が過ぎたら公開されます',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
-        timeCardTitle: '日時で調整',
+        timeCardTitle: 'ピンポイント日時調整',
         timeCardDesc: '複数の候補日それぞれに、都合の良い時間帯を複数選択してもらいます。',
         timeCardButton: '日時で作成',
-        // --- ▲ 修正ここまで ---
         timeCardNote: '投票結果は投票期限が過ぎたら公開されます',
-        pollCardTitle: '一般投票で調整',
+        pollCardTitle: 'カスタム投票',
         pollCardDesc: '「A案」「B案」など、自由な選択肢で投票を作成します。',
         createPollButton: '一般投票で作成',
         createDateH2: '日にちで日程調整を作成',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
         createTimeH2: '日時で日程調整を作成',
-        // --- ▲ 修正ここまで ---
         createPollH2: '一般投票を作成',
         titleLabel: 'タイトル',
         titlePlaceholder: '例：チームランチの日程調整',
@@ -57,29 +53,24 @@ const translations = {
         descPlaceholder: '例：チームランチの候補日を決めたいです。',
         deadlineLabel: '投票期限',
         datesLabel: '候補日を選択',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
-        timeSlotsLabel: '1. 候補日を選択', // create-time-section の H3
-        datetimeConfigLabel: '2. 候補時間帯を編集', // create-time-section の H3
-        // --- ▲ 修正ここまで ---
+        timeSlotsLabel: '1. 候補日を選択',
+        datetimeConfigLabel: '2. 候補時間帯を編集',
         pollOptionsLabel: '投票の選択肢',
         addOptionButton: '+ 選択肢を追加',
         createButton: '作成する',
         howToUseH2: '使い方',
         step1Title: 'ステップ1：日程調整の作成',
         step1Desc: 'サイトのトップページから、作成したい日程調整の種類を選択します。',
-        step1Bullet1: '日にちで調整: 候補日を複数選択してアンケートを作成します。',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
-        step1Bullet2: '日時で調整: 複数の候補日を選択し、それぞれに時間帯の候補を設定します。',
-        // --- ▲ 修正ここまで ---
+        step1Bullet1: '<strong>日にちで調整</strong>: カレンダーから候補日を複数選択して、参加者が都合の良い日を選ぶアンケートを作成します。',
+        step1Bullet2: '<strong>日時で調整</strong>: カレンダーで日付を選び、さらにその日の中で「09:00-09:30」のように具体的な時間帯（スロット）を複数設定するアンケートを作成します。',
+        step1Bullet3_poll: '<strong>一般投票で調整</strong>: 「A案」「B案」など、日付とは関係ない自由な選択肢で投票アンケートを作成します。',
         step1Note: 'タイトルや説明文、投票期限を設定したら、「作成する」ボタンを押してください。',
         step2Title: 'ステップ2：URLの共有',
         step2Desc: '日程調整の作成が完了すると、専用のURLが発行されます。このURLをコピーして、LINEやメール、Slackなどで参加者に共有しましょう。',
         step3Title: 'ステップ3：投票',
         step3Desc: '共有されたURLにアクセスすると、投票ページが表示されます。',
         step3Bullet1: '自分の名前を入力します。',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
-        step3Bullet2: '都合の良い日にち、日時、または選択肢を複数選択します。',
-        // --- ▲ 修正ここまで ---
+        step3Bullet2: 'アンケートの種類に応じて、都合の良い「日にち」（カレンダー）、具体的な「日時」（時間スロットのリスト）、または「選択肢」（A案/B案など）を選びます。',
         step3Bullet3: '「投票する」ボタンを押して投票完了です。',
         step3NoteTitle: '注意点：',
         step3Note: '投票結果は、投票期限が過ぎるまで他の人には公開されません。期限が過ぎると、すべての投票結果が自動で公開されます。',
@@ -97,9 +88,7 @@ const translations = {
         noVotes: 'まだ誰も投票していません。',
         voteH2: '投票ページ',
         voteDateH3: '投票日を選択',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
-        voteTimeH3: '候補日時を選択', // 投票ページでの日時選択のタイトル
-        // --- ▲ 修正ここまで ---
+        voteTimeH3: '候補日時を選択',
         votePollH3: '選択肢',
         voterNameLabel: 'お名前',
         voterNamePlaceholder: '例：山田太郎',
@@ -114,28 +103,24 @@ const translations = {
         appTitle: 'Schedule 3',
         howToUse: 'How to use',
         login: 'Login / Sign up',
-        lang: 'EN / JP',
+        lang: 'English', // プルダウンのボタン用
         mySchedules: 'My Schedules',
         logout: 'Logout',
         heroTitle: 'Quick & Simple',
         homeSubtitle: 'Select a schedule type',
         dateCardTitle: 'By Date',
-        dateCardDesc: 'Have participants select multiple convenient dates.',
+        dateCardDesc: 'Present candidate dates on a calendar for participants to choose from.',
         dateCardButton: 'Create by Date',
         dateCardNote: 'Results will be public after the voting deadline.',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
-        timeCardTitle: 'By Datetime',
+        timeCardTitle: 'Pinpoint Datetime Adjustment',
         timeCardDesc: 'Have participants select convenient time slots for multiple specific dates.',
         timeCardButton: 'Create by Datetime',
-        // --- ▲ 修正ここまで ---
         timeCardNote: 'Results will be public after the voting deadline.',
-        pollCardTitle: 'General Poll',
+        pollCardTitle: 'Custom Poll',
         pollCardDesc: 'Create a poll with custom options like "Option A", "Option B".',
         createPollButton: 'Create Poll',
         createDateH2: 'Create a schedule by date',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
         createTimeH2: 'Create a schedule by datetime',
-        // --- ▲ 修正ここまで ---
         createPollH2: 'Create a General Poll',
         titleLabel: 'Title',
         titlePlaceholder: 'e.g., Team Lunch Schedule',
@@ -143,29 +128,24 @@ const translations = {
         descPlaceholder: 'e.g., Let\'s decide the dates for our team lunch.',
         deadlineLabel: 'Voting Deadline',
         datesLabel: 'Select candidate dates',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
         timeSlotsLabel: '1. Select candidate dates',
         datetimeConfigLabel: '2. Edit candidate time slots',
-        // --- ▲ 修正ここまで ---
         pollOptionsLabel: 'Poll Options',
         addOptionButton: '+ Add Option',
         createButton: 'Create',
         howToUseH2: 'How to use',
         step1Title: 'Step 1: Create a Schedule',
         step1Desc: 'From the top page, select the type of schedule you want to create.',
-        step1Bullet1: 'By Date: Create a poll by selecting multiple candidate dates.',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
-        step1Bullet2: 'By Datetime: Select multiple dates and set time slots for each.',
-        // --- ▲ 修正ここまで ---
+        step1Bullet1: '<strong>By Date</strong>: Create a poll by selecting multiple candidate dates from the calendar for participants to choose from.',
+        step1Bullet2: '<strong>By Datetime</strong>: Create a poll by selecting dates, and then setting specific time slots (e.g., "09:00-09:30") for each selected date.',
+        step1Bullet3_poll: '<strong>General Poll</strong>: Create a poll with custom, non-date-related options, such as "Option A", "Option B".',
         step1Note: 'After setting the title, description, and voting deadline, press the "Create" button.',
         step2Title: 'Step 2: Share the URL',
         step2Desc: 'Once the schedule is created, a unique URL will be issued. Copy this URL and share it with participants via LINE, email, Slack, etc.',
         step3Title: 'Step 3: Vote',
         step3Desc: 'When you access the shared URL, the voting page will be displayed.',
         step3Bullet1: 'Enter your name.',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
-        step3Bullet2: 'Select one or more convenient dates, datetimes, or options.',
-        // --- ▲ 修正ここまで ---
+        step3Bullet2: 'Select your convenient "Date" (from the calendar), specific "Datetime" (from the time slot list), or "Option" (e.g., Option A/B) based on the poll type.',
         step3Bullet3: 'Press the "Vote" button to complete your vote.',
         step3NoteTitle: 'Note:',
         step3Note: 'Voting results will remain **private until the voting deadline has passed**. After the deadline, all voting results will be automatically published.',
@@ -182,9 +162,7 @@ const translations = {
         noVotes: 'No one has voted yet.',
         voteH2: 'Voting Page',
         voteDateH3: 'Select a voting date',
-        // --- ▼ 修正: 「時間帯」から「日時」へ ---
         voteTimeH3: 'Select candidate datetimes',
-        // --- ▲ 修正ここまで ---
         votePollH3: 'Options',
         voterNameLabel: 'Your Name',
         voterNamePlaceholder: 'e.g., John Doe',
@@ -194,20 +172,325 @@ const translations = {
         submitVoteButton: 'Vote',
         votedStatusH3: 'Voting Status',
         daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    },
+    ko: {
+        appTitle: '일정조정3',
+        howToUse: '사용법',
+        login: '로그인 / 등록',
+        lang: '한국어',
+        mySchedules: '내 설문',
+        logout: '로그아웃',
+        heroTitle: '간편하고 심플하게',
+        homeSubtitle: '일정 조정 유형을 선택',
+        dateCardTitle: '날짜로 조정',
+        dateCardDesc: '캘린더에서 후보 날짜를 제시하여 참가자가 편한 날을 선택할 수 있습니다.',
+        dateCardButton: '날짜로 만들기',
+        dateCardNote: '투표 결과는 투표 마감일이 지나면 공개됩니다',
+        timeCardTitle: '상세 일시 조정',
+        timeCardDesc: '여러 후보 날짜 각각에 대해 편한 시간대를 여러 개 선택하도록 합니다.',
+        timeCardButton: '일시로 만들기',
+        timeCardNote: '투표 결과는 투표 마감일이 지나면 공개됩니다',
+        pollCardTitle: '커스텀 투표',
+        pollCardDesc: '"A안", "B안" 등 자유로운 선택지로 투표를 만듭니다.',
+        createPollButton: '일반 투표로 만들기',
+        createDateH2: '날짜로 일정 조정 만들기',
+        createTimeH2: '일시로 일정 조정 만들기',
+        createPollH2: '일반 투표 만들기',
+        titleLabel: '제목',
+        titlePlaceholder: '예: 팀 점심 일정 조정',
+        descLabel: '설명',
+        descPlaceholder: '예: 팀 점심 날짜를 정하고 싶습니다.',
+        deadlineLabel: '투표 마감일',
+        datesLabel: '후보 날짜 선택',
+        timeSlotsLabel: '1. 후보 날짜 선택',
+        datetimeConfigLabel: '2. 후보 시간대 편집',
+        pollOptionsLabel: '투표 선택지',
+        addOptionButton: '+ 선택지 추가',
+        createButton: '만들기',
+        howToUseH2: '사용법',
+        step1Title: '스텝 1: 일정 조정 만들기',
+        step1Desc: '사이트 첫 페이지에서 만들고 싶은 일정 조정 유형을 선택합니다.',
+        step1Bullet1: '<strong>날짜로 조정</strong>: 캘린더에서 후보 날짜를 여러 개 선택하여 참가자가 편한 날을 고르는 설문을 만듭니다.',
+        step1Bullet2: '<strong>일시로 조정</strong>: 캘린더에서 날짜를 선택하고, "09:00-09:30"처럼 구체적인 시간대(슬롯)를 여러 개 설정하는 설문을 만듭니다.',
+        step1Bullet3_poll: '<strong>일반 투표로 조정</strong>: "A안", "B안" 등 날짜와 관계없는 자유로운 선택지로 투표 설문을 만듭니다.',
+        step1Note: '제목, 설명, 투표 마감일을 설정한 후 "만들기" 버튼을 누르세요.',
+        step2Title: '스텝 2: URL 공유',
+        step2Desc: '일정 조정이 완료되면 전용 URL이 발급됩니다. 이 URL을 복사하여 LINE, 이메일, Slack 등으로 참가자에게 공유하세요.',
+        step3Title: '스텝 3: 투표',
+        step3Desc: '공유된 URL에 접속하면 투표 페이지가 표시됩니다.',
+        step3Bullet1: '자신의 이름을 입력합니다.',
+        step3Bullet2: '설문 유형에 따라 편한 "날짜"(캘린더), 구체적인 "일시"(시간 슬롯 목록), 또는 "선택지"(A안/B안 등)를 선택합니다.',
+        step3Bullet3: '"투표하기" 버튼을 눌러 투표 완료입니다.',
+        step3NoteTitle: '주의점:',
+        step3Note: '투표 결과는 **투표 마감일이 지날 때까지 다른 사람에게 공개되지 않습니다**. 마감일이 지나면 모든 투표 결과가 자동으로 공개됩니다.',
+        loginH2: '로그인 / 등록',
+        loginDesc: 'Google 계정으로 간편하고 안전하게 로그인할 수 있습니다.',
+        loginButton: 'Google 계정으로 로그인',
+        emailPlaceholder: '이메일 주소',
+        passwordPlaceholder: '비밀번호',
+        loginButtonText: '로그인',
+        registerButtonText: '신규 등록',
+        orSeparator: '또는',
+        googleLoginText: 'Google 계정으로 로그인',
+        resultsH2: '투표 결과',
+        resultsClosedMessage: '투표가 마감되었습니다.',
+        noVotes: '아직 아무도 투표하지 않았습니다.',
+        voteH2: '투표 페이지',
+        voteDateH3: '투표일 선택',
+        voteTimeH3: '후보 일시 선택',
+        votePollH3: '선택지',
+        voterNameLabel: '이름',
+        voterNamePlaceholder: '예: 홍길동',
+        notAvailableLabel: '편한 날짜가 없음',
+        commentLabel: '코멘트',
+        commentPlaceholder: '예: 월말이라면 가능합니다.',
+        submitVoteButton: '투표하기',
+        votedStatusH3: '투표 현황',
+        daysOfWeek: ['일', '월', '화', '수', '목', '금', '토']
+    },
+    // --- ▼▼ [修正] フランス語のアポストロフィを \' でエスケープ ▼▼ ---
+    fr: {
+        appTitle: 'Planif. 3',
+        howToUse: 'Comment utiliser',
+        login: 'Connexion / S\'inscrire',
+        lang: 'Français',
+        mySchedules: 'Mes sondages',
+        logout: 'Déconnexion',
+        heroTitle: 'Rapide & Simple',
+        homeSubtitle: 'Choisir un type de planification',
+        dateCardTitle: 'Par Date',
+        dateCardDesc: 'Présentez des dates candidates sur un calendrier pour que les participants choisissent.',
+        dateCardButton: 'Créer par date',
+        dateCardNote: 'Les résultats seront publics après la date limite de vote.',
+        timeCardTitle: 'Ajustement Date/Heure',
+        timeCardDesc: 'Demandez aux participants de sélectionner plusieurs créneaux horaires qui leur conviennent pour chaque date candidate.',
+        timeCardButton: 'Créer par date/heure',
+        timeCardNote: 'Les résultats seront publics après la date limite de vote.',
+        pollCardTitle: 'Sondage personnalisé',
+        pollCardDesc: 'Créez un sondage avec des options personnalisées comme "Option A", "Option B".',
+        createPollButton: 'Créer un sondage',
+        createDateH2: 'Créer une planification par date',
+        createTimeH2: 'Créer une planification par date/heure',
+        createPollH2: 'Créer un sondage général',
+        titleLabel: 'Titre',
+        titlePlaceholder: 'Ex: Planification déjeuner d\'équipe',
+        descLabel: 'Description',
+        descPlaceholder: 'Ex: Décidons des dates pour notre déjeuner d\'équipe',
+        deadlineLabel: 'Date limite de vote',
+        datesLabel: 'Choisir les dates candidates',
+        timeSlotsLabel: '1. Choisir les dates candidates',
+        datetimeConfigLabel: '2. Modifier les créneaux horaires',
+        pollOptionsLabel: 'Options du sondage',
+        addOptionButton: '+ Ajouter une option',
+        createButton: 'Créer',
+        howToUseH2: 'Comment utiliser',
+        step1Title: 'Étape 1: Créer une planification',
+        step1Desc: 'Depuis la page d\'accueil, choisissez le type de planification que vous souhaitez créer.',
+        step1Bullet1: '<strong>Par Date</strong>: Créez un sondage en sélectionnant plusieurs dates candidates sur le calendrier.',
+        step1Bullet2: '<strong>Par Date/Heure</strong>: Créez un sondage en sélectionnant des dates, puis en définissant des créneaux horaires spécifiques (ex: "09:00-09:30") pour chaque date.',
+        step1Bullet3_poll: '<strong>Sondage général</strong>: Créez un sondage avec des options personnalisées non liées à des dates, comme "Option A", "Option B".',
+        step1Note: 'Après avoir défini le titre, la description et la date limite, appuyez sur "Créer".',
+        step2Title: 'Étape 2: Partager l\'URL',
+        step2Desc: 'Une fois la planification créée, une URL unique sera générée. Copiez-la et partagez-la avec les participants via LINE, e-mail, Slack, etc.',
+        step3Title: 'Étape 3: Voter',
+        step3Desc: 'En accédant à l\'URL partagée, la page de vote s\'affichera.',
+        step3Bullet1: 'Entrez votre nom.',
+        step3Bullet2: 'Selon le type de sondage, sélectionnez la "Date", la "Date/Heure" (liste de créneaux) ou l\' "Option" (A/B) qui vous convient.',
+        step3Bullet3: 'Appuyez sur "Voter" pour terminer.',
+        step3NoteTitle: 'Note:',
+        step3Note: 'Les résultats du vote resteront **privés jusqu\'à ce que la date limite soit passée**. Après la limite, tous les résultats seront automatiquement publiés.',
+        loginH2: 'Connexion / S\'inscrire',
+        loginDesc: 'Connectez-vous facilement et en toute sécurité avec votre compte Google.',
+        loginButton: 'Connexion avec Google',
+        emailPlaceholder: 'Adresse e-mail',
+        passwordPlaceholder: 'Mot de passe',
+        loginButtonText: 'Connexion',
+        registerButtonText: 'S\'inscrire',
+        orSeparator: 'ou',
+        googleLoginText: 'Connexion avec Google',
+        resultsH2: 'Résultats du vote',
+        resultsClosedMessage: 'Le vote est terminé.',
+        noVotes: 'Personne n\'a encore voté.',
+        voteH2: 'Page de vote',
+        voteDateH3: 'Choisir une date de vote',
+        voteTimeH3: 'Choisir une date/heure',
+        votePollH3: 'Options',
+        voterNameLabel: 'Votre nom',
+        voterNamePlaceholder: 'Ex: Jean Dupont',
+        notAvailableLabel: 'Indisponible à toutes les dates',
+        commentLabel: 'Commentaire',
+        commentPlaceholder: 'Ex: Je suis disponible à la fin du mois.',
+        submitVoteButton: 'Voter',
+        votedStatusH3: 'Statut du vote',
+        daysOfWeek: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
+    },
+    // --- ▲▲ [修正] ---
+    es: {
+        appTitle: 'Programar 3',
+        howToUse: 'Cómo usar',
+        login: 'Iniciar sesión / Registrarse',
+        lang: 'Español',
+        mySchedules: 'Mis encuestas',
+        logout: 'Cerrar sesión',
+        heroTitle: 'Rápido y Sencillo',
+        homeSubtitle: 'Selecciona un tipo de programación',
+        dateCardTitle: 'Por Fecha',
+        dateCardDesc: 'Presenta fechas candidatas en un calendario para que los participantes elijan.',
+        dateCardButton: 'Crear por fecha',
+        dateCardNote: 'Los resultados serán públicos después de la fecha límite de votación.',
+        timeCardTitle: 'Ajuste Fecha/Hora',
+        timeCardDesc: 'Pide a los participantes que seleccionen varias franjas horarias convenientes para cada fecha candidata.',
+        timeCardButton: 'Crear por fecha/hora',
+        timeCardNote: 'Los resultados serán públicos después de la fecha límite de votación.',
+        pollCardTitle: 'Votación personalizada',
+        pollCardDesc: 'Crea una votación con opciones personalizadas como "Opción A", "Opción B".',
+        createPollButton: 'Crear votación',
+        createDateH2: 'Crear programación por fecha',
+        createTimeH2: 'Crear programación por fecha/hora',
+        createPollH2: 'Crear votación general',
+        titleLabel: 'Título',
+        titlePlaceholder: 'Ej: Programar almuerzo de equipo',
+        descLabel: 'Descripción',
+        descPlaceholder: 'Ej: Decidamos las fechas para nuestro almuerzo de equipo.',
+        deadlineLabel: 'Fecha límite de votación',
+        datesLabel: 'Seleccionar fechas candidatas',
+        timeSlotsLabel: '1. Seleccionar fechas candidatas',
+        datetimeConfigLabel: '2. Editar franjas horarias',
+        pollOptionsLabel: 'Opciones de la votación',
+        addOptionButton: '+ Añadir opción',
+        createButton: 'Crear',
+        howToUseH2: 'Cómo usar',
+        step1Title: 'Paso 1: Crear una programación',
+        step1Desc: 'Desde la página principal, selecciona el tipo de programación que deseas crear.',
+        step1Bullet1: '<strong>Por Fecha</strong>: Crea una encuesta seleccionando múltiples fechas candidatas del calendario.',
+        step1Bullet2: '<strong>Por Fecha/Hora</strong>: Crea una encuesta seleccionando fechas y luego configurando franjas horarias específicas (ej: "09:00-09:30") para cada una.',
+        step1Bullet3_poll: '<strong>Votación general</strong>: Crea una encuesta con opciones personalizadas no relacionadas con fechas, como "Opción A", "Opción B".',
+        step1Note: 'Después de establecer el título, la descripción y la fecha límite, presiona "Crear".',
+        step2Title: 'Paso 2: Compartir la URL',
+        step2Desc: 'Una vez creada la programación, se generará una URL única. Cópiala y compártela con los participantes por LINE, correo electrónico, Slack, etc.',
+        step3Title: 'Paso 3: Votar',
+        step3Desc: 'Al acceder a la URL compartida, se mostrará la página de votación.',
+        step3Bullet1: 'Ingresa tu nombre.',
+        step3Bullet2: 'Según el tipo de encuesta, selecciona la "Fecha", la "Fecha/Hora" (de la lista de franjas) o la "Opción" (A/B) que te convenga.',
+        step3Bullet3: 'Presiona "Votar" para completar.',
+        step3NoteTitle: 'Nota:',
+        step3Note: 'Los resultados de la votación permanecerán **privados hasta que pase la fecha límite**. Después de la fecha límite, todos los resultados se publicarán automáticamente.',
+        loginH2: 'Iniciar sesión / Registrarse',
+        loginDesc: 'Puedes iniciar sesión de forma fácil y segura con tu cuenta de Google.',
+        loginButton: 'Iniciar sesión con Google',
+        emailPlaceholder: 'Dirección de correo',
+        passwordPlaceholder: 'Contraseña',
+        loginButtonText: 'Iniciar sesión',
+        registerButtonText: 'Registrarse',
+        orSeparator: 'o',
+        googleLoginText: 'Iniciar sesión con Google',
+        resultsH2: 'Resultados de la votación',
+        resultsClosedMessage: 'La votación ha cerrado.',
+        noVotes: 'Nadie ha votado todavía.',
+        voteH2: 'Página de votación',
+        voteDateH3: 'Seleccionar fecha de votación',
+        voteTimeH3: 'Seleccionar fecha/hora',
+        votePollH3: 'Opciones',
+        voterNameLabel: 'Tu nombre',
+        voterNamePlaceholder: 'Ej: Juan Pérez',
+        notAvailableLabel: 'No disponible en ninguna fecha',
+        commentLabel: 'Comentario',
+        commentPlaceholder: 'Ej: Estoy disponible a fin de mes.',
+        submitVoteButton: 'Votar',
+        votedStatusH3: 'Estado de la votación',
+        daysOfWeek: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+    },
+    zh: {
+        appTitle: '日程调整3',
+        howToUse: '使用方法',
+        login: '登录 / 注册',
+        lang: '简体中文',
+        mySchedules: '我的投票',
+        logout: '登出',
+        heroTitle: '快速 & 简单',
+        homeSubtitle: '选择日程调整的类型',
+        dateCardTitle: '按日期调整',
+        dateCardDesc: '在日历上提供候选日期，让参与者选择方便的日期。',
+        dateCardButton: '按日期创建',
+        dateCardNote: '投票结果将在投票截止日期后公布',
+        timeCardTitle: '精确时间调整',
+        timeCardDesc: '让参与者为每个候选日期选择多个方便的时间段。',
+        timeCardButton: '按时间创建',
+        timeCardNote: '投票结果将在投票截止日期后公布',
+        pollCardTitle: '自定义投票',
+        pollCardDesc: '创建带有自定义选项（如“A方案”、“B方案”）的投票。',
+        createPollButton: '创建投票',
+        createDateH2: '按日期创建日程调整',
+        createTimeH2: '按时间创建日程调整',
+        createPollH2: '创建通用投票',
+        titleLabel: '标题',
+        titlePlaceholder: '例：团队午餐日程调整',
+        descLabel: '说明',
+        descPlaceholder: '例：我们来决定团队午餐的日期。',
+        deadlineLabel: '投票截止日期',
+        datesLabel: '选择候选日期',
+        timeSlotsLabel: '1. 选择候选日期',
+        datetimeConfigLabel: '2. 编辑候选时间段',
+        pollOptionsLabel: '投票选项',
+        addOptionButton: '+ 添加选项',
+        createButton: '创建',
+        howToUseH2: '使用方法',
+        step1Title: '第1步：创建日程调整',
+        step1Desc: '从首页选择您想创建的日程调整类型。',
+        step1Bullet1: '<strong>按日期调整</strong>: 通过从日历中选择多个候选日期来创建投票。',
+        step1Bullet2: '<strong>按时间调整</strong>: 通过选择日期，然后为每个日期设置具体的时间段（例如“09:00-09:30”）来创建投票。',
+        step1Bullet3_poll: '<strong>通用投票</strong>: 创建与日期无关的自定义选项投票，例如“A方案”、“B方案”。',
+        step1Note: '设置标题、说明和投票截止日期后，按“创建”按钮。',
+        step2Title: '第2步：分享URL',
+        step2Desc: '创建日程后，将生成一个唯一的URL。复制此URL并通过LINE、电子邮件、Slack等方式分享给参与者。',
+        step3Title: '第3步：投票',
+        step3Desc: '访问共享的URL后，将显示投票页面。',
+        step3Bullet1: '输入您的名字。',
+        step3Bullet2: '根据投票类型，选择方便的“日期”（从日历）、“具体时间”（从时间段列表）或“选项”（例如A方案/B方案）。',
+        step3Bullet3: '按“投票”按钮完成投票。',
+        step3NoteTitle: '请注意：',
+        step3Note: '投票结果在**投票截止日期前对他人保密**。截止日期过后，所有投票结果将自动公布。',
+        loginH2: '登录 / 注册',
+        loginDesc: '您可以使用您的Google帐户轻松安全地登录。',
+        loginButton: '使用Google登录',
+        emailPlaceholder: '电子邮件地址',
+        passwordPlaceholder: '密码',
+        loginButtonText: '登录',
+        registerButtonText: '注册',
+        orSeparator: '或',
+        googleLoginText: '使用Google登录',
+        resultsH2: '投票结果',
+        resultsClosedMessage: '投票已截止。',
+        noVotes: '目前还没有人投票。',
+        voteH2: '投票页面',
+        voteDateH3: '选择投票日期',
+        voteTimeH3: '选择候选时间',
+        votePollH3: '选项',
+        voterNameLabel: '您的名字',
+        voterNamePlaceholder: '例：王五',
+        notAvailableLabel: '所有日期都不方便',
+        commentLabel: '评论',
+        commentPlaceholder: '例：我月底有空。',
+        submitVoteButton: '投票',
+        votedStatusH3: '投票情况',
+        daysOfWeek: ['日', '一', '二', '三', '四', '五', '六']
     }
 };
+// --- ▲▲ [修正] 翻訳オブジェクト全体を更新 ▲▲ ---
 
 const updateContent = (lang) => {
-    const text = translations[lang];
+    // 存在しない言語キーが指定された場合、'ja' にフォールバック
+    const text = translations[lang] || translations['ja'];
+    
     const elements = [
         { id: 'logo-text-pc', prop: 'textContent', value: text.appTitle },
         { id: 'logo-text-mobile', prop: 'textContent', value: text.appTitle },
         { id: 'how-to-use-link-pc', prop: 'textContent', value: text.howToUse },
         { id: 'login-link-pc', prop: 'textContent', value: text.login },
-        { id: 'lang-text-pc', prop: 'textContent', value: text.lang },
+        // { id: 'lang-text-pc', prop: 'textContent', value: text.lang }, // プルダウンボタンにより不要
         { id: 'how-to-use-link-mobile', prop: 'textContent', value: text.howToUse },
         { id: 'login-link-mobile', prop: 'textContent', value: text.login },
-        { id: 'lang-text-mobile', prop: 'textContent', value: text.lang },
+        // { id: 'lang-text-mobile', prop: 'textContent', value: text.lang }, // プルダウンボタンにより不要
         { id: 'my-schedules-link-pc', prop: 'textContent', value: text.mySchedules },
         { id: 'logout-link-pc', prop: 'textContent', value: text.logout },
         { id: 'my-schedules-link-mobile', prop: 'textContent', value: text.mySchedules },
@@ -233,6 +516,14 @@ const updateContent = (lang) => {
             element[el.prop] = el.value;
         }
     });
+
+    // --- ▼▼ [修正] プルダウンのボタンテキストを更新するロジック ▼▼ ---
+    const currentLangName = text.lang;
+    const langCurrentTextPC = document.getElementById('lang-current-text-pc');
+    const langCurrentTextMobile = document.getElementById('lang-current-text-mobile');
+    if (langCurrentTextPC) langCurrentTextPC.textContent = currentLangName;
+    if (langCurrentTextMobile) langCurrentTextMobile.textContent = currentLangName;
+    // --- ▲▲ [修正] ▲▲ ---
 
     const sections = ['home-section', 'how-to-use-section', 'login-section', 'create-date-section', 'create-time-section', 'create-poll-section', 'voting-page-section', 'voting-results-section', 'my-page-section'];
     sections.forEach(sectionId => {
@@ -262,13 +553,14 @@ const updateContent = (lang) => {
                     { selector: '.space-y-8 > div:nth-child(1) > p:nth-of-type(1)', prop: 'textContent', value: text.step1Desc },
                     { selector: '.space-y-8 > div:nth-child(1) > ul > li:nth-child(1)', prop: 'innerHTML', value: text.step1Bullet1 },
                     { selector: '.space-y-8 > div:nth-child(1) > ul > li:nth-child(2)', prop: 'innerHTML', value: text.step1Bullet2 },
+                    { selector: '.space-y-8 > div:nth-child(1) > ul > li:nth-child(3)', prop: 'innerHTML', value: text.step1Bullet3_poll },
                     { selector: '.space-y-8 > div:nth-child(1) > p:nth-of-type(2)', prop: 'textContent', value: text.step1Note },
                     { selector: '.space-y-8 > div:nth-child(2) > h3', prop: 'textContent', value: text.step2Title },
                     { selector: '.space-y-8 > div:nth-child(2) > p', prop: 'textContent', value: text.step2Desc },
                     { selector: '.space-y-8 > div:nth-child(3) > h3', prop: 'textContent', value: text.step3Title },
                     { selector: '.space-y-8 > div:nth-child(3) > p:nth-of-type(1)', prop: 'textContent', value: text.step3Desc },
                     { selector: '.space-y-8 > div:nth-child(3) > ul > li:nth-child(1)', prop: 'textContent', value: text.step3Bullet1 },
-                    { selector: '.space-y-8 > div:nth-child(3) > ul > li:nth-child(2)', prop: 'textContent', value: text.step3Bullet2 },
+                    { selector: '.space-y-8 > div:nth-child(3) > ul > li:nth-child(2)', prop: 'innerHTML', value: text.step3Bullet2 },
                     { selector: '.space-y-8 > div:nth-child(3) > ul > li:nth-child(3)', prop: 'textContent', value: text.step3Bullet3 },
                     { selector: '.space-y-8 > div:nth-child(3) > p:nth-of-type(2)', prop: 'innerHTML', value: text.step3NoteTitle },
                     { selector: '.space-y-8 > div:nth-child(3) > p:nth-of-type(3)', prop: 'innerHTML', value: text.step3Note }
@@ -302,17 +594,14 @@ const updateContent = (lang) => {
                 const createSubmitButton = document.querySelector(`#${sectionId} button[type="submit"]`);
                 if (createSubmitButton) createSubmitButton.textContent = text.createButton;
 
-                // 各セクション固有のラベル
                 if (sectionId === 'create-date-section') {
                     const datesLabel = document.querySelector(`#${sectionId} h3`);
                     if (datesLabel) datesLabel.textContent = text.datesLabel;
                 }
                 if (sectionId === 'create-time-section') {
-                    // --- ▼ 修正: 「日時」セクションの2つのH3を翻訳 ---
                     const h3s = document.querySelectorAll(`#${sectionId} h3`);
                     if (h3s.length > 0) h3s[0].textContent = text.timeSlotsLabel;
                     if (h3s.length > 1) h3s[1].textContent = text.datetimeConfigLabel;
-                    // --- ▲ 修正ここまで ---
                 }
                 if (sectionId === 'create-poll-section') {
                     const pollOptionsLabel = document.querySelector(`#${sectionId} h3`);
@@ -374,24 +663,9 @@ const toggleMobileMenu = () => {
     }
 };
 
-const handleLangToggle = () => {
-    currentLang = currentLang === 'ja' ? 'en' : 'ja';
-    localStorage.setItem('lang', currentLang);
-    updateContent(currentLang);
-    const calendarContainer = document.getElementById('calendar-container');
-    if (calendarContainer && !calendarContainer.classList.contains('hidden')) {
-        renderCalendar(calendarContainer, currentMonth, currentYear, true, [], true); 
-    }
-    // --- ▼ 追加: 「日時」カレンダーも再描画 ---
-    const timeCalendarContainer = document.getElementById('time-calendar-container');
-    if (timeCalendarContainer && !timeCalendarContainer.classList.contains('hidden')) {
-        // 注: onDateClick の再バインドが必要になるため、単純な再描画は推奨されない
-        // 日時作成画面は、言語切り替えで閉じるか、状態を保持した再描画ロジックが必要
-        alert("言語を切り替えました。「日時で調整」を再度開いてください。");
-        window.location.reload(); // 簡易的なリロードで対応
-    }
-    // --- ▲ 追加ここまで ---
-};
+// --- ▼▼ [削除] 古い言語切り替え関数は削除 ▼▼ ---
+// const handleLangToggle = () => { ... }
+// --- ▲▲ [削除] ▲▲ ---
 
 const handleThemeToggle = () => {
     html.classList.toggle('dark');
@@ -405,7 +679,9 @@ const applyTheme = (element) => {
     const sunIcon = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>`;
     const moonIcon = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1m-16 0H3m15.827 6.327l-.707.707M5.879 5.879l-.707.707m12.728 0l-.707-.707M6.515 17.485l-.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>`;
     if (element) {
-        element.innerHTML = currentTheme === 'dark' ? moonIcon : sunIcon;
+        // [修正] ダークモード切り替え時のアイコンロジックを修正
+        const isDark = localStorage.getItem('theme') === 'dark';
+        element.innerHTML = isDark ? moonIcon : sunIcon;
     }
 };
 
@@ -509,9 +785,10 @@ const mainAppLogic = async(user) => {
         const logoutLinkMobile = document.getElementById('logout-link-mobile');
         const userIconContainerMobile = document.getElementById('user-icon-container-mobile');
 
-        const langTogglePC = document.getElementById('lang-toggle-pc'); 
+        // [削除] 古い言語ボタントグルは不要
+        // const langTogglePC = document.getElementById('lang-toggle-pc'); 
         const themeTogglePC = document.getElementById('theme-toggle-pc');
-        const langToggleMobile = document.getElementById('lang-toggle-mobile'); 
+        // const langToggleMobile = document.getElementById('lang-toggle-mobile'); 
         const themeToggleMobile = document.getElementById('theme-toggle-mobile');
 
 
@@ -519,10 +796,8 @@ const mainAppLogic = async(user) => {
         const backToHomeButtonMobile = document.getElementById('back-to-home-button-mobile');
         
         const calendarContainer = document.getElementById('calendar-container');
-        // --- ▼ 修正: 「日時」セクションのコンテナ取得 ---
         const timeCalendarContainer = document.getElementById('time-calendar-container');
         const datetimeConfigContainer = document.getElementById('datetime-config-container');
-        // --- ▲ 修正ここまで ---
 
         const votingCalendarContainer = document.getElementById('voting-calendar-container');
         const votingTimeSlotsContainer = document.getElementById('voting-time-slots-container');
@@ -546,11 +821,9 @@ const mainAppLogic = async(user) => {
         const registerButton = document.getElementById('register-button');
 
         let isHowToUseVisible = false;
-        let selectedDates = new Set(); // 'date' と 'poll'、および投票ページでの 'datetime' 選択で使用
-        // --- ▼ 修正: 'time' 作成用の新しい状態変数 ---
-        let selectedDateTimes = new Map(); // 'time' (datetime) 作成用
-        // --- ▲ 修正ここまで ---
-        let selectedTimeSlots = new Set(); // 旧 'time' (単一日付) 投票用（互換性のため残す）
+        let selectedDates = new Set();
+        let selectedDateTimes = new Map();
+        let selectedTimeSlots = new Set();
 
         const today = new Date();
         let currentMonth = today.getMonth();
@@ -589,17 +862,15 @@ const mainAppLogic = async(user) => {
                 
                 let scheduleTypeLabel = '';
                 if (schedule.type === 'date') {
-                    scheduleTypeLabel = '日にち調整';
+                    scheduleTypeLabel = translations[currentLang].dateCardTitle;
                 } else if (schedule.type === 'time') {
-                    // --- ▼ 修正: 新旧 'time' タイプの表示分け ---
-                    if (schedule.candidates) { // 新しい日時タイプ
-                        scheduleTypeLabel = '日時調整';
-                    } else { // 古い時間帯タイプ
-                        scheduleTypeLabel = '時間帯調整';
+                    if (schedule.candidates) {
+                        scheduleTypeLabel = translations[currentLang].timeCardTitle;
+                    } else {
+                        scheduleTypeLabel = '時間帯調整'; // 古い形式（翻訳なし）
                     }
-                    // --- ▲ 修正ここまで ---
                 } else if (schedule.type === 'poll') {
-                    scheduleTypeLabel = '一般投票';
+                    scheduleTypeLabel = translations[currentLang].pollCardTitle;
                 }
 
                 listItem.innerHTML = `
@@ -741,7 +1012,6 @@ const mainAppLogic = async(user) => {
             }
         };
 
-        // --- ▼ 修正: renderCalendar に onDateClick コールバックを追加 ▼ ---
         const renderCalendar = (container, month, year, selectable = true, allowedDates = [], isMultipleSelection = true, onDateClick = null) => {
             if (!container) return;
             container.innerHTML = '';
@@ -790,11 +1060,9 @@ const mainAppLogic = async(user) => {
                     dayElement.classList.add('inactive');
                 } else if (selectable) {
                     dayElement.addEventListener('click', () => {
-                        // 外部コールバック（「日時で調整」用）
                         if (onDateClick) {
                             onDateClick(dateString, dayElement);
                         } 
-                        // 通常の「日にちで調整」用のロジック
                         else {
                             if (!isMultipleSelection) {
                                 selectedDates.clear();
@@ -811,18 +1079,17 @@ const mainAppLogic = async(user) => {
                         }
                     });
                     
-                    // 選択状態の復元
-                    if (onDateClick) { // 「日時」作成の場合
+                    if (onDateClick) {
                         if (selectedDateTimes.has(dateString)) {
                             dayElement.classList.add('selected');
                         }
-                    } else { // 「日にち」作成の場合
+                    } else {
                         if (selectedDates.has(dateString)) {
                             dayElement.classList.add('selected');
                         }
                     }
 
-                } else { // selectable が false (投票ページ) の場合
+                } else {
                     if (allowedDates.includes(dateString)) {
                         dayElement.classList.add('selectable-date');
                         dayElement.addEventListener('click', () => {
@@ -885,9 +1152,7 @@ const mainAppLogic = async(user) => {
                 });
             }
         };
-        // --- ▲ 修正ここまで ▲ ---
 
-        // --- ▼ 修正: generateTimeSlots に stateMap (selectedDateTimes) と dateString を渡せるように変更 ▼ ---
         const generateTimeSlots = (container, selectable = true, allowedTimeSlots = [], isMultipleSelection = true, dateString = null, stateMap = null) => {
             if (!container) return;
             container.innerHTML = '';
@@ -895,7 +1160,6 @@ const mainAppLogic = async(user) => {
             const timeSlotsToRender = selectable ? [] : allowedTimeSlots;
             
             if (selectable) {
-                // 「日時で調整」作成時
                 const startTime = 9 * 60;
                 const endTime = 24 * 60;
                 for (let i = startTime; i < endTime; i += 30) {
@@ -917,14 +1181,12 @@ const mainAppLogic = async(user) => {
 
                 timeSlotElement.addEventListener('click', () => {
                     if (selectable) {
-                        // 「日時で調整」作成時のロジック
                         if (dateString && stateMap) {
                             if (!stateMap.has(dateString)) {
                                 stateMap.set(dateString, new Set());
                             }
                             const timeSet = stateMap.get(dateString);
 
-                            // 「日時で調整」は常に複数選択可（UIが複雑になるため）
                             if (timeSet.has(timeText)) {
                                 timeSet.delete(timeText);
                                 timeSlotElement.classList.remove('selected');
@@ -934,7 +1196,6 @@ const mainAppLogic = async(user) => {
                             }
                         }
                     } else {
-                        // 投票ページのロジック (旧 'time' タイプ用)
                         if (notAvailableCheckbox && notAvailableCheckbox.checked) {
                             notAvailableCheckbox.checked = false;
                             if (notAvailableCommentContainer) {
@@ -957,11 +1218,9 @@ const mainAppLogic = async(user) => {
                     }
                 });
 
-                // 選択状態の復元
                 if (selectable && dateString && stateMap && stateMap.has(dateString) && stateMap.get(dateString).has(timeText)) {
                     timeSlotElement.classList.add('selected');
                 }
-                // 投票ページ(旧 'time' タイプ)での初期選択状態の反映
                 if (!selectable && allowedTimeSlots.includes(timeText)) {
                      if (selectedTimeSlots.has(timeText)) {
                         timeSlotElement.classList.add('selected');
@@ -971,7 +1230,6 @@ const mainAppLogic = async(user) => {
                 container.appendChild(timeSlotElement);
             });
         };
-        // --- ▲ 修正ここまで ▲ ---
         
         // PC用ボタンのイベントリスナー
         if (howToUseLinkPC) howToUseLinkPC.addEventListener('click', handleHowToUseToggle);
@@ -1034,7 +1292,6 @@ const mainAppLogic = async(user) => {
             });
         }
 
-        // --- ▼ 修正: updateVotedUsersList で新しい「日時」形式に対応 ▼ ---
         const updateVotedUsersList = (votedUsers, candidates, isResultsPage) => {
             const votedUsersListElement = document.getElementById('voted-users-list');
             const resultsDisplayElement = document.getElementById('results-display');
@@ -1064,14 +1321,12 @@ const mainAppLogic = async(user) => {
                     allCandidates = candidates.options;
                 } else if (typeof candidates === 'object' && !Array.isArray(candidates) && candidates.type !== 'poll') {
                     isDateTime = true;
-                    // 新しい「日時」形式 ( { "2025-10-10": ["09:00", ...], ... } )
                     Object.keys(candidates).forEach(date => {
                         candidates[date].forEach(time => {
                             allCandidates.push(`${date} ${time}`);
                         });
                     });
                 } else { 
-                    // 古い「日にち」または「時間帯」形式 ( ["..."] )
                     allCandidates = candidates;
                 }
                 
@@ -1083,6 +1338,9 @@ const mainAppLogic = async(user) => {
                             if (voteCounts[vote]) {
                                 voteCounts[vote].votes++;
                                 voteCounts[vote].voters.push(user.name);
+                            } else {
+                                // 候補にない票データ（古いデータなど）は無視するか、集計するか
+                                // ここでは、定義済みの候補 (allCandidates) にのみ投票を集計する
                             }
                         });
                     }
@@ -1090,18 +1348,26 @@ const mainAppLogic = async(user) => {
 
                 const notAvailableUsers = votedUsers.filter(user => user.voteData.status === 'not-available');
                 
-                const sortedCandidates = allCandidates.sort(); 
+                // --- ▼▼ [修正] 投票数の多い順にソート ▼▼ ---
+                const sortedCandidates = allCandidates.sort((a, b) => {
+                    const votesA = voteCounts[a] ? voteCounts[a].votes : 0;
+                    const votesB = voteCounts[b] ? voteCounts[b].votes : 0;
+                    return votesB - votesA; // 降順 (B - A)
+                });
+                // --- ▲▲ [修正] ---
 
                 if (resultsDisplayElement) {
                     resultsDisplayElement.innerHTML = '';
                     
                     if (isPoll) {
+                        // 投票数が0でない最大の投票数を探す（プログレスバーの基準）
                         const maxVotes = Math.max(...Object.values(voteCounts).map(v => v.votes), 1); 
                         
                         sortedCandidates.forEach(candidate => {
                             const count = voteCounts[candidate].votes;
                             const voters = voteCounts[candidate].voters;
-                            const percentage = (count / maxVotes) * 100;
+                            // 0票の場合、パーセンテージも0にする
+                            const percentage = (maxVotes > 0) ? (count / maxVotes) * 100 : 0;
 
                             const li = document.createElement('li');
                             li.className = 'p-4 border-b border-gray-200 dark:border-gray-700 space-y-2';
@@ -1178,9 +1444,7 @@ const mainAppLogic = async(user) => {
                 });
             }
         };
-        // --- ▲ 修正ここまで ▲ ---
         
-        // --- ▼ 修正: handleScheduleCreation で新しい「日時」形式の保存に対応 ▼ ---
         const handleScheduleCreation = async (e, type) => {
             e.preventDefault();
 
@@ -1222,19 +1486,18 @@ const mainAppLogic = async(user) => {
                 }
                 scheduleData = {
                     title, description, deadline, 
-                    dates: Array.from(selectedDates), // [ "2025-10-10", "2025-10-11" ]
+                    dates: Array.from(selectedDates),
                     votedUsers: [], 
                     createdBy: user.uid, 
                     type: 'date', 
                     selectionType: isMultipleSelection ? 'multiple' : 'single'
                 };
             } else if (type === 'time') {
-                // selectedDateTimes (Map) から Firestore に保存する candidates (Object) を作成
                 const candidates = {};
                 let hasValidTime = false;
                 selectedDateTimes.forEach((timeSet, dateString) => {
-                    if (timeSet.size > 0) { // 少なくとも1つの時間帯が選択されている日付のみ保存
-                        candidates[dateString] = Array.from(timeSet).sort(); // 時間帯を配列にして保存
+                    if (timeSet.size > 0) {
+                        candidates[dateString] = Array.from(timeSet).sort();
                         hasValidTime = true;
                     }
                 });
@@ -1245,10 +1508,10 @@ const mainAppLogic = async(user) => {
                 }
                 scheduleData = {
                     title, description, deadline, 
-                    candidates: candidates, // { "2025-10-10": ["09:00-...", "09:30-..."], ... }
+                    candidates: candidates,
                     votedUsers: [], 
                     createdBy: user.uid, 
-                    type: 'time', // タイプは 'time' のまま（中身の candidates で判別）
+                    type: 'time',
                     selectionType: isMultipleSelection ? 'multiple' : 'single'
                 };
             } else if (type === 'poll') {
@@ -1280,7 +1543,6 @@ const mainAppLogic = async(user) => {
                 if(shareUrlElement) shareUrlElement.textContent = `${window.location.origin}/${votingUrl}`;
                 showSection('creation-complete-section');
                 
-                // フォームと状態をリセット
                 selectedDates.clear();
                 selectedDateTimes.clear();
                 if (e.target instanceof HTMLFormElement) {
@@ -1306,7 +1568,6 @@ const mainAppLogic = async(user) => {
                 alert("スケジュールの作成に失敗しました。");
             }
         };
-        // --- ▲ 修正ここまで ▲ ---
 
     // ★★★ ページ判定ロジック ★★★
     if (myPageSection) { 
@@ -1348,21 +1609,19 @@ const mainAppLogic = async(user) => {
                 selectedDates.clear(); 
                 const multipleSelectionCheckbox = document.getElementById('date-multiple-selection-checkbox');
                 const isMultipleSelection = multipleSelectionCheckbox ? multipleSelectionCheckbox.checked : true;
-                renderCalendar(calendarContainer, currentMonth, currentYear, true, [], isMultipleSelection, null); // dateClick=null
+                renderCalendar(calendarContainer, currentMonth, currentYear, true, [], isMultipleSelection, null);
             });
         }
         
-        // --- ▼ 修正: createTimeButton のロジックを「日時」用に変更 ▼ ---
         if (createTimeButton) {
             createTimeButton.addEventListener('click', () => {
                 showSection('create-time-section');
-                selectedDateTimes.clear(); // 新しい状態変数をクリア
-                if(datetimeConfigContainer) datetimeConfigContainer.innerHTML = ''; // 時間設定UIをクリア
+                selectedDateTimes.clear();
+                if(datetimeConfigContainer) datetimeConfigContainer.innerHTML = '';
 
                 const multipleSelectionCheckbox = document.getElementById('time-multiple-selection-checkbox');
                 const isMultipleSelection = multipleSelectionCheckbox ? multipleSelectionCheckbox.checked : true;
 
-                // 日付クリック時のコールバック関数を定義
                 const onDateClick = (dateString, dayElement) => {
                     const configContainer = document.getElementById('datetime-config-container');
                     if (!configContainer) return;
@@ -1370,20 +1629,18 @@ const mainAppLogic = async(user) => {
                     const existingConfig = configContainer.querySelector(`[data-date-config="${dateString}"]`);
 
                     if (existingConfig) {
-                        // 既に選択済み -> 選択解除
                         selectedDateTimes.delete(dateString);
                         existingConfig.remove();
                         dayElement.classList.remove('selected');
                     } else {
-                        // 新規選択
-                        selectedDateTimes.set(dateString, new Set()); // まず空のSetで登録
+                        selectedDateTimes.set(dateString, new Set());
                         dayElement.classList.add('selected');
 
                         const wrapper = document.createElement('div');
                         wrapper.className = 'p-4 border rounded-lg dark:border-gray-600';
                         wrapper.dataset.dateConfig = dateString;
 
-                        const dateObj = new Date(dateString + 'T00:00:00'); // タイムゾーンを考慮
+                        const dateObj = new Date(dateString + 'T00:00:00');
                         const displayDate = `${dateString} (${translations[currentLang].daysOfWeek[dateObj.getDay()]})`;
 
                         wrapper.innerHTML = `<p class="font-bold dark:text-white">${displayDate}</p>`;
@@ -1391,7 +1648,6 @@ const mainAppLogic = async(user) => {
                         const grid = document.createElement('div');
                         grid.className = 'time-slot-grid mt-2';
                         
-                        // stateMap と dateString を渡して時間帯スロットを生成
                         generateTimeSlots(grid, true, [], true, dateString, selectedDateTimes);
                         
                         wrapper.appendChild(grid);
@@ -1399,11 +1655,9 @@ const mainAppLogic = async(user) => {
                     }
                 };
 
-                // コールバックを渡してカレンダーを描画
                 renderCalendar(timeCalendarContainer, currentMonth, currentYear, true, [], true, onDateClick);
             });
         }
-        // --- ▲ 修正ここまで ▲ ---
         
         if (createPollButton) {
             createPollButton.addEventListener('click', () => {
@@ -1431,10 +1685,10 @@ const mainAppLogic = async(user) => {
             });
         }
         
-        // イベントリスナー (言語・テーマ)
-        if (langTogglePC) langTogglePC.addEventListener('click', handleLangToggle);
+        // [削除] 古い言語イベントリスナーは不要
+        // if (langTogglePC) langTogglePC.addEventListener('click', handleLangToggle);
         if (themeTogglePC) themeTogglePC.addEventListener('click', handleThemeToggle);
-        if (langToggleMobile) langToggleMobile.addEventListener('click', handleLangToggle);
+        // if (langToggleMobile) langToggleMobile.addEventListener('click', handleLangToggle);
         if (themeToggleMobile) themeToggleMobile.addEventListener('click', handleThemeToggle);
 
 
@@ -1462,7 +1716,6 @@ const mainAppLogic = async(user) => {
             });
         }
     
-    // --- ▼ 修正: 投票ページ (normalizedScheduleId) のロジックを大幅に修正 ▼ ---
     } else if (normalizedScheduleId) {
         showSection('voting-page-section');
         const scheduleRef = doc(db, "schedules", normalizedScheduleId);
@@ -1502,13 +1755,10 @@ const mainAppLogic = async(user) => {
                     if (createdSchedule.type === 'poll') {
                         candidates = { type: 'poll', options: createdSchedule.options || [] }; 
                     } else if (createdSchedule.type === 'time' && createdSchedule.candidates) {
-                        // 新しい「日時」形式
                         candidates = createdSchedule.candidates;
                     } else if (createdSchedule.type === 'time' && createdSchedule.timeSlots) {
-                        // 古い「時間帯」形式
                         candidates = createdSchedule.timeSlots || [];
                     } else {
-                        // 「日にち」形式
                         candidates = createdSchedule.dates || [];
                     }
                     updateVotedUsersList(createdSchedule.votedUsers || [], candidates, true);
@@ -1523,19 +1773,15 @@ const mainAppLogic = async(user) => {
                         document.getElementById('voting-description').textContent = createdSchedule.description;
                     showSection('voting-page-section');
 
-                    // 状態をクリア
                     selectedDates.clear(); 
                     selectedTimeSlots.clear(); 
 
-                    // 既存の投票データを復元
                     if (currentUserVote && currentUserVote.voteData.status === 'available') {
                         if (createdSchedule.type === 'date' || createdSchedule.type === 'poll') {
                             selectedDates = new Set(currentUserVote.voteData.votes);
                          } else if (createdSchedule.type === 'time' && createdSchedule.candidates) {
-                             // 新しい「日時」形式
-                             selectedDates = new Set(currentUserVote.voteData.votes); // "YYYY-MM-DD HH:MM-..." 形式
+                             selectedDates = new Set(currentUserVote.voteData.votes);
                          } else if (createdSchedule.type === 'time' && createdSchedule.timeSlots) {
-                             // 古い「時間帯」形式
                              selectedTimeSlots = new Set(currentUserVote.voteData.votes);
                         }
                     }
@@ -1546,7 +1792,6 @@ const mainAppLogic = async(user) => {
                        voterNameInput.readOnly = true;
                     }
 
-                    // コンテナをすべて非表示
                     if(votingCalendarContainer) votingCalendarContainer.classList.add('hidden');
                     if(votingDateH3) votingDateH3.classList.add('hidden');
                     if(votingTimeSlotsContainer) votingTimeSlotsContainer.classList.add('hidden');
@@ -1555,9 +1800,8 @@ const mainAppLogic = async(user) => {
                     if(votingPollH3) votingPollH3.classList.add('hidden'); 
 
 
-                    let candidates; // 結果表示用の候補リスト
+                    let candidates;
 
-                    // タイプ別にUIを描画
                     if (createdSchedule.type === 'date') {
                         if(votingCalendarContainer) votingCalendarContainer.classList.remove('hidden');
                         if(votingDateH3) votingDateH3.classList.remove('hidden');
@@ -1565,12 +1809,11 @@ const mainAppLogic = async(user) => {
                         candidates = createdSchedule.dates || [];
                     
                     } else if (createdSchedule.type === 'time' && createdSchedule.candidates) {
-                        // ★★★ 新しい「日時」形式 ★★★
                         if(votingCalendarContainer) {
                             votingCalendarContainer.classList.remove('hidden');
-                            votingCalendarContainer.innerHTML = ''; // クリア
+                            votingCalendarContainer.innerHTML = '';
                         }
-                        if(votingTimeH3) votingTimeH3.classList.remove('hidden'); // 「候補日時を選択」
+                        if(votingTimeH3) votingTimeH3.classList.remove('hidden');
 
                         const datetimeListContainer = document.createElement('div');
                         datetimeListContainer.className = 'space-y-4';
@@ -1578,7 +1821,7 @@ const mainAppLogic = async(user) => {
                         const scheduleCandidates = createdSchedule.candidates;
                         const sortedDates = Object.keys(scheduleCandidates).sort();
                         
-                        candidates = []; // 結果表示用にフラット化
+                        candidates = [];
 
                         for (const date of sortedDates) {
                             const times = scheduleCandidates[date];
@@ -1592,15 +1835,14 @@ const mainAppLogic = async(user) => {
                             datetimeListContainer.appendChild(dateHeader);
                             
                             const timeGrid = document.createElement('div');
-                            timeGrid.className = 'grid grid-cols-2 sm:grid-cols-3 gap-2'; // SPは2列、sm以上は3列
+                            timeGrid.className = 'grid grid-cols-2 sm:grid-cols-3 gap-2';
                             
                             for (const time of times) {
                                 const uniqueId = `dt-${date}-${time.replace(/[:\s-]/g, '')}`;
-                                const datetimeString = `${date} ${time}`; // 投票値
-                                candidates.push(datetimeString); // 結果用
+                                const datetimeString = `${date} ${time}`;
+                                candidates.push(datetimeString);
 
                                 const optionElement = document.createElement('div');
-                                // Tailwind CSS でクリック可能な領域を広げる
                                 optionElement.className = 'border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors';
                                 
                                 const inputType = isMultipleSelection ? 'checkbox' : 'radio';
@@ -1618,7 +1860,6 @@ const mainAppLogic = async(user) => {
                                     inputElement.checked = true;
                                 }
                                 
-                                // ラベル全体をクリック可能にする (inputElement のクリックイベントは発火させない)
                                 optionElement.addEventListener('click', (e) => {
                                     if (e.target.tagName !== 'INPUT') {
                                         if (isMultipleSelection) {
@@ -1635,7 +1876,6 @@ const mainAppLogic = async(user) => {
                                     if (!isMultipleSelection) {
                                         selectedDates.clear(); 
                                         selectedDates.add(selectedOption);
-                                        // 他のラジオボタンのチェックを外す
                                         document.querySelectorAll('.datetime-vote-input').forEach(radio => {
                                             if (radio !== inputElement) radio.checked = false;
                                         });
@@ -1655,7 +1895,6 @@ const mainAppLogic = async(user) => {
                         if(votingCalendarContainer) votingCalendarContainer.appendChild(datetimeListContainer);
 
                     } else if (createdSchedule.type === 'time' && createdSchedule.timeSlots) {
-                        // 古い「時間帯」形式
                         if(votingTimeSlotsContainer) votingTimeSlotsContainer.classList.remove('hidden');
                         if(votingTimeH3) votingTimeH3.classList.remove('hidden');
                         generateTimeSlots(votingTimeSlotsContainer, false, createdSchedule.timeSlots || [], isMultipleSelection);
@@ -1665,7 +1904,7 @@ const mainAppLogic = async(user) => {
                         if(votingPollH3) votingPollH3.classList.remove('hidden');
                         if(votingPollOptionsContainer) {
                              votingPollOptionsContainer.classList.remove('hidden');
-                             votingPollOptionsContainer.innerHTML = ''; // クリア
+                             votingPollOptionsContainer.innerHTML = '';
                         }
 
                         candidates = createdSchedule.options || [];
@@ -1721,7 +1960,6 @@ const mainAppLogic = async(user) => {
                         });
                     }
 
-                    // 投票状況リストを更新
                     updateVotedUsersList(createdSchedule.votedUsers || [], candidates, false);
                 }
             } else {
@@ -1748,15 +1986,13 @@ const mainAppLogic = async(user) => {
                     return;
                 }
                 
-                let votes; // 投票データを格納
+                let votes;
                 if (currentSchedule.type === 'date' || currentSchedule.type === 'poll') {
-                    votes = selectedDates; // Set<string>
+                    votes = selectedDates;
                 } else if (currentSchedule.type === 'time' && currentSchedule.candidates) {
-                    // 新しい「日時」形式
-                    votes = selectedDates; // Set<string> ("YYYY-MM-DD HH:MM-...")
+                    votes = selectedDates;
                 } else if (currentSchedule.type === 'time' && currentSchedule.timeSlots) {
-                    // 古い「時間帯」形式
-                    votes = selectedTimeSlots; // Set<string>
+                    votes = selectedTimeSlots;
                 } else {
                     votes = new Set();
                 }
@@ -1794,11 +2030,9 @@ const mainAppLogic = async(user) => {
 
                 await updateDoc(scheduleRef, { votedUsers: updatedVotedUsers });
 
-                // 投票完了後に選択状態をリセット
                 selectedDates.clear(); 
                 selectedTimeSlots.clear(); 
                 
-                // UI上のチェックもリセット
                 document.querySelectorAll('.poll-vote-input, .datetime-vote-input').forEach(input => input.checked = false);
                 document.querySelectorAll('.time-slot.selected').forEach(el => el.classList.remove('selected'));
                 document.querySelectorAll('.calendar-day.selected').forEach(el => el.classList.remove('selected'));
@@ -1814,7 +2048,6 @@ const mainAppLogic = async(user) => {
             notAvailableCheckbox.addEventListener('change', () => {
                 if (notAvailableCheckbox.checked) {
                     if(notAvailableCommentContainer) notAvailableCommentContainer.classList.remove('hidden');
-                    // すべての選択を解除
                     selectedDates.clear();
                     selectedTimeSlots.clear();
                     const selectedElements = document.querySelectorAll('.calendar-day.selected, .time-slot.selected');
@@ -1826,14 +2059,14 @@ const mainAppLogic = async(user) => {
             });
         }
     } 
-    // --- ▲ 修正ここまで ▲ ---
 }
+
 document.addEventListener('DOMContentLoaded', async () => {
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenuContent = document.getElementById('mobile-menu-content');
     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-    const langTogglePC = document.getElementById('lang-toggle-pc');
-    const langToggleMobile = document.getElementById('lang-toggle-mobile');
+    // [削除] const langTogglePC = document.getElementById('lang-toggle-pc');
+    // [削除] const langToggleMobile = document.getElementById('lang-toggle-mobile');
     const themeTogglePC = document.getElementById('theme-toggle-pc');
     const themeToggleMobile = document.getElementById('theme-toggle-mobile');
 
@@ -1860,8 +2093,75 @@ document.addEventListener('DOMContentLoaded', async () => {
         })
     });
 
-    if (langTogglePC) langTogglePC.addEventListener('click', handleLangToggle);
-    if (langToggleMobile) langToggleMobile.addEventListener('click', handleLangToggle);
+    // --- ▼▼ [追加] 新しい言語プルダウン制御ロジック ▼▼ ---
+    const setupLangDropdown = (containerId) => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const button = container.querySelector('button[id^="lang-dropdown-button-"]');
+        const menu = container.querySelector('div[id^="lang-dropdown-menu-"]');
+
+        if (!button || !menu) return;
+
+        // ボタンクリックでメニューを開閉
+        button.addEventListener('click', (e) => {
+            e.stopPropagation(); // 他のクリックイベント（ドキュメント）に伝播させない
+            
+            // 他のプルダウン（PC/スマホ）が開いていれば閉じる
+            if (containerId === 'lang-dropdown-container-pc') {
+                document.getElementById('lang-dropdown-menu-mobile')?.classList.add('hidden');
+            } else {
+                document.getElementById('lang-dropdown-menu-pc')?.classList.add('hidden');
+            }
+            
+            menu.classList.toggle('hidden');
+        });
+
+        // メニューのリンクをクリックしたら言語切り替え
+        menu.querySelectorAll('a[data-lang]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const selectedLang = link.dataset.lang;
+                if (selectedLang !== currentLang) {
+                    currentLang = selectedLang;
+                    localStorage.setItem('lang', currentLang);
+                    updateContent(currentLang);
+                    
+                    // カレンダーなどが開いている場合はリロードで対応（元のロジックを踏襲）
+                    const calendarContainer = document.getElementById('calendar-container');
+                    if (calendarContainer && !calendarContainer.classList.contains('hidden')) {
+                        window.location.reload();
+                    }
+                    const timeCalendarContainer = document.getElementById('time-calendar-container');
+                    if (timeCalendarContainer && !timeCalendarContainer.classList.contains('hidden')) {
+                        window.location.reload();
+                    }
+                }
+                menu.classList.add('hidden'); // メニューを閉じる
+            });
+        });
+    };
+
+    setupLangDropdown('lang-dropdown-container-pc');
+    setupLangDropdown('lang-dropdown-container-mobile');
+
+    // ページ上のどこか（ボタンとメニュー以外）をクリックしたらメニューを閉じる
+    document.addEventListener('click', (e) => {
+        // PC
+        const pcContainer = document.getElementById('lang-dropdown-container-pc');
+        if (pcContainer && !pcContainer.contains(e.target)) {
+            document.getElementById('lang-dropdown-menu-pc')?.classList.add('hidden');
+        }
+        // Mobile
+        const mobileContainer = document.getElementById('lang-dropdown-container-mobile');
+        if (mobileContainer && !mobileContainer.contains(e.target)) {
+            document.getElementById('lang-dropdown-menu-mobile')?.classList.add('hidden');
+        }
+    });
+    // --- ▲▲ [追加] ---
+
+    // [削除] if (langTogglePC) langTogglePC.addEventListener('click', handleLangToggle);
+    // [削除] if (langToggleMobile) langToggleMobile.addEventListener('click', handleLangToggle);
 
     if (themeTogglePC) themeTogglePC.addEventListener('click', handleThemeToggle);
     if (themeToggleMobile) themeToggleMobile.addEventListener('click', handleThemeToggle);
