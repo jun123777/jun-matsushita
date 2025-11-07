@@ -30,9 +30,9 @@
                     
                     <div class="relative" id="lang-dropdown-container-pc">
                         <button id="lang-dropdown-button-pc" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-bold">
-                            <span id="lang-current-text-pc">日本語</span> <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            <span id="lang-current-text-pc">日本語</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        
                         <div id="lang-dropdown-menu-pc" class="hidden absolute right-0 mt-2 w-36 bg-white dark:bg-gray-800 rounded-md shadow-lg z-20 py-1 border dark:border-gray-700">
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="ja">日本語</a>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="en">English</a>
@@ -42,6 +42,7 @@
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="zh">简体中文</a>
                         </div>
                     </div>
+
                     <button id="theme-toggle-pc" class="text-gray-600 hover:text-blue-600 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
@@ -50,42 +51,23 @@
             </div>
         </div>
     </header>
-
     <header class="header block md:hidden fixed top-0 w-full z-10">
         <div class="container flex items-center justify-between">
             <div id="logo-and-back-mobile" class="flex items-center">
                 <a href="index.html" class="logo font-bold text-2xl text-blue-600">
                     <span id="logo-text-mobile">日程調整3</span>
                 </a>
-                </div>
-            <div class="flex items-center space-x-4">
-                <a id="how-to-use-link-mobile" href="index.html#how-to-use-section" class="text-gray-600 hover:text-blue-600 transition-colors">使い方</a>
-                <a id="my-schedules-link-mobile" href="my-page.html" class="hidden text-gray-600 hover:text-blue-600 transition-colors">マイアンケート</a>
-                <a id="logout-link-mobile" href="#" class="hidden text-red-500 hover:text-red-700 transition-colors">ログアウト</a>
-                <a id="login-link-mobile" href="index.html#login-section" class="text-gray-600 hover:text-blue-600 transition-colors">ログイン</a>
-                
-                <div class="relative" id="lang-dropdown-container-mobile">
-                    <button id="lang-dropdown-button-mobile" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-bold">
-                        <span id="lang-current-text-mobile">日本語</span>
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div id="lang-dropdown-menu-mobile" class="hidden absolute right-0 mt-2 w-36 bg-white dark:bg-gray-800 rounded-md shadow-lg z-20 py-1 border dark:border-gray-700">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="ja">日本語</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="en">English</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="ko">한국어</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="fr">Français</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="es">Español</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-lang="zh">简体中文</a>
-                    </div>
-                </div>
-                <button id="theme-toggle-mobile" class="text-gray-600 hover:text-blue-600 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-                    </button>
-                <div id="user-icon-container-mobile" class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center cursor-pointer transition-colors hover:border-blue-500"></div>
+            </div>
+
+            <div class="flex items-center">
+                <button id="mobile-menu-button" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
             </div>
         </div>
     </header>
-
     <main id="app-container" class="w-full">
         <section id="voting-page-section" class="selection-section w-full">
             <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
@@ -139,6 +121,40 @@
             </div>
         </section>
     </main>
+
+    <div id="mobile-menu-overlay" class=""></div>
+    <div id="mobile-menu-content" class="">
+        <nav class="flex flex-col space-y-6 p-8">
+            <div id="user-icon-container-mobile" class="w-16 h-16 rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer transition-colors hover:border-blue-500 mb-4">
+                </div>
+            
+            <a id="how-to-use-link-mobile" href="index.html#how-to-use-section" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-lg">使い方</a>
+            <a id="my-schedules-link-mobile" href="my-page.html" class="hidden text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-lg">マイアンケート</a>
+            <a id="login-link-mobile" href="index.html#login-section" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-lg">ログイン/登録</a>
+            <a id="logout-link-mobile" href="#" class="hidden text-red-500 hover:text-red-700 transition-colors text-lg">ログアウト</a>
+
+            <hr class="border-gray-200 dark:border-gray-700">
+
+            <div class="relative" id="lang-dropdown-container-mobile">
+                <button id="lang-dropdown-button-mobile" class="flex items-center justify-between w-full text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-bold text-lg">
+                    <span id="lang-current-text-mobile">日本語</span>
+                    <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="lang-dropdown-menu-mobile" class="hidden mt-2 w-full bg-gray-100 dark:bg-gray-800 rounded-md shadow-lg z-20 py-1 border dark:border-gray-700">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700" data-lang="ja">日本語</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700" data-lang="en">English</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700" data-lang="ko">한국어</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700" data-lang="fr">Français</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700" data-lang="es">Español</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700" data-lang="zh">简体中文</a>
+                </div>
+            </div>
+            
+            <button id="theme-toggle-mobile" class="flex items-center text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-lg">
+                <span class="ml-2">テーマ切替</span>
+            </button>
+        </nav>
+    </div>
     <script src="script.js" type="module"></script>
 </body>
 </html>

@@ -23,7 +23,7 @@ body {
     padding: 4rem 1.5rem;
 }
 
-/* --- ▼▼ [追加] 見出しの可読性（テキストシャドウ）▼▼ --- */
+/* --- ▼▼ [修正] 見出しの可読性（テキストシャドウ）▼▼ --- */
 #hero-title {
   /* 影を追加して、背景から文字を少し浮かせる */
   text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
@@ -33,7 +33,7 @@ body {
   /* 影を追加して、背景の明るい部分に文字が負けないようにする */
   text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.6);
 }
-/* --- ▲▲ [追加] ▲▲ --- */
+/* --- ▲▲ [修正] ▲▲ --- */
 
 .selection-section {
     padding: 4rem 1.5rem;
@@ -144,6 +144,51 @@ body > * {
     z-index: 1;
 }
 
+/* --- ▼▼ [追加] モバイル用ハンバーガーメニュー ▼▼ --- */
+#mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 40; /* Tailwind z-40 */
+    display: none; /* デフォルトは非表示 */
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+#mobile-menu-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+#mobile-menu-content {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px; /* メニューの幅 */
+    max-width: 80%; /* 画面幅の最大80% */
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 50; /* Tailwind z-50 */
+    transform: translateX(100%); /* 右側に隠す */
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* メニュー項目が多い場合にスクロール */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+}
+
+#mobile-menu-content.active {
+    transform: translateX(0); /* 表示する */
+}
+
+.dark #mobile-menu-content {
+    background-color: #2d3748; /* ダークモードのヘッダー色 */
+    border-left: 1px solid #4a5568; /* ダークモードの境界線 */
+}
+/* --- ▲▲ [追加] モバイル用ハンバーガーメニュー ▲▲ --- */
+
+
 /* --- 🔽 追加: 一般投票（Poll）のスタイル 🔽 --- */
 /* 投票結果のプログレスバー（1.jpg のスタイル） */
 .progress-bar {
@@ -195,7 +240,7 @@ body > * {
     background-color: #2d3748;
 }
 
-/* --- ▼▼ [追加] ダークモード時のテキストシャドウ ▼▼ --- */
+/* --- ▼▼ [修正] ダークモード時のテキストシャドウ ▼▼ --- */
 .dark #hero-title {
   text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.7);
 }
@@ -203,7 +248,7 @@ body > * {
 .dark #home-subtitle {
   text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.8);
 }
-/* --- ▲▲ [追加] ▲▲ --- */
+/* --- ▲▲ [修正] ▲▲ --- */
 
 .dark .selection-section .card {
     background-color: #2d3748;

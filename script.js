@@ -542,8 +542,11 @@ const updateContent = (lang) => {
                 }
                 if (sectionId === 'voting-results-section') h2.textContent = text.resultsH2;
                 if (sectionId === 'my-page-section') {
-                    const myPageH2 = section.querySelector('#my-page-content-wrapper h2');
-                    if (myPageH2) myPageH2.textContent = text.mySchedules || 'マイアンケート'; 
+                    // [修正] my-page-section のh2セレクタをより具体的に
+                    const myPageH2Login = section.querySelector('#login-prompt-container h2');
+                    if (myPageH2Login) myPageH2Login.textContent = 'ログインが必要です'; // これは固定でOK
+                    const myPageH2Content = section.querySelector('#actual-my-page-content h2');
+                    if (myPageH2Content) myPageH2Content.textContent = text.mySchedules;
                 }
             }
             
@@ -654,6 +657,7 @@ const updateContent = (lang) => {
     });
 };
 
+// --- ▼▼ [追加] ハンバーガーメニュー制御関数 ▼▼ ---
 const toggleMobileMenu = () => {
     const mobileMenuContent = document.getElementById('mobile-menu-content');
     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
@@ -662,10 +666,7 @@ const toggleMobileMenu = () => {
         mobileMenuOverlay.classList.toggle('active');
     }
 };
-
-// --- ▼▼ [削除] 古い言語切り替え関数は削除 ▼▼ ---
-// const handleLangToggle = () => { ... }
-// --- ▲▲ [削除] ▲▲ ---
+// --- ▲▲ [追加] ---
 
 const handleThemeToggle = () => {
     html.classList.toggle('dark');
@@ -678,12 +679,24 @@ const handleThemeToggle = () => {
 const applyTheme = (element) => {
     const sunIcon = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>`;
     const moonIcon = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1m-16 0H3m15.827 6.327l-.707.707M5.879 5.879l-.707.707m12.728 0l-.707-.707M6.515 17.485l-.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>`;
+    
+    // [修正] HTML要素そのものではなく、その *中身* (innerHTML) を設定する
+    // また、モバイルメニュー内のテキスト（"テーマ切替"）を保持するため、アイコンだけを差し替える
     if (element) {
-        // [修正] ダークモード切り替え時のアイコンロジックを修正
         const isDark = localStorage.getItem('theme') === 'dark';
-        element.innerHTML = isDark ? moonIcon : sunIcon;
+        const iconHTML = isDark ? moonIcon : sunIcon;
+        
+        // モバイル版ボタンの場合、テキスト（<span...）を保持する
+        if (element.id === 'theme-toggle-mobile') {
+            const textSpan = element.querySelector('span');
+            element.innerHTML = iconHTML + (textSpan ? textSpan.outerHTML : '');
+        } else {
+            // PC版はアイコンのみ
+            element.innerHTML = iconHTML;
+        }
     }
 };
+// --- ▲▲ [修正] ---
 
 // --- ヘッダー更新関数 ---
 const updateHeader = (user) => {
@@ -693,50 +706,47 @@ const updateHeader = (user) => {
     const mySchedulesLinkPC = document.getElementById('my-schedules-link-pc');
     const logoutLinkPC = document.getElementById('logout-link-pc');
 
-    // スマホ用要素の取得
+    // スマホ用要素の取得 (ハンバーガーメニュー内)
     const userIconContainerMobile = document.getElementById('user-icon-container-mobile');
     const loginLinkMobile = document.getElementById('login-link-mobile');
     const mySchedulesLinkMobile = document.getElementById('my-schedules-link-mobile');
     const logoutLinkMobile = document.getElementById('logout-link-mobile');
 
-    // PC用
-    if (userIconContainerPC) {
-        if (user && !user.isAnonymous) {
-            const photoURL = user.photoURL || 'https://via.placeholder.com/32';
-            userIconContainerPC.innerHTML = `<img src="${photoURL}" alt="User" class="w-full h-full rounded-full object-cover">`;
-            if (loginLinkPC) loginLinkPC.classList.add('hidden');
-            if (mySchedulesLinkPC) mySchedulesLinkPC.classList.remove('hidden');
-            if (logoutLinkPC) logoutLinkPC.classList.remove('hidden');
-        } else {
-            userIconContainerPC.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-            `;
-            if (loginLinkPC) loginLinkPC.classList.remove('hidden');
-            if (mySchedulesLinkPC) mySchedulesLinkPC.classList.add('hidden');
-            if (logoutLinkPC) logoutLinkPC.classList.add('hidden');
-        }
-    }
+    // 共通のSVGアイコン
+    const defaultIconHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+    `;
 
-    // スマホ用
-    if (userIconContainerMobile) {
-         if (user && !user.isAnonymous) {
-            const photoURL = user.photoURL || 'https://via.placeholder.com/32';
-            userIconContainerMobile.innerHTML = `<img src="${photoURL}" alt="User" class="w-full h-full rounded-full object-cover">`;
-            if (loginLinkMobile) loginLinkMobile.classList.add('hidden');
-            if (mySchedulesLinkMobile) mySchedulesLinkMobile.classList.remove('hidden');
-            if (logoutLinkMobile) logoutLinkMobile.classList.remove('hidden');
-        } else {
-            userIconContainerMobile.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-            `;
-            if (loginLinkMobile) loginLinkMobile.classList.remove('hidden');
-            if (mySchedulesLinkMobile) mySchedulesLinkMobile.classList.add('hidden');
-            if (logoutLinkMobile) logoutLinkMobile.classList.add('hidden');
-        }
+    if (user && !user.isAnonymous) {
+        const photoURL = user.photoURL || 'https://via.placeholder.com/32'; // Placeholderは小さい画像でよい
+        const userImageHTML = `<img src="${photoURL}" alt="User" class="w-full h-full rounded-full object-cover">`;
+
+        // PC
+        if (userIconContainerPC) userIconContainerPC.innerHTML = userImageHTML;
+        if (loginLinkPC) loginLinkPC.classList.add('hidden');
+        if (mySchedulesLinkPC) mySchedulesLinkPC.classList.remove('hidden');
+        if (logoutLinkPC) logoutLinkPC.classList.remove('hidden');
+        
+        // Mobile (ハンバーガーメニュー内)
+        if (userIconContainerMobile) userIconContainerMobile.innerHTML = userImageHTML;
+        if (loginLinkMobile) loginLinkMobile.classList.add('hidden');
+        if (mySchedulesLinkMobile) mySchedulesLinkMobile.classList.remove('hidden');
+        if (logoutLinkMobile) logoutLinkMobile.classList.remove('hidden');
+
+    } else {
+        // PC
+        if (userIconContainerPC) userIconContainerPC.innerHTML = defaultIconHTML;
+        if (loginLinkPC) loginLinkPC.classList.remove('hidden');
+        if (mySchedulesLinkPC) mySchedulesLinkPC.classList.add('hidden');
+        if (logoutLinkPC) logoutLinkPC.classList.add('hidden');
+        
+        // Mobile (ハンバーガーメニュー内)
+        if (userIconContainerMobile) userIconContainerMobile.innerHTML = defaultIconHTML;
+        if (loginLinkMobile) loginLinkMobile.classList.remove('hidden');
+        if (mySchedulesLinkMobile) mySchedulesLinkMobile.classList.add('hidden');
+        if (logoutLinkMobile) logoutLinkMobile.classList.add('hidden');
     }
 };
 
@@ -777,23 +787,20 @@ const mainAppLogic = async(user) => {
         const loginLinkPC = document.getElementById('login-link-pc');
         const mySchedulesLinkPC = document.getElementById('my-schedules-link-pc');
         const logoutLinkPC = document.getElementById('logout-link-pc');
-        const userIconContainerPC = document.getElementById('user-icon-container-pc');
         
+        // [修正] モバイルヘッダーのリンクはメニューパネル内のものを参照する
         const howToUseLinkMobile = document.getElementById('how-to-use-link-mobile');
         const loginLinkMobile = document.getElementById('login-link-mobile');
         const mySchedulesLinkMobile = document.getElementById('my-schedules-link-mobile');
         const logoutLinkMobile = document.getElementById('logout-link-mobile');
-        const userIconContainerMobile = document.getElementById('user-icon-container-mobile');
 
-        // [削除] 古い言語ボタントグルは不要
-        // const langTogglePC = document.getElementById('lang-toggle-pc'); 
         const themeTogglePC = document.getElementById('theme-toggle-pc');
-        // const langToggleMobile = document.getElementById('lang-toggle-mobile'); 
         const themeToggleMobile = document.getElementById('theme-toggle-mobile');
 
 
         const backToHomeButtonPC = document.getElementById('back-to-home-button-pc');
-        const backToHomeButtonMobile = document.getElementById('back-to-home-button-mobile');
+        // [修正] モバイル用の「戻る」ボタンはメニューパネル内に存在しない（ロゴをクリックする）
+        // const backToHomeButtonMobile = document.getElementById('back-to-home-button-mobile'); 
         
         const calendarContainer = document.getElementById('calendar-container');
         const timeCalendarContainer = document.getElementById('time-calendar-container');
@@ -1237,10 +1244,10 @@ const mainAppLogic = async(user) => {
         if (backToHomeButtonPC) backToHomeButtonPC.addEventListener('click', () => window.location.href = 'index.html');
         if (logoutLinkPC) logoutLinkPC.addEventListener('click', handleLogout);
 
-        // スマホ用ボタンのイベントリスナー
+        // [修正] スマホ用ボタンのイベントリスナー (メニューパネル内のリンク)
         if (howToUseLinkMobile) howToUseLinkMobile.addEventListener('click', handleHowToUseToggle);
         if (loginLinkMobile) loginLinkMobile.addEventListener('click', () => showSection('login-section'));
-        if (backToHomeButtonMobile) backToHomeButtonMobile.addEventListener('click', () => window.location.href = 'index.html');
+        // if (backToHomeButtonMobile) backToHomeButtonMobile.addEventListener('click', () => window.location.href = 'index.html');
         if (logoutLinkMobile) logoutLinkMobile.addEventListener('click', handleLogout);
         
         if (googleLoginButton) {
@@ -1685,10 +1692,7 @@ const mainAppLogic = async(user) => {
             });
         }
         
-        // [削除] 古い言語イベントリスナーは不要
-        // if (langTogglePC) langTogglePC.addEventListener('click', handleLangToggle);
         if (themeTogglePC) themeTogglePC.addEventListener('click', handleThemeToggle);
-        // if (langToggleMobile) langToggleMobile.addEventListener('click', handleLangToggle);
         if (themeToggleMobile) themeToggleMobile.addEventListener('click', handleThemeToggle);
 
 
@@ -2062,14 +2066,17 @@ const mainAppLogic = async(user) => {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // --- ▼▼ [修正] ハンバーガーメニュー関連の要素を取得 ▼▼ ---
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenuContent = document.getElementById('mobile-menu-content');
     const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-    // [削除] const langTogglePC = document.getElementById('lang-toggle-pc');
-    // [削除] const langToggleMobile = document.getElementById('lang-toggle-mobile');
+    // --- ▲▲ [修正] ---
+
     const themeTogglePC = document.getElementById('theme-toggle-pc');
     const themeToggleMobile = document.getElementById('theme-toggle-mobile');
 
+    // --- ▼▼ [修正] ハンバーガーメニューの `toggleMobileMenu` 関数を修正 ▼▼ ---
+    // （グローバルスコープから DOMContentLoaded 内に移動し、堅牢化）
     const toggleMobileMenu = () => {
         if (mobileMenuContent && mobileMenuOverlay) {
             mobileMenuContent.classList.toggle('active');
@@ -2079,21 +2086,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     updateContent(currentLang); 
     
+    // [修正] テーマアイコンの初期描画を修正
+    // applyThemeはlocalStorageの値に基づいてアイコンを正しく設定する
+    if (localStorage.getItem('theme') === 'dark') {
+        html.classList.add('dark');
+    }
     applyTheme(themeTogglePC);
     applyTheme(themeToggleMobile);
 
-    if (mobileMenuButton) {mobileMenuButton.addEventListener('click', toggleMobileMenu);}
-    if (mobileMenuOverlay) {mobileMenuOverlay.addEventListener('click', toggleMobileMenu);}
-
+    // --- ▼▼ [追加] ハンバーガーメニューのイベントリスナー ▼▼ ---
+    if (mobileMenuButton) {
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+    }
+    if (mobileMenuOverlay) {
+        mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+    }
+    // メニュー内のリンクをクリックしたらメニューを閉じる
     document.querySelectorAll('#mobile-menu-content a').forEach(link => {
         link.addEventListener('click', () => {
             if (mobileMenuContent && mobileMenuContent.classList.contains('active')) {
                 toggleMobileMenu();
             }
+            // 注意: ページ遷移しないリンク（例: '使い方'）の場合はこれだけでよいが、
+            // ページ遷移（例: 'マイアンケート'）する場合は遷移が優先される
         })
     });
+    // --- ▲▲ [追加] ---
 
-    // --- ▼▼ [追加] 新しい言語プルダウン制御ロジック ▼▼ ---
+
+    // --- ▼▼ [修正] 新しい言語プルダウン制御ロジック ▼▼ ---
     const setupLangDropdown = (containerId) => {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -2110,7 +2131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // 他のプルダウン（PC/スマホ）が開いていれば閉じる
             if (containerId === 'lang-dropdown-container-pc') {
                 document.getElementById('lang-dropdown-menu-mobile')?.classList.add('hidden');
-            } else {
+            } else if (containerId === 'lang-dropdown-container-mobile') {
                 document.getElementById('lang-dropdown-menu-pc')?.classList.add('hidden');
             }
             
@@ -2121,6 +2142,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         menu.querySelectorAll('a[data-lang]').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
+                e.stopPropagation(); // イベント伝播を止める
+                
                 const selectedLang = link.dataset.lang;
                 if (selectedLang !== currentLang) {
                     currentLang = selectedLang;
@@ -2152,16 +2175,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (pcContainer && !pcContainer.contains(e.target)) {
             document.getElementById('lang-dropdown-menu-pc')?.classList.add('hidden');
         }
-        // Mobile
+        // Mobile (メニューパネル *内* のプルダウン)
         const mobileContainer = document.getElementById('lang-dropdown-container-mobile');
         if (mobileContainer && !mobileContainer.contains(e.target)) {
             document.getElementById('lang-dropdown-menu-mobile')?.classList.add('hidden');
         }
     });
-    // --- ▲▲ [追加] ---
-
-    // [削除] if (langTogglePC) langTogglePC.addEventListener('click', handleLangToggle);
-    // [削除] if (langToggleMobile) langToggleMobile.addEventListener('click', handleLangToggle);
+    // --- ▲▲ [修正] ---
 
     if (themeTogglePC) themeTogglePC.addEventListener('click', handleThemeToggle);
     if (themeToggleMobile) themeToggleMobile.addEventListener('click', handleThemeToggle);
